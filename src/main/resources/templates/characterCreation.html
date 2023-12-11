@@ -24,52 +24,17 @@
         <input type="radio" id="raider" name="faction" value="Raider">
         <label for="raider">Raider</label><br>
 
+        <h3> Statistics</h3>
 
+        remaining points:<output id="points">---</output><br/>
+        <input class= "abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="atk"/>Attack<br/>
+        <input class= "abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="dmg"/>Damage<br/>
+        <input class= "abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="def"/>Defense<br/>
+        <input class= "abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="hp"/>Hit Points<br/>
+        <input class= "abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="lck"/>Luck<br/>
 
-        <div class="row">
-            <div class='col_4'>Points to Spend:</div>
-            <div class="col_1 pointsToSpend"></div>
-            <div class="col_7 pointsMax"></div>
         </div>
-        <div class="row">
-            <div class='row'>
-                <div class="col_1">Stat</div>
-                <div class="col_4"></div>
-            </div>
-            <div id="point-buy-table" class="character-creation">
-                <div class="row stats ATK">
-                    <div class="col_1">Attack</div>
-                    <div class="col_4">
-                        <input type='button' value='-' class='qtyminus' field='ATK' />
-                        <input type='text' name='Str' value='10' class='qty' disabled />
-                        <input type='button' value='+' class='qtyplus' field='ATK' />
-                    </div>
-                    <div class="row stats DMG">
-                        <div class="col_1">Damage</div>
-                        <div class="col_4">
-                            <input type='button' value='-' class='qtyminus' field='DMG' />
-                            <input type='text' name='Dex' value='10' class='qty' disabled />
-                            <input type='button' value='+' class='qtyplus' field='DMG' />
-                        </div>
-                        <div class="row stats HP">
-                            <div class="col_1">Hit Points</div>
-                            <div class="col_4">
-                                <input type='button' value='-' class='qtyminus' field='HP' />
-                                <input type='text' name='Con' value='10' class='qty' disabled />
-                                <input type='button' value='+' class='qtyplus' field='HP' />
-                            </div>
-                        </div>
-                        <div class="row stats LCK">
-                            <div class="col_1">Luck</div>
-                            <div class="col_4">
-                                <input type='button' value='-' class='qtyminus' field='LCK' />
-                                <input type='text' name='Int' value='10' class='qty' disabled />
-                                <input type='button' value='+' class='qtyplus' field='LCK' />
 
-                            </div>
-
-                        </div>
-                    </div>  </div>  </div>  </div>  </div>
 
     <button type="submit" form="characterSheet" formaction="/ui/send" formmethod="post"> Send</button>
 
