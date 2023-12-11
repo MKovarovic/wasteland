@@ -1,0 +1,50 @@
+button, .button, input[type=submit], input[type=reset], input[type=button]{
+    background-color: #3DD;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0px 3px 0px 0px #099;
+    margin-bottom: 1px;
+    padding: 0 15px;
+    line-height: 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.row {position: relative; height: 100%;}
+
+[class*='col_'] {
+    box-sizing: border-box;
+    float: left;
+    min-height: 20px;
+    margin: 0;
+    padding: 2px 3px;
+    position: relative;
+}
+[class*='col_']:after {
+    clear:both;
+    content: '';
+}
+
+.col_1 {width: 8.3%;}
+.col_2 {width: 16.6%;}
+.col_3 {width: 24.9%;}
+.col_4 {width: 33.2%;}
+.col_5 {width: 41.5%;}
+.col_6 {width: 49.8%;}
+.col_7 {width: 58.1%;}
+.col_8 {width: 66.4%;}
+.col_9 {width: 74.7%;}
+.col_10 {width: 83%;}
+.col_11 {width: 91.3%;}
+.col_12 {width: 99.6%;}
+
+#wrapper:before, #wrapper:after, .row:before, .row:after { clear: both; content: ''; display: table; }
+
+input.qtyplus, input.qtyminus {width:24px; padding: 0 2px;}
+
+.character-creation input[type='text'] {
+    padding: 0 2px;
+    width: 20px;
+    text-align: center;
+    border-color: #555;
+}
