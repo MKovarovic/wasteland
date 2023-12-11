@@ -1,3 +1,31 @@
+body{
+    font-family: "Arial";
+    font-size: 0.7rem;
+    width: 60%;
+    position:relative;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: black;
+    top: 2rem;
+
+}
+
+
+#Content{
+
+    padding: 0.5rem;
+    background-color: whitesmoke;
+    height:400px;
+
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+
+/*
+
 button, .button, input[type=submit], input[type=reset], input[type=button]{
     background-color: #3DD;
     border: none;
@@ -48,3 +76,6 @@ input.qtyplus, input.qtyminus {width:24px; padding: 0 2px;}
     text-align: center;
     border-color: #555;
 }
+
+*/
+
