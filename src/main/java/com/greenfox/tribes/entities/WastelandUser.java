@@ -15,11 +15,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="player")
-public class Player {
-  @Id
-  @GeneratedValue
-  private Long id;
+@Table(name = "player")
+public class WastelandUser {
+  @Id @GeneratedValue private Long id;
 
   @Column(unique = true, nullable = false)
   private String username;
