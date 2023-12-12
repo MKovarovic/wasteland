@@ -1,4 +1,4 @@
-package com.greenfox.tribes.controller;
+package com.greenfox.tribes.controllers;
 
 import com.greenfox.tribes.exceptions.UserAlreadyExistsException;
 import com.greenfox.tribes.services.CustomUserDetailService;

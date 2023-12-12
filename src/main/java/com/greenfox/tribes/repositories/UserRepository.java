@@ -1,6 +1,6 @@
 package com.greenfox.tribes.repositories;
 
-import com.greenfox.tribes.entities.WastelandUser;
+import com.greenfox.tribes.models.WastelandUser;
 import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 

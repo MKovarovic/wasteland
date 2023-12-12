@@ -1,6 +1,6 @@
 package com.greenfox.tribes;
 
-import com.greenfox.tribes.entities.WastelandUser;
+import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

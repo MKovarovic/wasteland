@@ -1,6 +1,6 @@
 package com.greenfox.tribes.services;
 
-import com.greenfox.tribes.entities.WastelandUser;
+import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.exceptions.UserAlreadyExistsException;
 import com.greenfox.tribes.repositories.UserRepository;
 import java.util.Optional;
