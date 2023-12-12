@@ -36,7 +36,7 @@ public class CharacterService {
     dto.setLCK(character.getLCK());
     dto.setHP(character.getHP());
     dto.setGold(character.getGold());
-    dto.setInventory(character.getInventory());
+   // dto.setInventory(character.getInventory());
 
     return dto;
   }
