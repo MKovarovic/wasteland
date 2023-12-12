@@ -32,7 +32,7 @@ public class PlayerCharacter {
 
   @ToString.Exclude
   @OneToMany(mappedBy = "playerCharacter", fetch = FetchType.EAGER)
-  private ArrayList<PlayerEquipment> inventory;
+  private ArrayList<CharacterEquipment> inventory;
 
   // TECHNICAL STUFF
   private Boolean isBusy;

@@ -2,11 +2,10 @@ package com.greenfox.tribes.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 @Entity
 @Data
-public class PlayerEquipment {
+public class CharacterEquipment {
   @Id @GeneratedValue private Long id;
 
   @ManyToOne

@@ -16,6 +16,8 @@ public class Equipment {
   private Long id;
 
   private String name;
+  private String type;
+  private String price;
   private Integer ATKbonus;
   private Integer DEFbonus;
   private Integer DMGbonus;
@@ -24,5 +26,5 @@ public class Equipment {
 
   @ToString.Exclude
   @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER)
-  private ArrayList<PlayerEquipment> characters;
+  private ArrayList<CharacterEquipment> characters;
 }
