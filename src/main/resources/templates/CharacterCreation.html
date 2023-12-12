@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Character Creation</title>
+    <link href="/CreationStyle.css" rel="stylesheet"/>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+<section id="Content">
+    <section id="Banner"></section>
+
+
+    <section id="Form">
+
+        <form id="characterSheet">
+            <div>
+                <h3> Name</h3>
+                <input type="text" id="nick" name="nick"
+                       placeholder="Choose your name" required minlength="3" maxlength="20">
+
+                <h3> Faction</h3>
+                <input type="radio" id="settler" name="faction" value="Settler">
+                <label for="settler">Settler</label><br>
+
+                <input type="radio" id="raider" name="faction" value="Raider">
+                <label for="raider">Raider</label><br>
+
+                <h3> Statistics</h3>
+
+                remaining points:
+                <output id="points">---</output>
+                <br/>
+                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="atk"
+                       name="atk"/>Attack<br/>
+                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="dmg"
+                       name="dmg"/>Damage<br/>
+                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="def"
+                       name="def"/>Defense<br/>
+                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="hp"
+                       name="hp"/>Hit Points<br/>
+                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="lck"
+                       name="lck"/>Luck<br/>
+
+            </div>
+
+
+            <button type="submit" form="characterSheet" formaction="/ui/send" formmethod="post"> Send</button>
+
+        </form>
+
+        <section id="DressUP"></section>
+    </section>
+
+
+</section>
+
+
+<script src="/PointBuy.js"></script>
+
+</body>
+
+
+</html>
