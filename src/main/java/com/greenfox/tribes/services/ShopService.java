@@ -28,13 +28,9 @@ public class ShopService {
       shoppingItem.add(equipment.getLCKbonus());
       shoppingItem.add(equipment.getPrice());
       shoppingItem.add(characterEquipmentRepo.findAllByEquipmentAndPlayerCharacter(equipment.getId(), character_id));
+      shoppingList.add(shoppingItem);
 
     }
     return shoppingList;
   }
 }
-//  private Integer ATKbonus;
-//  private Integer DEFbonus;
-//  private Integer DMGbonus;
-//  private Integer HPbonus;
-//  private Integer LCKbonus;
