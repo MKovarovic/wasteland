@@ -15,7 +15,7 @@ public class UserInterface {
 
   @GetMapping("/character/new")
   public String newCharacter() {
-    return "characterCreation";
+    return "CharacterCreation";
   }
 
   @GetMapping("/character/me")

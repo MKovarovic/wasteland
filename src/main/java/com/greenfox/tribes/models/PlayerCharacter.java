@@ -12,10 +12,10 @@ public class PlayerCharacter {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  Long id;
+  private Long id;
 
-  String characterName;
-  String faction;
+  private String characterName;
+  private String faction;
 
   //    Player player;
 

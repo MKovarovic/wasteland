@@ -8,10 +8,10 @@ import java.util.ArrayList;
 @Data
 public class CharacterDTO {
 
-  Long id;
+  private Long id;
 
-  String characterName;
-  String faction;
+  private String characterName;
+  private String faction;
 
   private Integer ATK; // chance to hit
   private Integer DEF; // chance to not be hit
