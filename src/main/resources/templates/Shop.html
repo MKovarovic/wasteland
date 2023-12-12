@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>'Shop'</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Type</th>
+        <th>Attack bonus</th>
+        <th>Defense bonus</th>
+        <th>Damage bonus</th>
+        <th>Hit point bonus</th>
+        <th>Luck bonus</th>
+        <th>Owned</th>
+        <th>Buy</th>
+        <th>Sell</th>
+
+
+
+    </tr>
+    <tr th:each="item: ${DTO}">
+
+        <td>
+            <p th:text="${item.get(0)}"></p>
+        </td>
+        <td>
+            <p th:text="${item.get(1)}"></p>
+        </td>
+        <td>
+            <p th:text="${item.get(2)}"></p>
+        </td>
+        <td>
+            <p th:text="${item.get(3)}"></p>
+        </td>
+        <td>
+            <p th:text="${item.get(4)}"></p>
+        </td>
+        <td>
+            <p th:text="${item.get(5)}"></p>
+        </td>
+        <td>
+            <p th:text="${item.get(6)}"></p>
+        </td>
+        <td>
+            <p th:text="${item.get(8)}"></p>
+        </td>
+        <td>
+            <p th:text="${item.get(7)}"></p>
+        </td>
+        <td>
+            <p th:text="${item.get(7)/2}"></p>
+        </td>
+    </tr>
+</table>
+
+
+</body>
+</html>
