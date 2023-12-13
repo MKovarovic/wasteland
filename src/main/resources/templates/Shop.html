@@ -25,34 +25,34 @@
     <tr th:each="item: ${DTO}">
 
         <td>
-            <p th:text="${item.get(0)}"></p>
+            <p th:text="${item.getName()}"></p>
         </td>
         <td>
-            <p th:text="${item.get(1)}"></p>
+            <p th:text="${item.getType()}"></p>
         </td>
         <td>
-            <p th:text="${item.get(2)}"></p>
+            <p th:text="${item.getATKbonus()}"></p>
         </td>
         <td>
-            <p th:text="${item.get(3)}"></p>
+            <p th:text="${item.getDEFbonus()}"></p>
         </td>
         <td>
-            <p th:text="${item.get(4)}"></p>
+            <p th:text="${item.getDMGbonus()}"></p>
         </td>
         <td>
-            <p th:text="${item.get(5)}"></p>
+            <p th:text="${item.getHPbonus()}"></p>
         </td>
         <td>
-            <p th:text="${item.get(6)}"></p>
+            <p th:text="${item.getLCKbonus()}"></p>
         </td>
         <td>
-            <p th:text="${item.get(8)}"></p>
+            <p th:text="${item.getNrOwned()}"></p>
         </td>
         <td>
-            <p th:text="${item.get(7)}"></p>
+            <p th:text="${item.getPrice()}"></p>
         </td>
         <td>
-            <p th:text="${item.get(7)/2}"></p>
+            <p th:text="${item.getPrice()/2}"></p>
         </td>
     </tr>
 </table>

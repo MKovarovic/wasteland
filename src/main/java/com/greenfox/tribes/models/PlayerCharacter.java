@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,7 +33,7 @@ public class PlayerCharacter {
 
   @ToString.Exclude
   @OneToMany(mappedBy = "playerCharacter", fetch = FetchType.EAGER)
-  private ArrayList<CharacterEquipment> inventory;
+  private List<CharacterEquipment> inventory;
 
   // TECHNICAL STUFF
   private Boolean isBusy;
