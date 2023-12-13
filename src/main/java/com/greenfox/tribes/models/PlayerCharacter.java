@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -12,7 +13,8 @@ public class PlayerCharacter {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+  @Column(name = "character_id")
+      private Long id;
 
   private String characterName;
   private String faction;
@@ -30,8 +32,8 @@ public class PlayerCharacter {
   private Integer gold;
 
   @ToString.Exclude
-  @OneToMany(mappedBy = "player_character", fetch = FetchType.EAGER)
-  private ArrayList<Equipment> inventory;
+  @OneToMany(mappedBy = "playerCharacter", fetch = FetchType.EAGER)
+  private List<CharacterEquipment> inventory;
 
   // TECHNICAL STUFF
   private Boolean isBusy;

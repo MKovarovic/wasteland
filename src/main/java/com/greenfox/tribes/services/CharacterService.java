@@ -24,6 +24,20 @@ public class CharacterService {
     playerCharacters.save(character);
   }
 
+  public void addCharacter(
+      String name, int hp, int atk, int dmg, int def, int lck, String faction, int gold) {
+    PlayerCharacter character = new PlayerCharacter();
+    character.setCharacterName(name);
+    character.setHP(hp);
+    character.setATK(atk);
+    character.setDMG(dmg);
+    character.setDEF(def);
+    character.setLCK(lck);
+    character.setFaction(faction);
+    character.setGold(gold);
+    playerCharacters.save(character);
+  }
+
   public CharacterDTO readCharacter(Long id) {
     PlayerCharacter character = playerCharacters.findById(id).get();
     CharacterDTO dto = new CharacterDTO();
@@ -36,8 +50,12 @@ public class CharacterService {
     dto.setLCK(character.getLCK());
     dto.setHP(character.getHP());
     dto.setGold(character.getGold());
-    dto.setInventory(character.getInventory());
+    // dto.setInventory(character.getInventory());
 
     return dto;
+  }
+
+  public PlayerCharacter returnCharacter(Long id) {
+    return playerCharacters.findById(id).get();
   }
 }
