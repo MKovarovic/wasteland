@@ -2,6 +2,7 @@ package com.greenfox.tribes.services;
 
 import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.models.Equipment;
+import com.greenfox.tribes.models.PlayerCharacter;
 import com.greenfox.tribes.repositories.EquipmentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class EquipmentService {
   @Autowired EquipmentRepo equipmentRepo;
 
-  public void addItem(EquipmentDTO dto) {
+  public void newItem(EquipmentDTO dto) {
     Equipment equipment = new Equipment();
     equipment.setName(dto.getName());
     equipment.setType(dto.getType());
@@ -23,7 +24,15 @@ public class EquipmentService {
     equipmentRepo.save(equipment);
   }
 
-  public void newItem(String name, String type, int price, int ATKbonus, int DEFbonus, int DMGbonus, int HPbonus, int LCKbonus) {
+  public void newItem(
+      String name,
+      String type,
+      int price,
+      int ATKbonus,
+      int DEFbonus,
+      int DMGbonus,
+      int HPbonus,
+      int LCKbonus) {
     Equipment equipment = new Equipment();
     equipment.setName(name);
     equipment.setType(type);
@@ -35,5 +44,8 @@ public class EquipmentService {
     equipment.setLCKbonus(LCKbonus);
     equipmentRepo.save(equipment);
   }
-}
 
+  public Equipment returnItem(Long id) {
+    return equipmentRepo.findById(id).get();
+  }
+}

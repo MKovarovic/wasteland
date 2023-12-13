@@ -15,4 +15,9 @@ public class CharacterEquipment {
   @ManyToOne
   @JoinColumn(name = "equipment_id")
   Equipment equipment;
+
+  public void setPair(PlayerCharacter character, Equipment equipment) {
+    this.equipment = equipment;
+    this.playerCharacter = character;
+  }
 }
