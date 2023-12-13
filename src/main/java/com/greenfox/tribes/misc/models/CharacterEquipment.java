@@ -11,7 +11,7 @@ public class CharacterEquipment {
   @Id @GeneratedValue private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "character_id")
+  @JoinColumn(name = "persona_id")
   Persona persona;
 
   @ManyToOne

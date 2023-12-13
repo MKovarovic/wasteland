@@ -1,5 +1,6 @@
 package com.greenfox.tribes.persona.models;
 
+import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.misc.models.CharacterEquipment;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -13,13 +14,15 @@ public class Persona {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "character_id")
-      private Long id;
+  @Column(name = "persona_id")
+  private Long id;
 
   private String characterName;
   private String faction;
 
-  //    Player player;
+@OneToOne
+@MapsId
+  WastelandUser player;
 
   // COMBAT STATS
   private Integer atk; // chance to hit
@@ -29,10 +32,10 @@ public class Persona {
   private Integer hp;
 
   // INVENTORY
-  private Integer gold;
+  private Integer pullRing;
 
   @ToString.Exclude
-  @OneToMany(mappedBy = "playerCharacter", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "persona", fetch = FetchType.EAGER)
   private List<CharacterEquipment> inventory;
 
   // TECHNICAL STUFF

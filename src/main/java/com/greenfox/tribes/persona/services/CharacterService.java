@@ -4,13 +4,16 @@ import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.dtos.PersonaDTO;
 import com.greenfox.tribes.persona.repositories.PersonaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CharacterService {
 
-  @Autowired
-  PersonaRepo playerCharacters;
+  @Autowired PersonaRepo playerCharacters;
 
   public void addCharacter(PersonaDTO dto) {
     Persona character = new Persona();
@@ -21,7 +24,7 @@ public class CharacterService {
     character.setDef(dto.getDef());
     character.setLck(dto.getLck());
     character.setFaction(dto.getFaction());
-    character.setGold(dto.getGold());
+    character.setPullRing(dto.getPullRing());
     playerCharacters.save(character);
   }
 
@@ -35,7 +38,7 @@ public class CharacterService {
     character.setDef(def);
     character.setLck(lck);
     character.setFaction(faction);
-    character.setGold(gold);
+    character.setPullRing(gold);
     playerCharacters.save(character);
   }
 
@@ -50,11 +53,26 @@ public class CharacterService {
     dto.setDef(character.getDef());
     dto.setLck(character.getLck());
     dto.setHp(character.getHp());
-    dto.setGold(character.getGold());
+    dto.setPullRing(character.getPullRing());
     // dto.setInventory(character.getInventory());
 
     return dto;
   }
+
+  public void updateCharacter(PersonaDTO dto) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Optional<Persona> loggedCharacter =
+        playerCharacters.findPersonaByPlayer_Username(auth.getName());
+    if (loggedCharacter.isPresent()) {
+      loggedCharacter.get().setAtk(dto.getAtk());
+      loggedCharacter.get().setDmg(dto.getDmg());
+      loggedCharacter.get().setDef(dto.getDef());
+      loggedCharacter.get().setLck(dto.getLck());
+      loggedCharacter.get().setPullRing(dto.getPullRing());
+      playerCharacters.save(loggedCharacter.get());
+    }
+  }
+
 
   public Persona returnCharacter(Long id) {
     return playerCharacters.findById(id).get();

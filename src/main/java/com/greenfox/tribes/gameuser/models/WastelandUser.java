@@ -1,10 +1,7 @@
 package com.greenfox.tribes.gameuser.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.greenfox.tribes.persona.models.Persona;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -17,4 +14,8 @@ public class WastelandUser {
   private String username;
 
   private String password;
+
+  @OneToOne(mappedBy = "player")
+  @PrimaryKeyJoinColumn
+  private Persona playerCharacter;
 }

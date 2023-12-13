@@ -20,7 +20,7 @@ public class ShopService {
     ArrayList<EquipmentDTO> shoppingList = new ArrayList<>();
     for (Equipment equipment : equipmentRepo.findAll()) {
       int numberOwned =
-          characterEquipmentRepo.countAllByEquipment_IdAndPlayerCharacter_Id(
+          characterEquipmentRepo.countAllByEquipment_IdAndPersona_Id(
               equipment.getId(), character_id);
       shoppingList.add(EquipmentDTO.fromEquipment(equipment, numberOwned));
     }

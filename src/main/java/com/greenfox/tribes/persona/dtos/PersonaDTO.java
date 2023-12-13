@@ -19,7 +19,7 @@ public class PersonaDTO {
   private Integer lck; // chance to crit, i.e. deal double damage
   private Integer hp;
 
-  private Integer gold;
+  private Integer pullRing;
 
   private ArrayList<Equipment> inventory;
 }
