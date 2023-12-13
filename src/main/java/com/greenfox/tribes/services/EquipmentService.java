@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class EquipmentService {
   @Autowired EquipmentRepo equipmentRepo;
 
-  public void newItem(EquipmentDTO dto) {
+  public void addItem(EquipmentDTO dto) {
     Equipment equipment = new Equipment();
     equipment.setName(dto.getName());
     equipment.setType(dto.getType());
@@ -20,6 +20,19 @@ public class EquipmentService {
     equipment.setDMGbonus(dto.getDMGbonus());
     equipment.setHPbonus(dto.getHPbonus());
     equipment.setLCKbonus(dto.getLCKbonus());
+    equipmentRepo.save(equipment);
+  }
+
+  public void newItem(String name, String type, int price, int ATKbonus, int DEFbonus, int DMGbonus, int HPbonus, int LCKbonus) {
+    Equipment equipment = new Equipment();
+    equipment.setName(name);
+    equipment.setType(type);
+    equipment.setPrice(price);
+    equipment.setATKbonus(ATKbonus);
+    equipment.setDEFbonus(DEFbonus);
+    equipment.setDMGbonus(DMGbonus);
+    equipment.setHPbonus(HPbonus);
+    equipment.setLCKbonus(LCKbonus);
     equipmentRepo.save(equipment);
   }
 }

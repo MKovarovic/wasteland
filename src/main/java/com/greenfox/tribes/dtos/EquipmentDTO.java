@@ -7,7 +7,7 @@ public class EquipmentDTO {
 
     private String name;
     private String type;
-    private String price;
+    private Integer price;
     private Integer ATKbonus;
     private Integer DEFbonus;
     private Integer DMGbonus;

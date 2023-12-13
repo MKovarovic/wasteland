@@ -27,9 +27,9 @@ public class ShopService {
       shoppingItem.add(equipment.getHPbonus());
       shoppingItem.add(equipment.getLCKbonus());
       shoppingItem.add(equipment.getPrice());
-      shoppingItem.add(characterEquipmentRepo.findAllByEquipmentAndPlayerCharacter(equipment.getId(), character_id));
+      shoppingItem.add(characterEquipmentRepo.findAllByEquipment_IdAndPlayerCharacter_Id(equipment.getId(), character_id));
       shoppingList.add(shoppingItem);
-
+      System.out.println(shoppingItem);
     }
     return shoppingList;
   }
