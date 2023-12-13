@@ -28,18 +28,30 @@
                     </td>
                 <tr>
                     <td>
-                        <p th:text="'Attack:' + ${DTO.getATK()}"></p>
+                        <p th:text="'⨁:' + ${DTO.getAtk()}"></p>
                     </td>
                     <td>
-                        <p th:text="'Defense:' + ${DTO.getDEF()}"></p>
+                        <p th:text="'𐃃:' + ${DTO.getDef()}"></p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Luck</p>
+                        <p th:text="'🗡:' + ${DTO.getDmg()}"></p>
                     </td>
                     <td>
-                        <p th:text="${DTO.getLCK()}"></p>
+                        <p th:text="'❤:' + ${DTO.getHp()}"></p>
+                    </td>
+                </tr>
+
+
+
+
+                <tr>
+                    <td>
+                        <p>⯎</p>
+                    </td>
+                    <td>
+                        <p th:text="${DTO.getLck()}"></p>
                     </td>
                 </tr>
 
@@ -68,19 +80,19 @@
                         <p th:text="${item.getName()}"></p>
                     </td>
                     <td>
-                        <p th:text="${item.getATKbonus()}"></p>
+                        <p th:text="${item.getAtkBonus()}"></p>
                     </td>
                     <td>
-                        <p th:text="${item.getDMGbonus()}"></p>
+                        <p th:text="${item.getDmgBonus()}"></p>
                     </td>
                     <td>
-                        <p th:text="${item.getDEFbonus()}"></p>
+                        <p th:text="${item.getDefBonus()}"></p>
                     </td>
                     <td>
-                        <p th:text="${item.getHPbonus()}"></p>
+                        <p th:text="${item.getHpBonus()}"></p>
                     </td>
                     <td>
-                        <p th:text="${item.getLCKbonus()}"></p>
+                        <p th:text="${item.getLckBonus()}"></p>
                     </td>
                     <td>
                         <button><a th:href="'/todo/delete?q=' + ${item.getId()}">Equip</a></button>

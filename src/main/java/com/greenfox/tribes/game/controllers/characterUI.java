@@ -3,25 +3,30 @@ package com.greenfox.tribes.game.controllers;
 import com.greenfox.tribes.persona.dtos.PersonaDTO;
 import com.greenfox.tribes.persona.services.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class UserInterface {
+@RequestMapping("/character")
+public class characterUI {
 
   @Autowired CharacterService characterService;
 
-  @GetMapping("/character/new")
+
+  @GetMapping("/new")
   public String newCharacter() {
-    return "CharacterCreation";
+    return "persona-sites/CharacterCreation";
   }
 
-  @GetMapping("/character/me")
-  public String myCharacter(Model model, @RequestParam("id") Long id) {
-    PersonaDTO dto = characterService.readCharacter(id);
+  @GetMapping("/me")
+  public String myCharacter(Model model) {
+    PersonaDTO dto = characterService.readCharacter();
     model.addAttribute("DTO", dto);
-    return "MainPage";
+    return "persona-sites/MainPage";
   }
 }

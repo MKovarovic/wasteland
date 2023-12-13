@@ -21,12 +21,12 @@ public class AuthController {
 
   @GetMapping("/login")
   public String login() {
-    return "login";
+    return "user-settings/login";
   }
 
   @GetMapping("/register")
   public String register() {
-    return "register";
+    return "user-settings/register";
   }
 
   @PostMapping("/register")
@@ -38,9 +38,9 @@ public class AuthController {
       userDetailsService.createUser(username, password);
     } catch (UserAlreadyExistsException e) {
       ra.addFlashAttribute("alreadyExists", true);
-      return new RedirectView("/register");
+      return new RedirectView("user-settings/register");
     }
-    return new RedirectView("/login");
+    return new RedirectView("user-settings/login");
   }
 
   // todo remove the following, it is only an example
@@ -49,11 +49,11 @@ public class AuthController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     model.addAttribute("username", auth.getName());
 
-    return "secure";
+    return "user-settings/secure";
   }
 
   @GetMapping("/")
   public String main() {
-    return "index";
+    return "user-settings/index";
   }
 }

@@ -18,6 +18,8 @@ public class CharacterEquipment {
   @JoinColumn(name = "equipment_id")
   Equipment equipment;
 
+
+
   public void setPair(Persona character, Equipment equipment) {
     this.equipment = equipment;
     this.persona = character;

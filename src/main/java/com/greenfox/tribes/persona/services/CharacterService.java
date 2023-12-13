@@ -59,6 +59,31 @@ public class CharacterService {
     return dto;
   }
 
+  public PersonaDTO readCharacter() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Optional<Persona> loggedCharacter =
+            playerCharacters.findPersonaByPlayer_Username(auth.getName());
+    PersonaDTO dto = new PersonaDTO();
+    if (loggedCharacter.isPresent()) {
+      dto.setId(loggedCharacter.get().getId());
+      dto.setCharacterName(loggedCharacter.get().getCharacterName());
+      dto.setFaction(loggedCharacter.get().getFaction());
+      dto.setAtk(loggedCharacter.get().getAtk());
+      dto.setDmg(loggedCharacter.get().getDmg());
+      dto.setDef(loggedCharacter.get().getDef());
+      dto.setLck(loggedCharacter.get().getLck());
+      dto.setHp(loggedCharacter.get().getHp());
+      dto.setInventory(loggedCharacter.get().getInventory());
+      System.out.println(dto.getInventory());
+      dto.setPullRing(loggedCharacter.get().getPullRing());
+    }
+
+
+    // dto.setInventory(character.getInventory());
+
+    return dto;
+  }
+
   public void updateCharacter(PersonaDTO dto) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     Optional<Persona> loggedCharacter =

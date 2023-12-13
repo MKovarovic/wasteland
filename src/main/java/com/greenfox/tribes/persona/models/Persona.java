@@ -1,5 +1,6 @@
 package com.greenfox.tribes.persona.models;
 
+import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.misc.models.CharacterEquipment;
 import jakarta.persistence.*;
@@ -44,5 +45,7 @@ public class Persona {
   Boolean isPremium = false;
   public void printstuff(){
   System.out.println(inventory);}
+
+
 
 }
