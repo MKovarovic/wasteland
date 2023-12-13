@@ -19,11 +19,11 @@ public class Equipment {
   private String name;
   private String type;
   private Integer price;
-  private Integer ATKbonus;
-  private Integer DEFbonus;
-  private Integer DMGbonus;
-  private Integer HPbonus;
-  private Integer LCKbonus;
+  private Integer atkBonus;
+  private Integer defBonus;
+  private Integer dmgBonus;
+  private Integer hpBonus;
+  private Integer lckBonus;
 
   @ToString.Exclude
   @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER)

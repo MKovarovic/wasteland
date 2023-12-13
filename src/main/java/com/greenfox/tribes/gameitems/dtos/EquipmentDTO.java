@@ -11,11 +11,11 @@ public class EquipmentDTO {
   private String name;
   private String type;
   private Integer price;
-  private Integer ATKbonus;
-  private Integer DEFbonus;
-  private Integer DMGbonus;
-  private Integer HPbonus;
-  private Integer LCKbonus;
+  private Integer atkBonus;
+  private Integer defBonus;
+  private Integer dmgBonus;
+  private Integer hpBonus;
+  private Integer lckBonus;
   private Integer nrOwned;
 
   public static EquipmentDTO fromEquipment(Equipment eq, int numberOwned) {
@@ -23,11 +23,11 @@ public class EquipmentDTO {
         eq.getName(),
         eq.getType(),
         eq.getPrice(),
-        eq.getATKbonus(),
-        eq.getDEFbonus(),
-        eq.getDMGbonus(),
-        eq.getHPbonus(),
-        eq.getLCKbonus(),
+        eq.getAtkBonus(),
+        eq.getDefBonus(),
+        eq.getDmgBonus(),
+        eq.getHpBonus(),
+        eq.getLckBonus(),
         numberOwned);
   }
 }

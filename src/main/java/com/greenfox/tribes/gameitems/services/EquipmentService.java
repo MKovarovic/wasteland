@@ -15,11 +15,11 @@ public class EquipmentService {
     equipment.setName(dto.getName());
     equipment.setType(dto.getType());
     equipment.setPrice(dto.getPrice());
-    equipment.setATKbonus(dto.getATKbonus());
-    equipment.setDEFbonus(dto.getDEFbonus());
-    equipment.setDMGbonus(dto.getDMGbonus());
-    equipment.setHPbonus(dto.getHPbonus());
-    equipment.setLCKbonus(dto.getLCKbonus());
+    equipment.setAtkBonus(dto.getAtkBonus());
+    equipment.setDefBonus(dto.getDefBonus());
+    equipment.setDmgBonus(dto.getDmgBonus());
+    equipment.setHpBonus(dto.getHpBonus());
+    equipment.setLckBonus(dto.getLckBonus());
     equipmentRepo.save(equipment);
   }
 
@@ -36,11 +36,11 @@ public class EquipmentService {
     equipment.setName(name);
     equipment.setType(type);
     equipment.setPrice(price);
-    equipment.setATKbonus(ATKbonus);
-    equipment.setDEFbonus(DEFbonus);
-    equipment.setDMGbonus(DMGbonus);
-    equipment.setHPbonus(HPbonus);
-    equipment.setLCKbonus(LCKbonus);
+    equipment.setAtkBonus(ATKbonus);
+    equipment.setDefBonus(DEFbonus);
+    equipment.setDmgBonus(DMGbonus);
+    equipment.setHpBonus(HPbonus);
+    equipment.setLckBonus(LCKbonus);
     equipmentRepo.save(equipment);
   }
 
