@@ -47,4 +47,21 @@ public class EquipmentService {
   public Equipment returnItem(Long id) {
     return equipmentRepo.findById(id).get();
   }
+
+  public void deleteItem(Long id){
+    equipmentRepo.deleteById(id);
+  }
+
+  public void updateItem(EquipmentDTO dto, Long id){
+    Equipment equipment = equipmentRepo.findById(id).get();
+    equipment.setName(dto.getName());
+    equipment.setType(dto.getType());
+    equipment.setPrice(dto.getPrice());
+    equipment.setAtkBonus(dto.getAtkBonus());
+    equipment.setDefBonus(dto.getDefBonus());
+    equipment.setDmgBonus(dto.getDmgBonus());
+    equipment.setHpBonus(dto.getHpBonus());
+    equipment.setLckBonus(dto.getLckBonus());
+    equipmentRepo.save(equipment);
+  }
 }
