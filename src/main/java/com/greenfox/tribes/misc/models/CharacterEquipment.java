@@ -23,3 +23,5 @@ public class CharacterEquipment {
     this.persona = character;
   }
 }
+
+//each entry includes both objects, which causes kinda entry-ception with equipment list. Fix it, maybe??

@@ -4,6 +4,7 @@ import com.greenfox.tribes.misc.models.CharacterEquipment;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.misc.models.repositories.CharacterEquipmentRepo;
 import com.greenfox.tribes.gameuser.repositories.UserRepository;
+import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.services.CharacterService;
 import com.greenfox.tribes.gameitems.services.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,9 @@ public class TribesApplication implements ApplicationRunner {
         equipmentService.newItem( "Wooden Shield", "Shield", 0, 0, 15, 0, 0, 5);
         equipmentService.newItem( "Hard hat", "Helmet", 0, 0, 0, 0, 5, 0);
         characterService.addCharacter("MaidBot3000", 20, 30, 5, 80, 1, "Bots", 10);*/
+/*      Persona persona = characterService.returnCharacter(1L);
 
+      persona.printstuff();*/
 /*    CharacterEquipment pair = new CharacterEquipment();
     pair.setPair(characterService.returnCharacter(1L), equipmentService.returnItem(1L));
     pairingRepo.save(pair);*/

@@ -3,6 +3,7 @@ package com.greenfox.tribes.gameuser.models;
 import com.greenfox.tribes.persona.models.Persona;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -15,7 +16,7 @@ public class WastelandUser {
 
   private String password;
 
-  @OneToOne(mappedBy = "player")
-  @PrimaryKeyJoinColumn
-  private Persona playerCharacter;
+  @OneToOne
+  @ToString.Exclude
+  private Persona persona;
 }
