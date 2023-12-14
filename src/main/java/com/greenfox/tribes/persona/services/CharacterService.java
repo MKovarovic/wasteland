@@ -28,7 +28,7 @@ public class CharacterService {
     playerCharacters.save(character);
   }
 
-  public void addCharacter(
+  public Persona addCharacter(
       String name, int hp, int atk, int dmg, int def, int lck, String faction, int gold) {
     Persona character = new Persona();
     character.setCharacterName(name);
@@ -40,6 +40,7 @@ public class CharacterService {
     character.setFaction(faction);
     character.setPullRing(gold);
     playerCharacters.save(character);
+    return character;
   }
 
   public PersonaDTO readCharacter(Long id) {

@@ -16,7 +16,7 @@ public class WebSecurityConfig {
     http.authorizeHttpRequests(
             (requests) ->
                 requests
-                    .requestMatchers("/", "/register") // todo: set open endpoints here
+                    .requestMatchers("/", "/register", "/character/new") // todo: set open endpoints here
                     .permitAll()
                     .anyRequest()
                     .authenticated())
