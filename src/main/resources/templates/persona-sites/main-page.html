@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Landing</title>
+</head>
+<body>
+
+<section id="Content">
+
+    <section id="Banner"></section>
+    <div id="links"><a href="only-available">Bounty/Raid</a><a href="cheapest">Hunt</a><a
+            href="isNike">Work/Scavange</a>
+        <hr>
+        <a href="averangeStock">Character</a><a href="mostExpensive">Farm/Camp</a></div>
+    <section id="Insides">
+
+        <section id="stats">
+            <h1 th:text="${DTO.getCharacterName()}"></h1>
+            <table>
+
+                <tr>
+                    <td>
+                        <p> Faction</p>
+                    </td>
+                    <td>
+                        <p th:text="${DTO.getFaction()}"></p>
+                    </td>
+                <tr>
+                    <td>
+                        <p th:text="'⨁:' + ${DTO.getAtk()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="'𐃃:' + ${DTO.getDef()}"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p th:text="'🗡:' + ${DTO.getDmg()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="'❤:' + ${DTO.getHp()}"></p>
+                    </td>
+                </tr>
+
+
+
+
+                <tr>
+                    <td>
+                        <p>⯎</p>
+                    </td>
+                    <td>
+                        <p th:text="${DTO.getLck()}"></p>
+                    </td>
+                </tr>
+
+            </table>
+
+            <img>
+
+        </section>
+
+        <section id="inventory">
+
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>ATK bonus</th>
+                    <th>DMG bonus</th>
+                    <th>DEF bonus</th>
+                    <th>HP bonus</th>
+                    <th>LCK bonus</th>
+                    <th>Equip?</th>
+
+                </tr>
+                <tr th:each="item: ${DTO.getInventory()}">
+
+                    <td>
+                        <p th:text="${item.getName()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getAtkBonus()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getDmgBonus()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getDefBonus()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getHpBonus()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getLckBonus()}"></p>
+                    </td>
+                    <td>
+                        <button><a th:href="'/todo/delete?q=' + ${item.getId()}">Equip</a></button>
+                    </td>
+
+                </tr>
+            </table>
+        </section>
+
+
+    </section>
+
+
+</section>
+
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>'Shop'</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Type</th>
+        <th>Attack bonus</th>
+        <th>Defense bonus</th>
+        <th>Damage bonus</th>
+        <th>Hit point bonus</th>
+        <th>Luck bonus</th>
+        <th>Owned</th>
+        <th>Buy</th>
+        <th>Sell</th>
+
+
+
+    </tr>
+    <tr th:each="item: ${DTO}">
+
+        <td>
+            <p th:text="${item.getName()}"></p>
+        </td>
+        <td>
+            <p th:text="${item.getType()}"></p>
+        </td>
+        <td>
+            <p th:text="${item.getAtkBonus()}"></p>
+        </td>
+        <td>
+            <p th:text="${item.getDefBonus()}"></p>
+        </td>
+        <td>
+            <p th:text="${item.getDmgBonus()}"></p>
+        </td>
+        <td>
+            <p th:text="${item.getHpBonus()}"></p>
+        </td>
+        <td>
+            <p th:text="${item.getLckBonus()}"></p>
+        </td>
+        <td>
+            <p th:text="${item.getNrOwned()}"></p>
+        </td>
+        <td>
+            <p th:text="${item.getPrice()}"></p>
+        </td>
+        <td>
+            <p th:text="${item.getPrice()/2}"></p>
+        </td>
+    </tr>
+</table>
+
+
+</body>
+</html>
