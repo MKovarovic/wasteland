@@ -18,12 +18,11 @@ public class CharacterEquipment {
   @JoinColumn(name = "equipment_id")
   Equipment equipment;
 
-
-
   public void setPair(Persona character, Equipment equipment) {
     this.equipment = equipment;
     this.persona = character;
   }
 }
 
-//each entry includes both objects, which causes kinda entry-ception with equipment list. Fix it, maybe??
+// each entry includes both objects, which causes kinda entry-ception with equipment list. Fix it,
+// maybe??

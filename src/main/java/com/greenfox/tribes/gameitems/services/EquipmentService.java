@@ -27,20 +27,20 @@ public class EquipmentService {
       String name,
       String type,
       int price,
-      int ATKbonus,
-      int DEFbonus,
-      int DMGbonus,
-      int HPbonus,
-      int LCKbonus) {
+      int atkBonus,
+      int defBonus,
+      int dmgBonus,
+      int hpBonus,
+      int lckBonus) {
     Equipment equipment = new Equipment();
     equipment.setName(name);
     equipment.setType(type);
     equipment.setPrice(price);
-    equipment.setAtkBonus(ATKbonus);
-    equipment.setDefBonus(DEFbonus);
-    equipment.setDmgBonus(DMGbonus);
-    equipment.setHpBonus(HPbonus);
-    equipment.setLckBonus(LCKbonus);
+    equipment.setAtkBonus(atkBonus);
+    equipment.setDefBonus(defBonus);
+    equipment.setDmgBonus(dmgBonus);
+    equipment.setHpBonus(hpBonus);
+    equipment.setLckBonus(lckBonus);
     equipmentRepo.save(equipment);
   }
 
@@ -48,11 +48,11 @@ public class EquipmentService {
     return equipmentRepo.findById(id).get();
   }
 
-  public void deleteItem(Long id){
+  public void deleteItem(Long id) {
     equipmentRepo.deleteById(id);
   }
 
-  public void updateItem(EquipmentDTO dto, Long id){
+  public void updateItem(EquipmentDTO dto, Long id) {
     Equipment equipment = equipmentRepo.findById(id).get();
     equipment.setName(dto.getName());
     equipment.setType(dto.getType());

@@ -12,7 +12,6 @@ import java.util.List;
 public class Equipment {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-
   @Column(name = "equipment_id")
   private Long id;
 

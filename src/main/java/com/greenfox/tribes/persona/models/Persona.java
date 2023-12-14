@@ -1,6 +1,5 @@
 package com.greenfox.tribes.persona.models;
 
-import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.misc.models.CharacterEquipment;
 import jakarta.persistence.*;
@@ -21,8 +20,8 @@ public class Persona {
   private String characterName;
   private String faction;
 
-@OneToOne(mappedBy = "persona")
-@ToString.Exclude
+  @OneToOne(mappedBy = "persona")
+  @ToString.Exclude
   WastelandUser player;
 
   // COMBAT STATS
@@ -39,13 +38,7 @@ public class Persona {
   @OneToMany(mappedBy = "persona", fetch = FetchType.EAGER)
   private List<CharacterEquipment> inventory;
 
-
   // TECHNICAL STUFF
   private Boolean isBusy;
   Boolean isPremium = false;
-  public void printstuff(){
-  System.out.println(inventory);}
-
-
-
 }

@@ -54,7 +54,6 @@ public class CharacterService {
     dto.setLck(character.getLck());
     dto.setHp(character.getHp());
     dto.setPullRing(character.getPullRing());
-    // dto.setInventory(character.getInventory());
 
     return dto;
   }
@@ -62,7 +61,7 @@ public class CharacterService {
   public PersonaDTO readCharacter() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     Optional<Persona> loggedCharacter =
-            playerCharacters.findPersonaByPlayer_Username(auth.getName());
+        playerCharacters.findPersonaByPlayer_Username(auth.getName());
     PersonaDTO dto = new PersonaDTO();
     if (loggedCharacter.isPresent()) {
       dto.setId(loggedCharacter.get().getId());
@@ -77,7 +76,6 @@ public class CharacterService {
       System.out.println(dto.getInventory());
       dto.setPullRing(loggedCharacter.get().getPullRing());
     }
-
 
     // dto.setInventory(character.getInventory());
 
@@ -97,7 +95,6 @@ public class CharacterService {
       playerCharacters.save(loggedCharacter.get());
     }
   }
-
 
   public Persona returnCharacter(Long id) {
     return playerCharacters.findById(id).get();

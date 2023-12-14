@@ -14,7 +14,6 @@ public class CharacterUI {
 
   @Autowired CharacterService characterService;
 
-
   @GetMapping("/new")
   public String newCharacter() {
     return "persona-sites/character-creation";

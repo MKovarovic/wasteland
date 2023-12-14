@@ -31,9 +31,7 @@ public class AuthController {
 
   @PostMapping("/register")
   public RedirectView registerPost(
-      @RequestParam String username,
-      @RequestParam String password,
-      RedirectAttributes ra) {
+      @RequestParam String username, @RequestParam String password, RedirectAttributes ra) {
     try {
       userDetailsService.createUser(username, password);
     } catch (UserAlreadyExistsException e) {

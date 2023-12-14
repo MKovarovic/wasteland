@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/shop")
 public class Shop {
 
-    @Autowired
-    ShopService shopService;
-    @GetMapping("/")
-    public String browseShop(Model model, Long id){
-        model.addAttribute("DTO", shopService.getShoppingList(id));
-        return "game-sites/shop";
-    }
+  @Autowired ShopService shopService;
 
+  @GetMapping("/")
+  public String browseShop(Model model, Long id) {
+    model.addAttribute("DTO", shopService.getShoppingList(id));
+    return "game-sites/shop";
+  }
 }
