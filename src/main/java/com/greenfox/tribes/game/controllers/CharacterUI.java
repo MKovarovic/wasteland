@@ -19,6 +19,8 @@ public class CharacterUI {
     return "persona-sites/character-creation";
   }
 
+
+
   @GetMapping("/me")
   public String myCharacter(Model model) {
     PersonaDTO dto = characterService.readCharacter();
