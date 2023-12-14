@@ -16,7 +16,7 @@ public class Shop {
     @GetMapping("/")
     public String browseShop(Model model, Long id){
         model.addAttribute("DTO", shopService.getShoppingList(id));
-        return "Shop";
+        return "game-sites/shop";
     }
 
 }
