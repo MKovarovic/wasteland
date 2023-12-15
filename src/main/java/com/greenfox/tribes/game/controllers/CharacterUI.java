@@ -24,6 +24,7 @@ public class CharacterUI {
   @Autowired CharacterService characterService;
   @Autowired CustomUserDetailService userService;
   @Autowired UserRepository userRepository;
+
   @Autowired EquipmentService equipmentService;
   @Autowired CharacterEquipmentRepo pairingRepo;
 
@@ -32,9 +33,9 @@ public class CharacterUI {
     return "persona-sites/character-creation";
   }
 
-  @PostMapping("/new")
+  @GetMapping("/new/create")
   public String finishCreation(
-      @RequestParam("nick") String characterName,
+      @RequestParam("characterName") String characterName,
       @RequestParam("faction") String faction,
       @RequestParam("atk") int atk,
       @RequestParam("dmg") int dmg,
@@ -47,17 +48,25 @@ public class CharacterUI {
     System.out.println(persona);
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    WastelandUser user = (WastelandUser) userService.loadUserByUsername(auth.getName());
-    System.out.println(user);
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     user.setPersona(persona);
+    userRepository.save(user);
 
-    return "persona-sites/main-page";
+
+    return "redirect:/character/me";
   }
 
   @GetMapping("/me")
   public String myCharacter(Model model) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+
+    if(user.getPersona() == null){
+      return "persona-sites/character-creation";
+    }else{
+
     PersonaDTO dto = characterService.readCharacter();
     model.addAttribute("DTO", dto);
     return "persona-sites/main-page";
-  }
+  }}
 }

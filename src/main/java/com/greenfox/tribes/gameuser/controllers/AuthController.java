@@ -24,6 +24,7 @@ public class AuthController {
     return "user-settings/login";
   }
 
+
   @GetMapping("/register")
   public String register() {
     return "user-settings/register";
