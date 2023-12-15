@@ -51,9 +51,9 @@ public class ShopService {
   public void sellStuff(Long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    CharacterEquipment pair = new CharacterEquipment();
     Equipment equipment = equipmentService.returnItem(id);
-    user.getPersona().getInventory().remove(equipment);
+    CharacterEquipment pair = characterEquipmentRepo.findFirstByEquipmentAndPersona(equipment, user.getPersona());
+    characterEquipmentRepo.delete(pair);
     user.getPersona().setPullRing(user.getPersona().getPullRing() + (equipment.getPrice()/2));
     userRepository.save(user);
   }

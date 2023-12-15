@@ -39,7 +39,7 @@ public class AuthController {
       ra.addFlashAttribute("alreadyExists", true);
       return new RedirectView("/register");
     }
-    return new RedirectView("/login");
+    return new RedirectView("/character/me");
   }
 
   // todo remove the following, it is only an example
