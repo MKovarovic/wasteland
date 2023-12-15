@@ -23,12 +23,9 @@ public class CharacterUI {
 
   @Autowired CharacterService characterService;
   @Autowired CustomUserDetailService userService;
-  @Autowired
-  UserRepository userRepository;
-  @Autowired
-  EquipmentService equipmentService;
-  @Autowired
-  CharacterEquipmentRepo pairingRepo;
+  @Autowired UserRepository userRepository;
+  @Autowired EquipmentService equipmentService;
+  @Autowired CharacterEquipmentRepo pairingRepo;
 
   @GetMapping("/new")
   public String newCharacter() {
@@ -50,9 +47,9 @@ public class CharacterUI {
     System.out.println(persona);
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-   WastelandUser user = (WastelandUser) userService.loadUserByUsername(auth.getName());
+    WastelandUser user = (WastelandUser) userService.loadUserByUsername(auth.getName());
     System.out.println(user);
-user.setPersona(persona);
+    user.setPersona(persona);
 
     return "persona-sites/main-page";
   }
@@ -62,6 +59,5 @@ user.setPersona(persona);
     PersonaDTO dto = characterService.readCharacter();
     model.addAttribute("DTO", dto);
     return "persona-sites/main-page";
-
   }
 }

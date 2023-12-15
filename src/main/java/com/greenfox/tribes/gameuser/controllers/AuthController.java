@@ -26,21 +26,19 @@ public class AuthController {
 
   @GetMapping("/register")
   public String register() {
-    return "/user-settings/register";
+    return "user-settings/register";
   }
 
   @PostMapping("/register")
-  public String registerPost(
-      @RequestParam String username, @RequestParam String password, RedirectAttributes ra) {
+  public RedirectView registerPost(
+          @RequestParam String username, @RequestParam String password, RedirectAttributes ra) {
     try {
       userDetailsService.createUser(username, password);
     } catch (UserAlreadyExistsException e) {
       ra.addFlashAttribute("alreadyExists", true);
-      return "redirect:/register";
-      //return new RedirectView("user-settings/register");
+      return new RedirectView("user-settings/register");
     }
-    //ra.addAttribute("username", username);
-    return "redirect:/character/new";
+    return new RedirectView("user-settings/login");
   }
 
   // todo remove the following, it is only an example
