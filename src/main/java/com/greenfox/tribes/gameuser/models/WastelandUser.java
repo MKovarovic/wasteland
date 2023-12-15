@@ -16,5 +16,5 @@ public class WastelandUser {
 
   private String password;
 
-  @OneToOne  @ToString.Exclude private Persona persona;
+  @OneToOne @ToString.Exclude private Persona persona;
 }

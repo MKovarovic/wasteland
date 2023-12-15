@@ -11,6 +11,6 @@ public interface CharacterEquipmentRepo extends JpaRepository<CharacterEquipment
 
 
   Integer countAllByEquipmentAndPersona(Equipment e, Persona d);
-  CharacterEquipment findFirstByEquipmentAndPersona(Equipment e, Persona d);
 
+  CharacterEquipment findFirstByEquipmentAndPersona(Equipment e, Persona d);
 }

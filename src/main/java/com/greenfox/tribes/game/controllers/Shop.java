@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class Shop {
 
   @Autowired ShopService shopService;
-  @Autowired
-  UserRepository userRepository;
+  @Autowired UserRepository userRepository;
+
   @GetMapping("")
   public String browseShop(Model model, Long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -40,6 +40,4 @@ public class Shop {
     shopService.sellStuff(id);
     return "redirect:/shop";
   }
-
-
 }
