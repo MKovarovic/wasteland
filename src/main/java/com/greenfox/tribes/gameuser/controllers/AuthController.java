@@ -3,6 +3,8 @@ package com.greenfox.tribes.gameuser.controllers;
 import com.greenfox.tribes.misc.exceptions.UserAlreadyExistsException;
 import com.greenfox.tribes.gameuser.services.CustomUserDetailService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @AllArgsConstructor
 public class AuthController {
 
+  AuthenticationManager provider;
   CustomUserDetailService userDetailsService;
 
   @GetMapping("/login")
@@ -38,7 +41,16 @@ public class AuthController {
       ra.addFlashAttribute("alreadyExists", true);
       return new RedirectView("/register");
     }
-    return new RedirectView("/character/me");
+
+    // Authenticate user programmatically after registration
+    Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+    Authentication authenticated = provider.authenticate(authentication);
+
+    SecurityContextHolder.getContext().setAuthentication(authenticated);
+
+    ra.addAttribute("username", username);
+    return new RedirectView("/character/new");
+
   }
 
   // todo remove the following, it is only an example
