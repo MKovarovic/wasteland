@@ -36,9 +36,9 @@ public class AuthController {
       userDetailsService.createUser(username, password);
     } catch (UserAlreadyExistsException e) {
       ra.addFlashAttribute("alreadyExists", true);
-      return new RedirectView("user-settings/register");
+      return new RedirectView("/register");
     }
-    return new RedirectView("user-settings/login");
+    return new RedirectView("/character/me");
   }
 
   // todo remove the following, it is only an example

@@ -9,6 +9,7 @@ import lombok.Data;
 public class EquipmentDTO {
 
   private String name;
+  private Long id;
   private String type;
   private Integer price;
   private Integer atkBonus;
@@ -21,6 +22,7 @@ public class EquipmentDTO {
   public static EquipmentDTO fromEquipment(Equipment eq, int numberOwned) {
     return new EquipmentDTO(
         eq.getName(),
+        eq.getId(),
         eq.getType(),
         eq.getPrice(),
         eq.getAtkBonus(),

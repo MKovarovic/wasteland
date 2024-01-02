@@ -19,7 +19,7 @@
         <form id="characterSheet">
             <div>
                 <h3> Name</h3>
-                <input type="text" id="nick" name="nick"
+                <input type="text" id="nick" name="characterName"
                        placeholder="Choose your name" required minlength="3" maxlength="20">
 
                 <h3> Faction</h3>
@@ -48,7 +48,7 @@
             </div>
 
 
-            <button type="submit" form="characterSheet" formaction="/character/new" formmethod="post"> Send</button>
+            <button type="submit" form="characterSheet" formaction="/character/new/create" formmethod="get"> Send</button>
 
         </form>
 
