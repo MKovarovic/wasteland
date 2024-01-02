@@ -39,8 +39,9 @@ public class AuthController {
       userDetailsService.createUser(username, password);
     } catch (UserAlreadyExistsException e) {
       ra.addFlashAttribute("alreadyExists", true);
-      return new RedirectView("user-settings/register");
+      return new RedirectView("/register");
     }
+
     // Authenticate user programmatically after registration
     Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
     Authentication authenticated = provider.authenticate(authentication);
@@ -49,6 +50,7 @@ public class AuthController {
 
     ra.addAttribute("username", username);
     return new RedirectView("/character/new");
+
   }
 
   // todo remove the following, it is only an example
