@@ -18,12 +18,12 @@
 
 <div th:fragment="Navigation" class="SideContent">
     <div id="menuButtons">
-        <button type="button">OVERVIEW</button>
-        <button type="button">SHOP</button>
+        <button type="button" onclick="window.location.href='/character/me';">OVERVIEW</button>
+        <button type="button" onclick="window.location.href='/shop';">SHOP</button>
         <button type="button">ARENA</button>
         <button type="button">HUNT</button>
         <button type="button">WORK</button>
-        <button type="button">LOG OUT</button>
+        <button type="button" onclick="window.location.href='/logout';">LOG OUT</button>
     </div>
 </div>
 
@@ -52,18 +52,16 @@
     <div id="container2">
 
 
+        <div class="MainContent">
 
-            <div class="MainContent">
+            <div th:replace="${content}"></div>
 
-                <div th:replace="${content}"></div>
-
-
-            </div>
 
         </div>
 
-</div>
+    </div>
 
+</div>
 
 
 </body>

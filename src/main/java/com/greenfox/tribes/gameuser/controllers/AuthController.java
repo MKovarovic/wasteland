@@ -44,7 +44,7 @@ public class AuthController {
       userDetailsService.createUser(username, password);
     } catch (UserAlreadyExistsException e) {
       ra.addFlashAttribute("alreadyExists", true);
-      return new RedirectView("/register");
+      return new RedirectView("/welcome");
     }
 
     // Authenticate user programmatically after registration
