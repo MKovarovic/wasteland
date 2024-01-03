@@ -22,14 +22,18 @@ public class AuthController {
   AuthenticationManager provider;
   CustomUserDetailService userDetailsService;
 
+  @GetMapping("/welcome")
+  public String welcome() {
+    return "welcome";
+  }
   @GetMapping("/login")
   public String login() {
-    return "user-settings/login";
+    return "welcome";
   }
 
   @GetMapping("/register")
   public String register() {
-    return "user-settings/register";
+    return "welcome";
   }
 
   @PostMapping("/register")
@@ -64,6 +68,6 @@ public class AuthController {
 
   @GetMapping("/")
   public String main() {
-    return "user-settings/index";
+    return "main-page";
   }
 }

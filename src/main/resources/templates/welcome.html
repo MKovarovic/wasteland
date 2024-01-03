@@ -3,8 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="/Graphics.css" rel="stylesheet"/>
 </head>
 <body>
+<div id = "container">
+    <div th:insert="/fragments/structure.html :: siteForm2(~{::#content})">
+        <div id="content">
+            <h1>WELCOME</h1>
+            <div th:if="${param.error}">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}">
+                You have been logged out.
+            </div>
+            <div th:if="${alreadyExists}">
+                Username already exists!
+            </div>
+            <form id="account" method="post">
+                <div class="form-input"><input type="text" name="username" placeholder="username"/></div>
+                <div class="form-input"> <input type="password" name="password" placeholder="password"/></div>
+
+                <button type="submit" id="login" formaction="/login">Log In</button>
+                <button type="submit" id="register" formaction="/register">Register</button>
+
+
+            </form>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
