@@ -22,8 +22,7 @@ public class ShopService {
   @Autowired EquipmentRepo equipmentRepo;
   @Autowired EquipmentService equipmentService;
   @Autowired UserRepository userRepository;
-  @Autowired
-  PersonaRepo personaRepo;
+  @Autowired PersonaRepo personaRepo;
   @Autowired CharacterEquipmentRepo characterEquipmentRepo;
 
   public ArrayList<EquipmentDTO> getShoppingList() {
@@ -44,7 +43,8 @@ public class ShopService {
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     CharacterEquipment pair = new CharacterEquipment();
     pair.setPair(user.getPersona(), equipmentService.returnItem(id));
-    user.getPersona().setPullRing(user.getPersona().getPullRing() - equipmentService.returnItem(id).getPrice());
+    user.getPersona()
+        .setPullRing(user.getPersona().getPullRing() - equipmentService.returnItem(id).getPrice());
     characterEquipmentRepo.save(pair);
   }
 
@@ -52,11 +52,10 @@ public class ShopService {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Equipment equipment = equipmentService.returnItem(id);
-    CharacterEquipment pair = characterEquipmentRepo.findFirstByEquipmentAndPersona(equipment, user.getPersona());
+    CharacterEquipment pair =
+        characterEquipmentRepo.findFirstByEquipmentAndPersona(equipment, user.getPersona());
     characterEquipmentRepo.delete(pair);
-    user.getPersona().setPullRing(user.getPersona().getPullRing() + (equipment.getPrice()/2));
+    user.getPersona().setPullRing(user.getPersona().getPullRing() + (equipment.getPrice() / 2));
     userRepository.save(user);
   }
-
-
 }

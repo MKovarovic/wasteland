@@ -4,7 +4,6 @@ import com.greenfox.tribes.gameitems.services.EquipmentService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.gameuser.repositories.UserRepository;
 import com.greenfox.tribes.gameuser.services.CustomUserDetailService;
-import com.greenfox.tribes.misc.models.CharacterEquipment;
 import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
 import com.greenfox.tribes.persona.dtos.PersonaDTO;
 import com.greenfox.tribes.persona.models.Persona;
@@ -12,7 +11,6 @@ import com.greenfox.tribes.persona.services.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +50,6 @@ public class CharacterUI {
     user.setPersona(persona);
     userRepository.save(user);
 
-
     return "redirect:/character/me";
   }
 
@@ -61,12 +58,12 @@ public class CharacterUI {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
 
-    if(user.getPersona() == null){
+    if (user.getPersona() == null) {
       return "persona-sites/character-creation";
-    }else{
-
-    PersonaDTO dto = characterService.readCharacter();
-    model.addAttribute("DTO", dto);
-    return "persona-sites/main-page";
-  }}
+    } else {
+      PersonaDTO dto = characterService.readCharacter();
+      model.addAttribute("DTO", dto);
+      return "persona-sites/main-page";
+    }
+  }
 }
