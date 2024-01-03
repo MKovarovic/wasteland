@@ -69,4 +69,10 @@ public class CharacterUI {
     model.addAttribute("DTO", dto);
     return "persona-sites/main-page";
   }}
+
+  @GetMapping("/test")
+  public String test(){
+    return "test";
+  }
+
 }
