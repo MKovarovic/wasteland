@@ -26,9 +26,10 @@ public class AuthController {
   public String welcome() {
     return "welcome";
   }
+
   @GetMapping("/login")
   public RedirectView login() {
-   return new RedirectView("/character/me");
+    return new RedirectView("/character/me");
   }
 
   @GetMapping("/register")
@@ -54,7 +55,6 @@ public class AuthController {
 
     ra.addAttribute("username", username);
     return new RedirectView("/character/new");
-
   }
 
   // todo remove the following, it is only an example
