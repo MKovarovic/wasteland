@@ -22,7 +22,7 @@ public class WebSecurityConfig {
         .authorizeHttpRequests(
             (requests) ->
                 requests
-                    .requestMatchers("/", "/register") // todo: set open endpoints here
+                    .requestMatchers("/", "/register", "/welcome", "/resources/**") // todo: set open endpoints here
                     .permitAll()
                     .anyRequest()
                     .authenticated())

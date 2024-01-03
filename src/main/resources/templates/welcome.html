@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="/Graphics.css" rel="stylesheet"/>
+    <link href="/resources/Graphics.css" rel="stylesheet"/>
 </head>
 <body>
 <div id = "container">
@@ -27,6 +27,11 @@
                 <button type="submit" id="register" formaction="/register">Register</button>
 
 
+            </form>
+            <form th:action="@{/login}" method="post">
+                <div><label> User Name : <input type="text" name="username"/> </label></div>
+                <div><label> Password: <input type="password" name="password"/> </label></div>
+                <div><input type="submit" value="Sign In"/></div>
             </form>
         </div>
     </div>

@@ -27,8 +27,8 @@ public class AuthController {
     return "welcome";
   }
   @GetMapping("/login")
-  public String login() {
-    return "welcome";
+  public RedirectView login() {
+   return new RedirectView("/character/me");
   }
 
   @GetMapping("/register")
