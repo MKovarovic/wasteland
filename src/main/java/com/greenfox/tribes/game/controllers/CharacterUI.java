@@ -70,9 +70,6 @@ public class CharacterUI {
     return "persona-sites/main-page";
   }}
 
-  @GetMapping("/test")
-  public String test(){
-    return "test";
-  }
+
 
 }
