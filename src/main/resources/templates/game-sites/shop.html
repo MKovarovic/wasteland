@@ -3,88 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>'Shop'</title>
+    <link href="/resources/Graphics.css" rel="stylesheet"/>
 </head>
 <body>
+<div id="container">
+    <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
+        <div id="content">
 
-<table>
-    <tr>
-        <th>Item</th>
-        <th>Type</th>
-        <th>Attack bonus</th>
-        <th>Defense bonus</th>
-        <th>Damage bonus</th>
-        <th>Hit point bonus</th>
-        <th>Luck bonus</th>
-        <th>Owned</th>
-        <th>Buy</th>
-        <th>Sell</th>
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Type</th>
+                    <th>Attack bonus</th>
+                    <th>Defense bonus</th>
+                    <th>Damage bonus</th>
+                    <th>Hit point bonus</th>
+                    <th>Luck bonus</th>
+                    <th>Owned</th>
+                    <th>Buy</th>
+                    <th>Sell</th>
 
 
-    </tr>
-    <tr th:each="item: ${DTO}">
+                </tr>
+                <tr th:each="item: ${DTO}">
 
-        <td>
-            <p th:text="${item.getName()}"></p>
-        </td>
-        <td>
-            <p th:text="${item.getType()}"></p>
-        </td>
-        <td>
-            <p th:text="${item.getAtkBonus()}"></p>
-        </td>
-        <td>
-            <p th:text="${item.getDefBonus()}"></p>
-        </td>
-        <td>
-            <p th:text="${item.getDmgBonus()}"></p>
-        </td>
-        <td>
-            <p th:text="${item.getHpBonus()}"></p>
-        </td>
-        <td>
-            <p th:text="${item.getLckBonus()}"></p>
-        </td>
-        <td>
-            <p th:text="${item.getNrOwned()}"></p>
-        </td>
-        <td>
+                    <td>
+                        <p th:text="${item.getName()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getType()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getAtkBonus()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getDefBonus()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getDmgBonus()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getHpBonus()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getLckBonus()}"></p>
+                    </td>
+                    <td>
+                        <p th:text="${item.getNrOwned()}"></p>
+                    </td>
+                    <td>
 
-        <td>
-            <form th:action="'/shop/buy'" method="post">
-                <span th:text="${item.getPrice()}"></span>
-                <input type="hidden" th:value="${item.getId()}" name="id">
-                <img src="/pullRing.png" height="20" width="20"/>
-                <button type="submit"> Buy</button>
-            </form>
+                    <td>
+                        <form th:action="'/shop/buy'" method="post">
+                            <span th:text="${item.getPrice()}"></span>
+                            <input type="hidden" th:value="${item.getId()}" name="id">
+                            <img src="/pullRing.png" height="20" width="20"/>
+                            <button type="submit"> Buy</button>
+                        </form>
 
-            <!--            <a th:href="'/shop/buy?=' + ${item.getId()}">
+                        <!--            <a th:href="'/shop/buy?=' + ${item.getId()}">
+                                        <span th:text="${item.getPrice()/2}"></span>
+
+                                    </a>-->
+
+
+                    </td>
+
+                    </td>
+                    <td>
+                        <form th:action="'/shop/sell'" method="post">
                             <span th:text="${item.getPrice()/2}"></span>
+                            <input type="hidden" th:value="${item.getId()}" name="id">
+                            <img src="/pullRing.png" height="20" width="20"/>
+                            <button type="submit"> Sell</button>
+                        </form>
 
-                        </a>-->
+                        <!--            <a th:href="'/shop/buy?=' + ${item.getId()}">
+                                        <span th:text="${item.getPrice()/2}"></span>
 
-
-        </td>
-
-        </td>
-        <td>
-            <form th:action="'/shop/sell'" method="post">
-                <span th:text="${item.getPrice()/2}"></span>
-                <input type="hidden" th:value="${item.getId()}" name="id">
-                <img src="/pullRing.png" height="20" width="20"/>
-                <button type="submit"> Sell</button>
-            </form>
-
-            <!--            <a th:href="'/shop/buy?=' + ${item.getId()}">
-                            <span th:text="${item.getPrice()/2}"></span>
-
-                        </a>-->
+                                    </a>-->
 
 
-        </td>
-    </tr>
-</table>
-<h3>Pull Rings</h3>
-<span th:text="${rings}"></span>
-
+                    </td>
+                </tr>
+            </table>
+            <h3>Pull Rings</h3>
+            <span th:text="${rings}"></span>
+        </div>
+    </div>
+</div>
 </body>
 </html>

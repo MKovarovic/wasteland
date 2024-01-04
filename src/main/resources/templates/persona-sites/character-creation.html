@@ -1,56 +1,62 @@
-WASTELAND
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/resources/Graphics.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="container">
+    <div th:insert="/fragments/structure.html :: siteForm2(~{::#content})">
+        <div id="content">
+            <form id="characterSheet">
+                <div>
+                    <h3> Name</h3>
+                    <input type="text" id="nick" name="characterName"
+                           placeholder="Choose your name" required minlength="3" maxlength="20">
 
-<section id="Content">
-    <section id="Banner"></section>
+                    <h3> Faction</h3>
+                    <input type="radio" id="settler" name="faction" value="Settler">
+                    <label for="settler">Settler</label><br>
 
+                    <input type="radio" id="raider" name="faction" value="Raider">
+                    <label for="raider">Raider</label><br>
 
-    <section id="Form">
+                    <h3> Statistics</h3>
 
-        <form id="characterSheet">
-            <div>
-                <h3> Name</h3>
-                <input type="text" id="nick" name="characterName"
-                       placeholder="Choose your name" required minlength="3" maxlength="20">
+                    remaining points:
+                    <output id="points">---</output>
+                    <br/>
+                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="atk"
+                           name="atk"/>Attack<br/>
+                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="dmg"
+                           name="dmg"/>Damage<br/>
+                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="def"
+                           name="def"/>Defense<br/>
+                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="hp"
+                           name="hp"/>Hit Points<br/>
+                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="lck"
+                           name="lck"/>Luck<br/>
 
-                <h3> Faction</h3>
-                <input type="radio" id="settler" name="faction" value="Settler">
-                <label for="settler">Settler</label><br>
-
-                <input type="radio" id="raider" name="faction" value="Raider">
-                <label for="raider">Raider</label><br>
-
-                <h3> Statistics</h3>
-
-                remaining points:
-                <output id="points">---</output>
-                <br/>
-                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="atk"
-                       name="atk"/>Attack<br/>
-                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="dmg"
-                       name="dmg"/>Damage<br/>
-                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="def"
-                       name="def"/>Defense<br/>
-                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="hp"
-                       name="hp"/>Hit Points<br/>
-                <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="lck"
-                       name="lck"/>Luck<br/>
-
-            </div>
-
-
-            <button type="submit" form="characterSheet" formaction="/character/new/create" formmethod="get"> Send</button>
-
-        </form>
-
-        <section id="DressUP"></section>
-    </section>
+                </div>
 
 
-</section>
+                <button type="submit" form="characterSheet" formaction="/character/new/create" formmethod="get"> Send
+                </button>
+
+            </form>
+
+            <section id="DressUP"></section>
+            </section>
 
 
-<script src="/PointBuy.js"></script>
+            </section>
 
+
+            <script src="/PointBuy.js"></script>
+        </div>
+    </div>
+</div>
 </body>
 
 

@@ -29,7 +29,7 @@ public class WebSecurityConfig {
         .formLogin((form) -> form.loginPage("/login").permitAll())
         .logout(
             (logout) ->
-                logout.logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true));
+                logout.logoutUrl("/logout").logoutSuccessUrl("/welcome").invalidateHttpSession(true));
 
     return http.build();
   }
