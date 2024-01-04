@@ -13,6 +13,6 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long characterId;
-    private String activity;
+    private Activity activity;
     private Long startTime;
 }

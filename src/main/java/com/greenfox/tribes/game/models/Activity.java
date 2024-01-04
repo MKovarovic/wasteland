@@ -2,18 +2,26 @@ package com.greenfox.tribes.game.models;
 
 import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.gameitems.services.EquipmentService;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Data
+@Entity
 public class Activity {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  Long id;
   private String name;
   private Long timestamp;
-  @Autowired EquipmentService equipmentService;
-  public Object[] getReward() {
-    Object[] rewards = new Object[2];
-    Integer pullRings = 10;
-    Equipment rewardItem = equipmentService.randomEquipment();
-    rewards[0] = pullRings;
-    rewards[1] = rewardItem;
-    return rewards;
-  }
+  private int time = 5; //number of minutes to complete
+  private int pullRings = 10; // money part of reward
+  Object rewardItem; //item part of reward, if any
+
+
 }
