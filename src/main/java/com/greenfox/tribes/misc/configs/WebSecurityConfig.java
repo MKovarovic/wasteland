@@ -22,11 +22,11 @@ public class WebSecurityConfig {
         .authorizeHttpRequests(
             (requests) ->
                 requests
-                    .requestMatchers("/", "/register", "/welcome", "/resources/**") // todo: set open endpoints here
+                    .requestMatchers("/", "/register", "/resources/**") // todo: set open endpoints here
                     .permitAll()
                     .anyRequest()
                     .authenticated())
-        .formLogin((form) -> form.loginPage("/login").permitAll())
+        .formLogin((form) -> form.loginPage("/welcome").permitAll())
         .logout(
             (logout) ->
                 logout.logoutUrl("/logout").logoutSuccessUrl("/welcome").invalidateHttpSession(true));
