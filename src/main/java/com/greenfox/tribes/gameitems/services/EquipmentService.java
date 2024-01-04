@@ -6,9 +6,19 @@ import com.greenfox.tribes.gameitems.repositories.EquipmentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Random;
+
 @Service
 public class EquipmentService {
   @Autowired EquipmentRepo equipmentRepo;
+
+  public Equipment randomEquipment() {
+    List<Equipment> equipmentList = equipmentRepo.findAll();
+    Random random = new Random();
+    int index = random.nextInt(equipmentList.size());
+    return equipmentList.get(index);
+  }
 
   public void newItem(EquipmentDTO dto) {
     Equipment equipment = new Equipment();
