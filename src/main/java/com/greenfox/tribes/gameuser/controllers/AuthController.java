@@ -2,13 +2,15 @@ package com.greenfox.tribes.gameuser.controllers;
 
 import com.greenfox.tribes.misc.exceptions.UserAlreadyExistsException;
 import com.greenfox.tribes.gameuser.services.CustomUserDetailService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,19 +29,12 @@ public class AuthController {
     return "welcome";
   }
 
-  @GetMapping("/login")
-  public RedirectView login() {
-    return new RedirectView("/character/me");
-  }
-
-  @GetMapping("/register")
-  public String register() {
-    return "welcome";
-  }
-
   @PostMapping("/register")
   public RedirectView registerPost(
-      @RequestParam String username, @RequestParam String password, RedirectAttributes ra) {
+      @RequestParam String username,
+      @RequestParam String password,
+      RedirectAttributes ra,
+      HttpServletRequest request) {
     try {
       userDetailsService.createUser(username, password);
     } catch (UserAlreadyExistsException e) {
@@ -53,21 +48,15 @@ public class AuthController {
 
     SecurityContextHolder.getContext().setAuthentication(authenticated);
 
+    HttpSession session = request.getSession(true);
+    session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+
     ra.addAttribute("username", username);
     return new RedirectView("/character/new");
   }
 
-  // todo remove the following, it is only an example
-  @GetMapping("/secure")
-  public String secure(Model model) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    model.addAttribute("username", auth.getName());
-
-    return "user-settings/secure";
-  }
-
   @GetMapping("/")
-  public String main() {
-    return "main-page";
+  public RedirectView main() {
+    return new RedirectView("/character/me");
   }
 }
