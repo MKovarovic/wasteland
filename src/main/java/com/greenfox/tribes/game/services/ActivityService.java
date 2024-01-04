@@ -1,4 +1,5 @@
-package com.greenfox.tribes.gameitems.services;
+/*
+package com.greenfox.tribes.game.services;
 
 import com.greenfox.tribes.game.models.Activity;
 import com.greenfox.tribes.game.models.ActivityLog;
@@ -39,3 +40,4 @@ public class ActivityService {
     }
   }
 }
+*/

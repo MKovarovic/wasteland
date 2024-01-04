@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface ActivityLogRepo extends JpaRepository<ActivityLog, Long> {
 
-    Optional<ActivityLog> findActivityLogByCharacterId(Long characterId);
+    Optional<ActivityLog> findActivityLogByPersonaId(Long personaId);
 }
