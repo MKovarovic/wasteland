@@ -1,10 +1,11 @@
 package com.greenfox.tribes.game.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.greenfox.tribes.misc.models.CharacterEquipment;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -13,6 +14,9 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long characterId;
-    private Activity activity;
     private Long startTime;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+Activity activity;
+
 }

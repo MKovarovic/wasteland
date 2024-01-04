@@ -1,6 +1,8 @@
 package com.greenfox.tribes.gameitems.models;
 
+import com.greenfox.tribes.game.models.Activity;
 import com.greenfox.tribes.misc.models.CharacterEquipment;
+import com.greenfox.tribes.persona.models.Persona;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -27,4 +29,9 @@ public class Equipment {
   @ToString.Exclude
   @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER)
   private List<CharacterEquipment> characters;
+
+  @ToString.Exclude
+  @ManyToOne
+  Activity activity;
+
 }
