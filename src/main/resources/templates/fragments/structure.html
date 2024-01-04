@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="/Graphics.css" rel="stylesheet"/>
+    <link href="/resources/Graphics.css" rel="stylesheet"/>
 </head>
 <body>
 <div th:fragment="Banner">
     <div id="header">
         <div id="bannerImage">
-            <img src="/header.png" alt="Banner Image" width="1100px" height="200px">
+            <img src="/resources/header.png" alt="Banner Image" width="1100px" height="200px">
         </div>
         <h1>WASTELAND</h1>
     </div>
@@ -30,9 +30,8 @@
 
 <div th:fragment="siteForm(content)">
 
-    <div class="container">
-        <div th:replace="/fragments/structure :: Banner"></div>
-
+    <div th:replace="/fragments/structure :: Banner"></div>
+    <div id="container">
         <div id="body">
             <div th:replace="/fragments/structure :: Navigation"></div>
 
@@ -49,8 +48,9 @@
 
 <div th:fragment="siteForm2(content)">
 
-    <div class="container">
-        <div th:replace="/fragments/structure :: Banner"></div>
+    <div th:replace="/fragments/structure :: Banner"></div>
+    <div id="container2">
+
 
 
             <div class="MainContent">
@@ -61,8 +61,9 @@
             </div>
 
         </div>
-    </div>
+
 </div>
+
 
 
 </body>

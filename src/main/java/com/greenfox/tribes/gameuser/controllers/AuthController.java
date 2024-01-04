@@ -22,14 +22,19 @@ public class AuthController {
   AuthenticationManager provider;
   CustomUserDetailService userDetailsService;
 
+  @GetMapping("/welcome")
+  public String welcome() {
+    return "welcome";
+  }
+
   @GetMapping("/login")
-  public String login() {
-    return "user-settings/login";
+  public RedirectView login() {
+    return new RedirectView("/character/me");
   }
 
   @GetMapping("/register")
   public String register() {
-    return "user-settings/register";
+    return "welcome";
   }
 
   @PostMapping("/register")
@@ -50,7 +55,6 @@ public class AuthController {
 
     ra.addAttribute("username", username);
     return new RedirectView("/character/new");
-
   }
 
   // todo remove the following, it is only an example
@@ -64,6 +68,6 @@ public class AuthController {
 
   @GetMapping("/")
   public String main() {
-    return "user-settings/index";
+    return "main-page";
   }
 }
