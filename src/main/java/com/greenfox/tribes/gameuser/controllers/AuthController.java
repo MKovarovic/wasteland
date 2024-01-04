@@ -27,16 +27,6 @@ public class AuthController {
     return "welcome";
   }
 
-  @GetMapping("/login")
-  public RedirectView login() {
-    return new RedirectView("/character/me");
-  }
-
-  @GetMapping("/register")
-  public String register() {
-    return "welcome";
-  }
-
   @PostMapping("/register")
   public RedirectView registerPost(
       @RequestParam String username, @RequestParam String password, RedirectAttributes ra) {
@@ -57,17 +47,8 @@ public class AuthController {
     return new RedirectView("/character/new");
   }
 
-  // todo remove the following, it is only an example
-  @GetMapping("/secure")
-  public String secure(Model model) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    model.addAttribute("username", auth.getName());
-
-    return "user-settings/secure";
-  }
-
   @GetMapping("/")
-  public String main() {
-    return "main-page";
+  public RedirectView main() {
+    return new RedirectView("/character/me");
   }
 }
