@@ -1,7 +1,6 @@
 package com.greenfox.tribes.gameitems.models;
 
 import com.greenfox.tribes.misc.models.CharacterEquipment;
-import com.greenfox.tribes.persona.models.Persona;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
