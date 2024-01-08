@@ -25,14 +25,13 @@ public class Work {
     model.addAttribute("name", user.getPersona().getCharacterName());
     model.addAttribute("faction", user.getPersona().getFaction());
     model.addAttribute("isBusy", user.getPersona().getIsBusy());
-model.addAttribute("id", user.getPersona().getId());
-
+    model.addAttribute("id", user.getPersona().getId());
 
     return "game-sites/work";
   }
 
   @GetMapping("/work/log")
-  public String logWork(@RequestParam("id") long id ) {
+  public String logWork(@RequestParam("id") long id) {
     activityService.logActivity("WORK", id);
     return "redirect:/activity/work";
   }
