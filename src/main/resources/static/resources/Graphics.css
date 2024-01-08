@@ -113,3 +113,29 @@ body{
   border: 5px solid black;
   
 }
+
+ #box{
+  display:flex;
+  flex-direction:row;
+justify-content: space-between;
+
+   width: 100%;
+   height: 100%;
+}
+#text{
+  flex-grow:3;
+  align-items:flex-start;
+  margin: auto;
+}
+#picture{
+  flex-grow:1;
+  width: 300%;
+  height: 300%;
+  align-items:flex-end;
+  margin: auto;
+
+}
+img{
+  width: 100%;
+  height: 100%;
+}
