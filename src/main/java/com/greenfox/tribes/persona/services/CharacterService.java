@@ -100,4 +100,12 @@ public class CharacterService {
   public Persona returnCharacter(Long id) {
     return playerCharacters.findById(id).get();
   }
+
+  public Boolean isBusy(Long id) {
+    try {
+      return playerCharacters.findById(id).get().getIsBusy();
+    } catch (Exception e) {
+      throw new IllegalArgumentException("No such persona");
+    }
+  }
 }

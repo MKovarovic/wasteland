@@ -27,4 +27,7 @@ public class Equipment {
   @ToString.Exclude
   @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER)
   private List<CharacterEquipment> characters;
+
+
+
 }
