@@ -26,7 +26,7 @@ public class Work {
     model.addAttribute("faction", user.getPersona().getFaction());
     model.addAttribute("isBusy", user.getPersona().getIsBusy());
     model.addAttribute("id", user.getPersona().getId());
-
+    activityService.isFinished(user.getPersona().getId());
     return "game-sites/work";
   }
 
