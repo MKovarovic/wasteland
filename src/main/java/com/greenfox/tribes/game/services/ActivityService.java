@@ -1,5 +1,6 @@
 package com.greenfox.tribes.game.services;
 
+import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.models.ActivityLog;
 import com.greenfox.tribes.game.repositories.ActivityLogRepo;
 import com.greenfox.tribes.gameitems.models.Equipment;
@@ -23,22 +24,22 @@ public class ActivityService {
   private EquipmentRepo equipmentRepo;
   @Autowired private CharacterEquipmentRepo pairingRepo;
 
-  public void logActivity(String type, Long personaId) {
+  public void logActivity(ActivityType type, Long personaId) {
     ActivityLog activity = new ActivityLog();
     activity.setType(type);
     activity.setTimestamp(System.currentTimeMillis());
     switch (type) {
-      case "WORK":
+      case WORK:
         activity.setTime(20);
         activity.setPullRings(10);
         activity.setGivesItem(false);
         break;
-      case "PvP":
+      case PVP:
         activity.setTime(5);
         activity.setPullRings(100);
         activity.setGivesItem(false);
         break;
-      case "PvE":
+      case PVE:
         activity.setTime(10);
         activity.setPullRings(200);
         activity.setGivesItem(true);

@@ -1,5 +1,6 @@
 package com.greenfox.tribes.game.controllers;
 
+import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.services.ActivityService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.gameuser.repositories.UserRepository;
@@ -32,7 +33,7 @@ public class Work {
 
   @GetMapping("/work/log")
   public String logWork(@RequestParam("id") long id) {
-    activityService.logActivity("WORK", id);
+    activityService.logActivity(ActivityType.WORK, id);
     return "redirect:/activity/work";
   }
 }
