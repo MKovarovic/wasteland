@@ -113,5 +113,19 @@ public class ActivityService {
     return result;
   }
 
+public void decideFightResult(Persona[] combatants){
+    Persona attacker = combatants[0];
+    Persona defender = combatants[1];
+    Random rnd = new Random();
+    while(attacker.getHp() > 0 && defender.getHp() > 0){
+        int attack = rnd.nextInt((int) attacker.getAtk());
+        defender.setHp(defender.getHp() - attack);
+        if(defender.getHp() <= 0){
+            break;
+        }
+        int defense = rnd.nextInt((int) defender.getDef());
+        attacker.setHp(attacker.getHp() - defense);
+    }
 
+}
 }
