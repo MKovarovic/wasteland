@@ -119,13 +119,26 @@ public class ActivityService {
     Random rnd = new Random();
     while (attacker.getHp() > 0 && defender.getHp() > 0) {
       int attack = rnd.nextInt((int) attacker.getAtk());
-      defender.setHp(defender.getHp() - (attack - (defender.getDef() / 2)));
+
+      if (attack >= defender.getDef()) {
+        if (rnd.nextInt(100) < attacker.getLck()) {
+          defender.setHp(defender.getHp() - (attacker.getDmg() * 2));
+        }
+        defender.setHp(defender.getHp() - attacker.getDmg());
+      }
       if (defender.getHp() <= 0 || attacker.getHp() <= 0) {
         break;
       }
       int defense = rnd.nextInt((int) defender.getAtk());
-      attacker.setHp(attacker.getHp() - (defense - (attacker.getDef() / 2)));
+      if (defense >= attacker.getDef()) {
+        if (rnd.nextInt(100) < attacker.getLck()) {
+          attacker.setHp(attacker.getHp() - (defender.getDmg() * 2));
+        }
+        attacker.setHp(attacker.getHp() - defender.getDmg());
+      }
     }
+
+
     Persona winner;
     Persona loser;
 
