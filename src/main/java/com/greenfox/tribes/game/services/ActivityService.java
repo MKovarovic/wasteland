@@ -113,19 +113,52 @@ public class ActivityService {
     return result;
   }
 
-public void decideFightResult(Persona[] combatants){
+  public void decideFightResult(Persona[] combatants) {
     Persona attacker = combatants[0];
     Persona defender = combatants[1];
     Random rnd = new Random();
-    while(attacker.getHp() > 0 && defender.getHp() > 0){
-        int attack = rnd.nextInt((int) attacker.getAtk());
-        defender.setHp(defender.getHp() - attack);
-        if(defender.getHp() <= 0){
-            break;
-        }
-        int defense = rnd.nextInt((int) defender.getDef());
-        attacker.setHp(attacker.getHp() - defense);
+    while (attacker.getHp() > 0 && defender.getHp() > 0) {
+      int attack = rnd.nextInt((int) attacker.getAtk());
+      defender.setHp(defender.getHp() - (attack - (defender.getDef() / 2)));
+      if (defender.getHp() <= 0 || attacker.getHp() <= 0) {
+        break;
+      }
+      int defense = rnd.nextInt((int) defender.getAtk());
+      attacker.setHp(attacker.getHp() - (defense - (attacker.getDef() / 2)));
+    }
+    if (attacker.getHp() <= 0) {
+      Persona winner =
+          playerCharacters
+              .findById(defender.getId())
+              .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+      Persona loser =
+              playerCharacters
+                      .findById(attacker.getId())
+                      .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+
+      getReward(winner.getId());
+      winner.setPullRing(winner.getPullRing() + (loser.getPullRing()/2));
+      loser.setPullRing(loser.getPullRing()/2);
+      playerCharacters.save(winner);
+      playerCharacters.save(loser);
     }
 
-}
+    if (defender.getHp() <= 0) {
+      Persona winner =
+              playerCharacters
+                      .findById(attacker.getId())
+                      .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+      Persona loser =
+              playerCharacters
+                      .findById(defender.getId())
+                      .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+
+      getReward(winner.getId());
+      winner.setPullRing(winner.getPullRing() + (loser.getPullRing()/2));
+      loser.setPullRing(loser.getPullRing()/2);
+      playerCharacters.save(winner);
+      playerCharacters.save(loser);
+
+    }
+  }
 }
