@@ -1,5 +1,6 @@
 package com.greenfox.tribes.game.controllers;
 
+import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.services.ActivityService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.gameuser.repositories.UserRepository;
@@ -22,17 +23,17 @@ public class Work {
   public String work(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    activityService.isFinished(user.getPersona().getId());
     model.addAttribute("name", user.getPersona().getCharacterName());
     model.addAttribute("faction", user.getPersona().getFaction());
     model.addAttribute("isBusy", user.getPersona().getIsBusy());
     model.addAttribute("id", user.getPersona().getId());
-    //activityService.isFinished(user.getPersona().getId());  /causes problems, would be better to find a better way.
     return "game-sites/work";
   }
 
   @GetMapping("/work/log")
   public String logWork(@RequestParam("id") long id) {
-    activityService.logActivity("WORK", id);
+    activityService.logActivity(ActivityType.WORK, id);
     return "redirect:/activity/work";
   }
 }

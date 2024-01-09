@@ -1,5 +1,6 @@
 package com.greenfox.tribes.game.services;
 
+import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.models.ActivityLog;
 import com.greenfox.tribes.game.repositories.ActivityLogRepo;
 import com.greenfox.tribes.gameitems.models.Equipment;
@@ -8,6 +9,7 @@ import com.greenfox.tribes.misc.models.CharacterEquipment;
 import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
 import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.repositories.PersonaRepo;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,22 +24,22 @@ public class ActivityService {
   private EquipmentRepo equipmentRepo;
   @Autowired private CharacterEquipmentRepo pairingRepo;
 
-  public void logActivity(String type, Long personaId) {
+  public void logActivity(ActivityType type, Long personaId) {
     ActivityLog activity = new ActivityLog();
     activity.setType(type);
     activity.setTimestamp(System.currentTimeMillis());
     switch (type) {
-      case "WORK":
+      case WORK:
         activity.setTime(20);
         activity.setPullRings(10);
         activity.setGivesItem(false);
         break;
-      case "PvP":
+      case PVP:
         activity.setTime(5);
         activity.setPullRings(100);
         activity.setGivesItem(false);
         break;
-      case "PvE":
+      case PVE:
         activity.setTime(10);
         activity.setPullRings(200);
         activity.setGivesItem(true);
@@ -54,14 +56,20 @@ public class ActivityService {
     activityLogRepo.save(activity);
   }
 
-  public void isFinished(Long id) {
-    ActivityLog activity = activityLogRepo.findActivityLogByPersonaId(id).get();
-    if (System.currentTimeMillis() >= activity.getTimestamp() + (activity.getTime() * 60 * 1000)) {
-      getReward(id);
-      Persona persona = activityLogRepo.findActivityLogByPersonaId(id).get().getPersona();
-      persona.setIsBusy(false);
-      activityLogRepo.delete(activity);
+  public boolean isFinished(Long id) {
+    Optional<ActivityLog> activity = activityLogRepo.findActivityLogByPersonaId(id);
+    if (activity.isEmpty()) {
+      return false;
     }
+    if (System.currentTimeMillis()
+        >= activity.get().getTimestamp() + (activity.get().getTime() * 60 * 1000)) {
+      getReward(id);
+      Persona persona = activity.get().getPersona();
+      persona.setIsBusy(false);
+      activityLogRepo.delete(activity.get());
+      return true;
+    }
+    return false;
   }
 
   public void getReward(Long id) {
