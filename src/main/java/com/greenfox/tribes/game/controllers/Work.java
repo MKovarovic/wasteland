@@ -38,25 +38,51 @@ public class Work {
     return "redirect:/activity/work";
   }
 
-
   @GetMapping("/pvp")
   public String pvp(Model model) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    /*    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona[] combatants = activityService.arenaFight(user.getPersona().getId());
-    model.addAttribute("combatants", combatants);
-
-    if (activityService.isFinished(user.getPersona().getId())){
+    //model.addAttribute("combatants", combatants);
+    System.out.println(combatants[0].getCharacterName() + " vs. " + combatants[1].getCharacterName());
+    if (activityService.isFinished(user.getPersona().getId())) {
       activityService.decideFightResult(combatants);
+    }else{
 
+    }*/
+
+    return "game-sites/work";
+  }
+
+  @GetMapping("/pvp/done")
+  public String pvpDone(
+      Model model, @RequestParam("userId") long id, @RequestParam("enemyId") long enemyId) {
+
+    Persona user = userRepository.findById(id).get().getPersona();
+    Persona enemy = userRepository.findById(enemyId).get().getPersona();
+    Persona[] combatants = {user, enemy};
+    // model.addAttribute("combatants", combatants);
+    System.out.println(
+        combatants[0].getCharacterName() + " vs. " + combatants[1].getCharacterName());
+    if (activityService.isFinished(user.getId())) {
+      activityService.decideFightResult(combatants);
     }
 
-      return "game-sites/pvp";
+    return "game-sites/work";
   }
 
   @GetMapping("/pvp/log")
   public String logPvp(@RequestParam("id") long id) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    Persona[] combatants = activityService.arenaFight(user.getPersona().getId());
     activityService.logActivity(ActivityType.PVP, id);
-    return "redirect:/activity/pvp";
+    String adress =
+        "redirect:/activity/pvp/done"
+            + "?userId="
+            + combatants[0].getPlayer().getId()
+            + "&enemyId="
+            + combatants[1].getPlayer().getId();
+    return adress;
   }
 }
