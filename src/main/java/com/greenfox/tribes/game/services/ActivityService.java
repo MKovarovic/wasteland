@@ -126,39 +126,30 @@ public class ActivityService {
       int defense = rnd.nextInt((int) defender.getAtk());
       attacker.setHp(attacker.getHp() - (defense - (attacker.getDef() / 2)));
     }
+    Persona winner;
+    Persona loser;
+
     if (attacker.getHp() <= 0) {
-      Persona winner =
-          playerCharacters
-              .findById(defender.getId())
-              .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-      Persona loser =
-              playerCharacters
-                      .findById(attacker.getId())
-                      .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-
-      getReward(winner.getId());
-      winner.setPullRing(winner.getPullRing() + (loser.getPullRing()/2));
-      loser.setPullRing(loser.getPullRing()/2);
-      playerCharacters.save(winner);
-      playerCharacters.save(loser);
+      winner = defender;
+      loser = attacker;
+    } else {
+      winner = attacker;
+      loser = defender;
     }
 
-    if (defender.getHp() <= 0) {
-      Persona winner =
-              playerCharacters
-                      .findById(attacker.getId())
-                      .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-      Persona loser =
-              playerCharacters
-                      .findById(defender.getId())
-                      .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Persona winnerPersona =
+        playerCharacters
+            .findById(winner.getId())
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Persona loserPersona =
+        playerCharacters
+            .findById(loser.getId())
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
-      getReward(winner.getId());
-      winner.setPullRing(winner.getPullRing() + (loser.getPullRing()/2));
-      loser.setPullRing(loser.getPullRing()/2);
-      playerCharacters.save(winner);
-      playerCharacters.save(loser);
-
-    }
+    getReward(winnerPersona.getId());
+    winnerPersona.setPullRing(winnerPersona.getPullRing() + (loserPersona.getPullRing() / 2));
+    loserPersona.setPullRing(loserPersona.getPullRing() / 2);
+    playerCharacters.save(winnerPersona);
+    playerCharacters.save(loserPersona);
   }
 }
