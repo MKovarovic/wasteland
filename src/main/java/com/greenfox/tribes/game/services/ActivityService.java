@@ -86,4 +86,32 @@ public class ActivityService {
       pairingRepo.save(pair);
     }
   }
+
+  public Persona[] arenaFight(Long id) {
+    String faction;
+    Persona attacker =
+        playerCharacters
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    if (attacker.getFaction().equals("Raider")) {
+      faction = "Settler";
+    } else {
+      faction = "Raider";
+    }
+    Persona defender =
+        playerCharacters
+            .findById(
+                playerCharacters
+                    .findRandomIdByFaction(faction)
+                    .orElseThrow(() -> new IllegalArgumentException("Nobody on the other team")))
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+
+    logActivity(ActivityType.PVE, attacker.getId());
+    Persona[] result = new Persona[2];
+    result[0] = attacker;
+    result[1] = defender;
+    return result;
+  }
+
+
 }
