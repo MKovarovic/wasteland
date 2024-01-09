@@ -8,6 +8,7 @@ import com.greenfox.tribes.misc.models.CharacterEquipment;
 import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
 import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.repositories.PersonaRepo;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,14 +55,20 @@ public class ActivityService {
     activityLogRepo.save(activity);
   }
 
-  public void isFinished(Long id) {
-    ActivityLog activity = activityLogRepo.findActivityLogByPersonaId(id).get();
-    if (System.currentTimeMillis() >= activity.getTimestamp() + (activity.getTime() * 60 * 1000)) {
-      getReward(id);
-      Persona persona = activityLogRepo.findActivityLogByPersonaId(id).get().getPersona();
-      persona.setIsBusy(false);
-      activityLogRepo.delete(activity);
+  public boolean isFinished(Long id) {
+    Optional<ActivityLog> activity = activityLogRepo.findActivityLogByPersonaId(id);
+    if (activity.isEmpty()) {
+      return false;
     }
+    if (System.currentTimeMillis()
+        >= activity.get().getTimestamp() + (activity.get().getTime() * 60 * 1000)) {
+      getReward(id);
+      Persona persona = activity.get().getPersona();
+      persona.setIsBusy(false);
+      activityLogRepo.delete(activity.get());
+      return true;
+    }
+    return false;
   }
 
   public void getReward(Long id) {
