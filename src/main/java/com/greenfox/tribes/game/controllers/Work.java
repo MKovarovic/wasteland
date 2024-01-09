@@ -4,6 +4,7 @@ import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.services.ActivityService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.gameuser.repositories.UserRepository;
+import com.greenfox.tribes.persona.models.Persona;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,5 +36,27 @@ public class Work {
   public String logWork(@RequestParam("id") long id) {
     activityService.logActivity(ActivityType.WORK, id);
     return "redirect:/activity/work";
+  }
+
+
+  @GetMapping("/pvp")
+  public String pvp(Model model) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    Persona[] combatants = activityService.arenaFight(user.getPersona().getId());
+    model.addAttribute("combatants", combatants);
+
+    if (activityService.isFinished(user.getPersona().getId())){
+      activityService.decideFightResult(combatants);
+
+    }
+
+      return "game-sites/pvp";
+  }
+
+  @GetMapping("/pvp/log")
+  public String logPvp(@RequestParam("id") long id) {
+    activityService.logActivity(ActivityType.PVP, id);
+    return "redirect:/activity/pvp";
   }
 }
