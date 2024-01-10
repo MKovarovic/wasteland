@@ -2,6 +2,7 @@ package com.greenfox.tribes.game.controllers;
 
 import com.greenfox.tribes.game.dtos.ActivityDTO;
 import com.greenfox.tribes.game.enums.ActivityType;
+import com.greenfox.tribes.game.models.ActivityLog;
 import com.greenfox.tribes.game.services.ActivityService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.gameuser.repositories.UserRepository;
@@ -43,12 +44,13 @@ public class Work {
   public String pvp(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-
-    if(activityService.isFinished(user.getPersona().getId())){
-      Persona[] combatants = activityService.fightOutcome(user.getPersona().getId());
+Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
+    if(activityService.isFinished(userHero.getId())){
+      Persona[] combatants = activityService.fightOutcome(userHero.getId());
       activityService.arenaPrize(combatants);
     }
-    ActivityDTO dto = activityService.getActivity(user.getPersona().getId());
+
+ActivityLog dto = activityService.getActivity(userHero.getId()).get();
     if(dto.getEnemyID() != 0){
       model.addAttribute("enemyName", userRepository.findById(dto.getEnemyID()).get().getPersona().getCharacterName());
       model.addAttribute("enemyATK", userRepository.findById(dto.getEnemyID()).get().getPersona().getAtk());
@@ -67,17 +69,27 @@ public class Work {
       model.addAttribute("enemyDEF", "????");
       model.addAttribute("enemyLCK", "????");
     }
-        return "game-sites/pvp";
+
+    model.addAttribute("Name", userHero.getCharacterName());
+    model.addAttribute("ATK", userHero.getAtk());
+    model.addAttribute("HP", userHero.getHp());
+    model.addAttribute("DMG", userHero.getDmg());
+    model.addAttribute("DEF", userHero.getDef());
+    model.addAttribute("LCK", userHero.getLck());
+
+
+
+    return "game-sites/pvp";
     }
 
 
 
 
   @GetMapping("/pvp/log")
-  public String logPvp(@RequestParam("id") long id) {
+  public String logPvp() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     activityService.pvpMatching(user.getPersona().getId());
-    activityService.logActivity(ActivityType.PVP, id);
+    //activityService.logActivity(ActivityType.PVP, user.getPersona().getId());
     return "redirect:/activity/pvp";
 }}
