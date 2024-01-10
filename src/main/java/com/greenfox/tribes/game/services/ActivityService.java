@@ -86,4 +86,83 @@ public class ActivityService {
       pairingRepo.save(pair);
     }
   }
+
+  public Persona[] arenaFight(Long id) {
+    String faction;
+    Persona attacker =
+        playerCharacters
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    if (attacker.getFaction().equals("Raider")) {
+      faction = "Settler";
+    } else {
+      faction = "Raider";
+    }
+    Persona defender =
+        playerCharacters
+            .findById(
+                playerCharacters
+                    .findRandomIdByFaction(faction)
+                    .orElseThrow(() -> new IllegalArgumentException("Nobody on the other team")))
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+
+    logActivity(ActivityType.PVE, attacker.getId());
+    Persona[] result = new Persona[2];
+    result[0] = attacker;
+    result[1] = defender;
+    return result;
+  }
+
+  public void decideFightResult(Persona[] combatants) {
+    Persona attacker = combatants[0];
+    Persona defender = combatants[1];
+    Random rnd = new Random();
+    while (attacker.getHp() > 0 && defender.getHp() > 0) {
+      int attack = rnd.nextInt((int) attacker.getAtk());
+
+      if (attack >= defender.getDef()) {
+        if (rnd.nextInt(100) < attacker.getLck()) {
+          defender.setHp(defender.getHp() - (attacker.getDmg() * 2));
+        }
+        defender.setHp(defender.getHp() - attacker.getDmg());
+      }
+      if (defender.getHp() <= 0 || attacker.getHp() <= 0) {
+        break;
+      }
+      int defense = rnd.nextInt((int) defender.getAtk());
+      if (defense >= attacker.getDef()) {
+        if (rnd.nextInt(100) < attacker.getLck()) {
+          attacker.setHp(attacker.getHp() - (defender.getDmg() * 2));
+        }
+        attacker.setHp(attacker.getHp() - defender.getDmg());
+      }
+    }
+
+
+    Persona winner;
+    Persona loser;
+
+    if (attacker.getHp() <= 0) {
+      winner = defender;
+      loser = attacker;
+    } else {
+      winner = attacker;
+      loser = defender;
+    }
+
+    Persona winnerPersona =
+        playerCharacters
+            .findById(winner.getId())
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Persona loserPersona =
+        playerCharacters
+            .findById(loser.getId())
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+
+    getReward(winnerPersona.getId());
+    winnerPersona.setPullRing(winnerPersona.getPullRing() + (loserPersona.getPullRing() / 2));
+    loserPersona.setPullRing(loserPersona.getPullRing() / 2);
+    playerCharacters.save(winnerPersona);
+    playerCharacters.save(loserPersona);
+  }
 }
