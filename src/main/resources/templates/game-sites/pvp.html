@@ -10,7 +10,7 @@
     <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
         <div id="content">
             <div id="box">
-                <div class = "combatant">
+                <div class="combatant">
                     <table>
 
                         <tr>
@@ -33,8 +33,6 @@
                                 <p th:text="'❤:' + ${HP}"></p>
                             </td>
                         </tr>
-
-
                         <tr>
                             <td>
                                 <p>⯎</p>
@@ -46,45 +44,54 @@
 
                     </table>
                 </div>
-                <div class = "combatant"></div>
-                <table>
-
-                    <tr>
-                        <td>
-                            <p th:text="${enemyName}"></p>
-                        </td>
-                    <tr>
-                        <td>
-                            <p th:text="'⨁:' + ${enemyATK}"></p>
-                        </td>
-                        <td>
-                            <p th:text="'𐃃:' + ${enemyDEF}"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p th:text="'🗡:' + ${enemyDMG}"></p>
-                        </td>
-                        <td>
-                            <p th:text="'❤:' + ${enemyHP}"></p>
-                        </td>
-                    </tr>
 
 
-                    <tr>
-                        <td>
-                            <p>⯎</p>
-                        </td>
-                        <td>
-                            <p th:text="${enemyLCK}"></p>
-                        </td>
-                    </tr>
+                <div class="combatant">
+                    <table>
 
-                </table>
+                        <tr>
+                            <td>
+                                <p th:text="${enemyName}"></p>
+                            </td>
+                        <tr>
+                            <td>
+                                <p th:text="'⨁:' + ${enemyATK}"></p>
+                            </td>
+                            <td>
+                                <p th:text="'𐃃:' + ${enemyDEF}"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p th:text="'🗡:' + ${enemyDMG}"></p>
+                            </td>
+                            <td>
+                                <p th:text="'❤:' + ${enemyHP}"></p>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <p>⯎</p>
+                            </td>
+                            <td>
+                                <p th:text="${enemyLCK}"></p>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <a th:text="${faction == 'Raider'}? 'Go Raiding' : 'Collect Bounty'"
+                       th:href="'/activity/pvp/log' + ${id}" class="button"></a>
+                </div>
             </div>
+
         </div>
 
     </div>
+
+
 </div>
 </div>
 
