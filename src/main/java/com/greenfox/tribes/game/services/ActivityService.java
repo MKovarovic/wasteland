@@ -1,5 +1,6 @@
 package com.greenfox.tribes.game.services;
 
+import com.greenfox.tribes.game.dtos.ActivityDTO;
 import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.models.ActivityLog;
 import com.greenfox.tribes.game.repositories.ActivityLogRepo;
@@ -56,18 +57,23 @@ public class ActivityService {
     activityLogRepo.save(activity);
   }
 
-  public Optional<ActivityLog> getActivity(Long id) {
+  public ActivityDTO getActivity(Long id) {
     Optional<ActivityLog> activity = activityLogRepo.findActivityLogByPersonaId(id);
-    return activity;
-    /*System.out.println(activity.get().getEnemyID());
-      return activity.map(activityLog -> new ActivityDTO(
-              activityLog.getType(),
-              activityLog.getTimestamp(),
-              activityLog.getTime(),
-              activityLog.getPullRings(),
-              activityLog.getGivesItem(),
-              activityLog.getEnemyID(),
-              activityLog.getPersona().getId())).orElse(null);*/
+   // return activity;
+    if (activity.isEmpty()) {
+      return null;
+    }
+
+      return new ActivityDTO(
+              activity.get().getType(),
+              activity.get().getTimestamp(),
+              activity.get().getTime(),
+              activity.get().getPullRings(),
+              activity.get().getGivesItem(),
+              activity.get().getEnemyID(),
+              activity.get().getPersona().getId());
+
+
   }
 
   public boolean isFinished(Long id) {

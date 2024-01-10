@@ -50,8 +50,8 @@ Persona userHero = userRepository.findById(user.getPersona().getId()).get().getP
       activityService.arenaPrize(combatants);
     }
 
-ActivityLog dto = activityService.getActivity(userHero.getId()).get();
-    if(dto.getEnemyID() != 0){
+ActivityDTO dto = activityService.getActivity(userHero.getId());
+    if(dto != null){
       model.addAttribute("enemyName", userRepository.findById(dto.getEnemyID()).get().getPersona().getCharacterName());
       model.addAttribute("enemyATK", userRepository.findById(dto.getEnemyID()).get().getPersona().getAtk());
       model.addAttribute("enemyHP", userRepository.findById(dto.getEnemyID()).get().getPersona().getHp());
