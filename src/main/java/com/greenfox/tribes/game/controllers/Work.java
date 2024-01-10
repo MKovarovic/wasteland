@@ -1,5 +1,6 @@
 package com.greenfox.tribes.game.controllers;
 
+import com.greenfox.tribes.game.dtos.ActivityDTO;
 import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.services.ActivityService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
@@ -40,49 +41,43 @@ public class Work {
 
   @GetMapping("/pvp")
   public String pvp(Model model) {
-    /*    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    Persona[] combatants = activityService.arenaFight(user.getPersona().getId());
-    //model.addAttribute("combatants", combatants);
-    System.out.println(combatants[0].getCharacterName() + " vs. " + combatants[1].getCharacterName());
-    if (activityService.isFinished(user.getPersona().getId())) {
-      activityService.decideFightResult(combatants);
+
+    if(activityService.isFinished(user.getPersona().getId())){
+      Persona[] combatants = activityService.fightOutcome(user.getPersona().getId());
+      activityService.arenaPrize(combatants);
+    }
+    ActivityDTO dto = activityService.getActivity(user.getPersona().getId());
+    if(dto.getEnemyID() != 0){
+      model.addAttribute("enemyName", userRepository.findById(dto.getEnemyID()).get().getPersona().getCharacterName());
+      model.addAttribute("enemyATK", userRepository.findById(dto.getEnemyID()).get().getPersona().getAtk());
+      model.addAttribute("enemyHP", userRepository.findById(dto.getEnemyID()).get().getPersona().getHp());
+      model.addAttribute("enemyDMG", userRepository.findById(dto.getEnemyID()).get().getPersona().getDmg());
+      model.addAttribute("enemyDEF", userRepository.findById(dto.getEnemyID()).get().getPersona().getDef());
+      model.addAttribute("enemyLCK", userRepository.findById(dto.getEnemyID()).get().getPersona().getLck());
+
+
+
     }else{
-
-    }*/
-
-    return "game-sites/work";
-  }
-
-  @GetMapping("/pvp/done")
-  public String pvpDone(
-      Model model, @RequestParam("userId") long id, @RequestParam("enemyId") long enemyId) {
-
-    Persona user = userRepository.findById(id).get().getPersona();
-    Persona enemy = userRepository.findById(enemyId).get().getPersona();
-    Persona[] combatants = {user, enemy};
-    // model.addAttribute("combatants", combatants);
-    System.out.println(
-        combatants[0].getCharacterName() + " vs. " + combatants[1].getCharacterName());
-    if (activityService.isFinished(user.getId())) {
-      activityService.decideFightResult(combatants);
+      model.addAttribute("enemyName", "????");
+      model.addAttribute("enemyATK", "????");
+      model.addAttribute("enemyHP", "????");
+      model.addAttribute("enemyDMG", "????");
+      model.addAttribute("enemyDEF", "????");
+      model.addAttribute("enemyLCK", "????");
+    }
+        return "game-sites/pvp";
     }
 
-    return "game-sites/work";
-  }
+
+
 
   @GetMapping("/pvp/log")
   public String logPvp(@RequestParam("id") long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    Persona[] combatants = activityService.arenaFight(user.getPersona().getId());
+    activityService.pvpMatching(user.getPersona().getId());
     activityService.logActivity(ActivityType.PVP, id);
-    String adress =
-        "redirect:/activity/pvp/done"
-            + "?userId="
-            + combatants[0].getPlayer().getId()
-            + "&enemyId="
-            + combatants[1].getPlayer().getId();
-    return adress;
-  }
-}
+    return "redirect:/activity/pvp";
+}}
