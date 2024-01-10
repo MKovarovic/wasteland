@@ -12,7 +12,7 @@ public class ActivityDTO {
     private int pullRings;
     private Boolean givesItem;
     private Long enemyID;
-    Persona personaID;
+    Long personaID;
 
     public ActivityDTO(ActivityType type, Long timestamp, int time, int pullRings, Boolean givesItem, Long enemyID, Long personaId) {
     }
