@@ -5,6 +5,7 @@ import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.services.ActivityService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.gameuser.repositories.UserRepository;
+import com.greenfox.tribes.misc.repositories.MonsterRepo;
 import com.greenfox.tribes.persona.models.Persona;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class Work {
   @Autowired UserRepository userRepository;
   @Autowired ActivityService activityService;
+  @Autowired
+  MonsterRepo monsterRepo;
 
   @GetMapping("/work")
   public String work(Model model) {
@@ -91,4 +94,62 @@ public class Work {
     activityService.pvpMatching(user.getPersona().getId());
     return "redirect:/activity/pvp";
   }
+
+  @GetMapping("/pve")
+  public String pve(Model model) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
+    if (activityService.isFinished(userHero.getId())) {
+      Persona[] combatants = activityService.fightOutcome(userHero.getId());
+      activityService.arenaPrize(combatants);
+    }
+
+    ActivityDTO dto = activityService.getActivity(userHero.getId());
+    if (dto != null) {
+      model.addAttribute(
+              "enemyName",
+              monsterRepo.findById(dto.getEnemyID()).get().getName());
+      model.addAttribute(
+              "enemyATK", monsterRepo.findById(dto.getEnemyID()).get().getAtk());
+      model.addAttribute(
+              "enemyHP", monsterRepo.findById(dto.getEnemyID()).get().getHp());
+      model.addAttribute(
+              "enemyDMG", monsterRepo.findById(dto.getEnemyID()).get().getDmg());
+      model.addAttribute(
+              "enemyDEF", monsterRepo.findById(dto.getEnemyID()).get().getDef());
+      model.addAttribute(
+              "enemyLCK", monsterRepo.findById(dto.getEnemyID()).get().getLck());
+
+    } else {
+      model.addAttribute("enemyName", "????");
+      model.addAttribute("enemyATK", "????");
+      model.addAttribute("enemyHP", "????");
+      model.addAttribute("enemyDMG", "????");
+      model.addAttribute("enemyDEF", "????");
+      model.addAttribute("enemyLCK", "????");
+    }
+
+    model.addAttribute("Name", userHero.getCharacterName());
+    model.addAttribute("ATK", userHero.getAtk());
+    model.addAttribute("HP", userHero.getHp());
+    model.addAttribute("DMG", userHero.getDmg());
+    model.addAttribute("DEF", userHero.getDef());
+    model.addAttribute("LCK", userHero.getLck());
+
+    return "game-sites/pve";
+  }
+
+  @GetMapping("/pve/log")
+  public String logPve() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    activityService.pveMatching(user.getPersona().getId());
+    return "redirect:/activity/pve";
+  }
+
+
+
+
+
 }
