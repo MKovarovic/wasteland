@@ -6,8 +6,11 @@ import com.greenfox.tribes.game.models.ActivityLog;
 import com.greenfox.tribes.game.repositories.ActivityLogRepo;
 import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.gameitems.repositories.EquipmentRepo;
+import com.greenfox.tribes.misc.dtos.MonsterDTO;
 import com.greenfox.tribes.misc.models.CharacterEquipment;
+import com.greenfox.tribes.misc.models.Monster;
 import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
+import com.greenfox.tribes.misc.repositories.MonsterRepo;
 import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.repositories.PersonaRepo;
 import java.util.Optional;
@@ -22,6 +25,7 @@ import java.util.Random;
 public class ActivityService {
   private ActivityLogRepo activityLogRepo;
   private PersonaRepo playerCharacters;
+  private MonsterRepo monsterRepo;
   private EquipmentRepo equipmentRepo;
   @Autowired private CharacterEquipmentRepo pairingRepo;
 
@@ -126,6 +130,20 @@ public class ActivityService {
                     .orElseThrow(() -> new IllegalArgumentException("Nobody on the other team")))
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
+    logActivity(ActivityType.PVE, attacker.getId());
+    activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get().setEnemyID(defender.getId());
+    activityLogRepo.save(activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get());
+  }
+
+  public void pveMatching(Long id) {
+    Persona attacker =
+        playerCharacters
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Monster defender =
+        monsterRepo
+            .findById(monsterRepo.findRandomMonsterId().orElseThrow(() -> new IllegalArgumentException("No such Monster")))
+            .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
     logActivity(ActivityType.PVE, attacker.getId());
     activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get().setEnemyID(defender.getId());
     activityLogRepo.save(activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get());
