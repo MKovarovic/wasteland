@@ -6,13 +6,19 @@ import com.greenfox.tribes.game.models.ActivityLog;
 import com.greenfox.tribes.game.repositories.ActivityLogRepo;
 import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.gameitems.repositories.EquipmentRepo;
+import com.greenfox.tribes.gameuser.models.WastelandUser;
+import com.greenfox.tribes.gameuser.repositories.UserRepository;
 import com.greenfox.tribes.misc.models.CharacterEquipment;
+import com.greenfox.tribes.misc.models.Monster;
 import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
+import com.greenfox.tribes.misc.repositories.MonsterRepo;
 import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.repositories.PersonaRepo;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -21,8 +27,10 @@ import java.util.Random;
 @AllArgsConstructor
 public class ActivityService {
   private ActivityLogRepo activityLogRepo;
-  private PersonaRepo playerCharacters;
-  private EquipmentRepo equipmentRepo;
+  @Autowired UserRepository userRepository;
+  @Autowired private PersonaRepo playerCharacters;
+  @Autowired private MonsterRepo monsterRepo;
+  @Autowired private EquipmentRepo equipmentRepo;
   @Autowired private CharacterEquipmentRepo pairingRepo;
 
   public void logActivity(ActivityType type, Long personaId) {
@@ -131,6 +139,23 @@ public class ActivityService {
     activityLogRepo.save(activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get());
   }
 
+  public void pveMatching(Long id) {
+    Persona attacker =
+        playerCharacters
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Monster defender =
+        monsterRepo
+            .findById(
+                monsterRepo
+                    .findRandomMonsterId()
+                    .orElseThrow(() -> new IllegalArgumentException("No such Monster")))
+            .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
+    logActivity(ActivityType.PVE, attacker.getId());
+    activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get().setEnemyID(defender.getId());
+    activityLogRepo.save(activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get());
+  }
+
   // COMBAT RESOLUTION
 
   public Persona[] fightOutcome(Long id) {
@@ -199,5 +224,20 @@ public class ActivityService {
     loserPersona.setPullRing(loserPersona.getPullRing() / 2);
     playerCharacters.save(winnerPersona);
     playerCharacters.save(loserPersona);
+  }
+
+  public void huntPrize(Persona[] combatants) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    Persona loggedCharacter = user.getPersona();
+    if (combatants[0] == loggedCharacter) {
+      loggedCharacter.setPullRing(
+          loggedCharacter.getPullRing() + (combatants[1].getPullRing() / 2));
+      getReward(loggedCharacter.getId());
+    } else {
+      loggedCharacter.setPullRing(
+          loggedCharacter.getPullRing() - (loggedCharacter.getPullRing() / 2));
+    }
+    playerCharacters.save(loggedCharacter);
   }
 }

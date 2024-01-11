@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work</title>
+    <link href="/resources/ActivityGraphics.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="container">
+    <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
+        <div id="content">
+            <div id="box">
+                <div class="combatant">
+                    <table>
+
+                        <tr>
+                            <td>
+                                <p th:text="${Name}"></p>
+                            </td>
+                        <tr>
+                            <td>
+                                <p th:text="'⨁:' + ${ATK}"></p>
+                            </td>
+                            <td>
+                                <p th:text="'𐃃:' + ${DEF}"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p th:text="'🗡:' + ${DMG}"></p>
+                            </td>
+                            <td>
+                                <p th:text="'❤:' + ${HP}"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>⯎</p>
+                            </td>
+                            <td>
+                                <p th:text="${LCK}"></p>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+
+
+                <div class="combatant">
+                    <table>
+
+                        <tr>
+                            <td>
+                                <p th:text="${enemyName}"></p>
+                            </td>
+                        <tr>
+                            <td>
+                                <p th:text="'⨁:' + ${enemyATK}"></p>
+                            </td>
+                            <td>
+                                <p th:text="'𐃃:' + ${enemyDEF}"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p th:text="'🗡:' + ${enemyDMG}"></p>
+                            </td>
+                            <td>
+                                <p th:text="'❤:' + ${enemyHP}"></p>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <p>⯎</p>
+                            </td>
+                            <td>
+                                <p th:text="${enemyLCK}"></p>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <a
+                       th:href="'/activity/pve/log'" class="button"> Hunt</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+</div>
+
+</body>
+</html>
