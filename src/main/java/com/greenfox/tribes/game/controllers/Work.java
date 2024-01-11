@@ -2,7 +2,6 @@ package com.greenfox.tribes.game.controllers;
 
 import com.greenfox.tribes.game.dtos.ActivityDTO;
 import com.greenfox.tribes.game.enums.ActivityType;
-import com.greenfox.tribes.game.models.ActivityLog;
 import com.greenfox.tribes.game.services.ActivityService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.gameuser.repositories.UserRepository;
@@ -90,7 +89,6 @@ public class Work {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     activityService.pvpMatching(user.getPersona().getId());
-    // activityService.logActivity(ActivityType.PVP, user.getPersona().getId());
     return "redirect:/activity/pvp";
   }
 }
