@@ -68,8 +68,7 @@ public class CharacterUI {
   }
   @RequestMapping("/me/equip")
   public String toggleEquip(@RequestParam("id") long id) {
-    String confirmation = characterService.toggleEquip((long)id);
-    System.out.println(confirmation);
+    characterService.toggleEquip((long)id);
     return "redirect:/character/me";
   }
 }

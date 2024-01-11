@@ -117,7 +117,7 @@ public class CharacterService {
     }
   }
 
-  public String toggleEquip(Long id) {
+  public void toggleEquip(Long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     Optional<Persona> loggedCharacter =
         playerCharacters.findPersonaByPlayer_Username(auth.getName());
@@ -134,19 +134,22 @@ public class CharacterService {
       if(equipment.getIsEquipped()) {  // equipped, equipable -> unequip
         equipment.setIsEquipped(false);
         pairingRepo.save(equipment);
-
-        return "Unequipped";
+        System.out.println("///////////////");
+        System.out.println("Unequipped");
+        System.out.println("///////////////");
       }
       else{
         if(canBeEquipped(equipment.getEquipment().getType())) { // not equipped, equipable -> equip
           equipment.setIsEquipped(true);
           pairingRepo.save(equipment);
-          return "Equipped";
+          System.out.println("///////////////");
+          System.out.println("Equipped") ;
+          System.out.println("///////////////");
         }
       }
 
     }
-    return "Can't have more then one of the same type";
+
   }
 
   public Boolean canBeEquipped(String type) {
