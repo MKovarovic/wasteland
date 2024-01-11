@@ -1,5 +1,7 @@
 package com.greenfox.tribes.persona.services;
 
+import com.greenfox.tribes.gameitems.models.Equipment;
+import com.greenfox.tribes.misc.models.CharacterEquipment;
 import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.dtos.PersonaDTO;
 import com.greenfox.tribes.persona.repositories.PersonaRepo;
@@ -8,6 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -108,4 +113,43 @@ public class CharacterService {
       throw new IllegalArgumentException("No such persona");
     }
   }
+
+  public void toggleEquip(Long id) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Optional<Persona> loggedCharacter =
+        playerCharacters.findPersonaByPlayer_Username(auth.getName());
+    CharacterEquipment equipment = null;
+    for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
+      if (Objects.equals(e.getId(), id)) {
+        equipment = e;
+      }
+    }
+
+    if (equipment != null) {
+      equipment.setIsEquipped(!equipment.getIsEquipped());
+    }
+  }
+
+  public Boolean canBeEquipped(String type) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Optional<Persona> loggedCharacter =
+        playerCharacters.findPersonaByPlayer_Username(auth.getName());
+
+    List<Equipment> equipped = new ArrayList<>();
+    if (loggedCharacter.isPresent()) {
+      for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
+        Equipment equipment = e.getEquipment();
+        if (e.getIsEquipped()) {
+          if(Objects.equals(equipment.getType(), type)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+
+
+  }
+
+
 }

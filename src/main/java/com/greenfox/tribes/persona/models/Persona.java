@@ -1,13 +1,16 @@
 package com.greenfox.tribes.persona.models;
 
 import com.greenfox.tribes.game.models.ActivityLog;
+import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.misc.models.CharacterEquipment;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity
@@ -41,6 +44,7 @@ public class Persona {
   @ToString.Exclude
   @OneToMany(mappedBy = "persona", fetch = FetchType.EAGER)
   private List<CharacterEquipment> inventory;
+
 
 
   @ToString.Exclude
