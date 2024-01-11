@@ -45,7 +45,7 @@ public class Persona {
 
   @ToString.Exclude
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "activity_log_id")
   ActivityLog activityLog;
 
   // TECHNICAL STUFF

@@ -1,5 +1,6 @@
 package com.greenfox.tribes.game.controllers;
 
+import com.greenfox.tribes.game.dtos.ActivityDTO;
 import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.services.ActivityService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
@@ -40,49 +41,54 @@ public class Work {
 
   @GetMapping("/pvp")
   public String pvp(Model model) {
-    /*    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    Persona[] combatants = activityService.arenaFight(user.getPersona().getId());
-    //model.addAttribute("combatants", combatants);
-    System.out.println(combatants[0].getCharacterName() + " vs. " + combatants[1].getCharacterName());
-    if (activityService.isFinished(user.getPersona().getId())) {
-      activityService.decideFightResult(combatants);
-    }else{
-
-    }*/
-
-    return "game-sites/work";
-  }
-
-  @GetMapping("/pvp/done")
-  public String pvpDone(
-      Model model, @RequestParam("userId") long id, @RequestParam("enemyId") long enemyId) {
-
-    Persona user = userRepository.findById(id).get().getPersona();
-    Persona enemy = userRepository.findById(enemyId).get().getPersona();
-    Persona[] combatants = {user, enemy};
-    // model.addAttribute("combatants", combatants);
-    System.out.println(
-        combatants[0].getCharacterName() + " vs. " + combatants[1].getCharacterName());
-    if (activityService.isFinished(user.getId())) {
-      activityService.decideFightResult(combatants);
+    Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
+    if (activityService.isFinished(userHero.getId())) {
+      Persona[] combatants = activityService.fightOutcome(userHero.getId());
+      activityService.arenaPrize(combatants);
     }
 
-    return "game-sites/work";
+    ActivityDTO dto = activityService.getActivity(userHero.getId());
+    if (dto != null) {
+      model.addAttribute(
+          "enemyName",
+          userRepository.findById(dto.getEnemyID()).get().getPersona().getCharacterName());
+      model.addAttribute(
+          "enemyATK", userRepository.findById(dto.getEnemyID()).get().getPersona().getAtk());
+      model.addAttribute(
+          "enemyHP", userRepository.findById(dto.getEnemyID()).get().getPersona().getHp());
+      model.addAttribute(
+          "enemyDMG", userRepository.findById(dto.getEnemyID()).get().getPersona().getDmg());
+      model.addAttribute(
+          "enemyDEF", userRepository.findById(dto.getEnemyID()).get().getPersona().getDef());
+      model.addAttribute(
+          "enemyLCK", userRepository.findById(dto.getEnemyID()).get().getPersona().getLck());
+
+    } else {
+      model.addAttribute("enemyName", "????");
+      model.addAttribute("enemyATK", "????");
+      model.addAttribute("enemyHP", "????");
+      model.addAttribute("enemyDMG", "????");
+      model.addAttribute("enemyDEF", "????");
+      model.addAttribute("enemyLCK", "????");
+    }
+
+    model.addAttribute("Name", userHero.getCharacterName());
+    model.addAttribute("ATK", userHero.getAtk());
+    model.addAttribute("HP", userHero.getHp());
+    model.addAttribute("DMG", userHero.getDmg());
+    model.addAttribute("DEF", userHero.getDef());
+    model.addAttribute("LCK", userHero.getLck());
+
+    return "game-sites/pvp";
   }
 
   @GetMapping("/pvp/log")
-  public String logPvp(@RequestParam("id") long id) {
+  public String logPvp() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    Persona[] combatants = activityService.arenaFight(user.getPersona().getId());
-    activityService.logActivity(ActivityType.PVP, id);
-    String adress =
-        "redirect:/activity/pvp/done"
-            + "?userId="
-            + combatants[0].getPlayer().getId()
-            + "&enemyId="
-            + combatants[1].getPlayer().getId();
-    return adress;
+    activityService.pvpMatching(user.getPersona().getId());
+    return "redirect:/activity/pvp";
   }
 }

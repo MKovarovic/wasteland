@@ -1,5 +1,6 @@
 package com.greenfox.tribes.game.services;
 
+import com.greenfox.tribes.game.dtos.ActivityDTO;
 import com.greenfox.tribes.game.enums.ActivityType;
 import com.greenfox.tribes.game.models.ActivityLog;
 import com.greenfox.tribes.game.repositories.ActivityLogRepo;
@@ -56,6 +57,23 @@ public class ActivityService {
     activityLogRepo.save(activity);
   }
 
+  public ActivityDTO getActivity(Long id) {
+    Optional<ActivityLog> activity = activityLogRepo.findActivityLogByPersonaId(id);
+    // return activity;
+    if (activity.isEmpty()) {
+      return null;
+    }
+
+    return new ActivityDTO(
+        activity.get().getType(),
+        activity.get().getTimestamp(),
+        activity.get().getTime(),
+        activity.get().getPullRings(),
+        activity.get().getGivesItem(),
+        activity.get().getEnemyID(),
+        activity.get().getPersona().getId());
+  }
+
   public boolean isFinished(Long id) {
     Optional<ActivityLog> activity = activityLogRepo.findActivityLogByPersonaId(id);
     if (activity.isEmpty()) {
@@ -87,7 +105,9 @@ public class ActivityService {
     }
   }
 
-  public Persona[] arenaFight(Long id) {
+  // TARGET SELECTION
+
+  public void pvpMatching(Long id) {
     String faction;
     Persona attacker =
         playerCharacters
@@ -107,15 +127,22 @@ public class ActivityService {
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
     logActivity(ActivityType.PVE, attacker.getId());
-    Persona[] result = new Persona[2];
-    result[0] = attacker;
-    result[1] = defender;
-    return result;
+    activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get().setEnemyID(defender.getId());
+    activityLogRepo.save(activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get());
   }
 
-  public void decideFightResult(Persona[] combatants) {
-    Persona attacker = combatants[0];
-    Persona defender = combatants[1];
+  // COMBAT RESOLUTION
+
+  public Persona[] fightOutcome(Long id) {
+    Persona attacker =
+        playerCharacters
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Persona defender =
+        playerCharacters
+            .findById(
+                activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get().getEnemyID())
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     Random rnd = new Random();
     while (attacker.getHp() > 0 && defender.getHp() > 0) {
       int attack = rnd.nextInt((int) attacker.getAtk());
@@ -138,7 +165,6 @@ public class ActivityService {
       }
     }
 
-
     Persona winner;
     Persona loser;
 
@@ -150,13 +176,22 @@ public class ActivityService {
       loser = defender;
     }
 
+    Persona[] result = new Persona[2];
+    result[0] = winner;
+    result[1] = loser;
+    return result;
+  }
+
+  // REWARD - STEAL OR HAVE STOLEN
+
+  public void arenaPrize(Persona[] combatants) {
     Persona winnerPersona =
         playerCharacters
-            .findById(winner.getId())
+            .findById(combatants[0].getId())
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     Persona loserPersona =
         playerCharacters
-            .findById(loser.getId())
+            .findById(combatants[1].getId())
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
     getReward(winnerPersona.getId());
