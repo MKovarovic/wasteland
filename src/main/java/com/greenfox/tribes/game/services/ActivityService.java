@@ -6,6 +6,8 @@ import com.greenfox.tribes.game.models.ActivityLog;
 import com.greenfox.tribes.game.repositories.ActivityLogRepo;
 import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.gameitems.repositories.EquipmentRepo;
+import com.greenfox.tribes.gameuser.models.WastelandUser;
+import com.greenfox.tribes.gameuser.repositories.UserRepository;
 import com.greenfox.tribes.misc.dtos.MonsterDTO;
 import com.greenfox.tribes.misc.models.CharacterEquipment;
 import com.greenfox.tribes.misc.models.Monster;
@@ -16,6 +18,8 @@ import com.greenfox.tribes.persona.repositories.PersonaRepo;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -24,8 +28,13 @@ import java.util.Random;
 @AllArgsConstructor
 public class ActivityService {
   private ActivityLogRepo activityLogRepo;
+  @Autowired
+  UserRepository userRepository;
+  @Autowired
   private PersonaRepo playerCharacters;
+  @Autowired
   private MonsterRepo monsterRepo;
+  @Autowired
   private EquipmentRepo equipmentRepo;
   @Autowired private CharacterEquipmentRepo pairingRepo;
 
@@ -217,5 +226,18 @@ public class ActivityService {
     loserPersona.setPullRing(loserPersona.getPullRing() / 2);
     playerCharacters.save(winnerPersona);
     playerCharacters.save(loserPersona);
+  }
+
+  public void huntPrize(Persona[] combatants) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    Persona loggedCharacter =user.getPersona();
+      if(combatants[0] == loggedCharacter) {
+        loggedCharacter.setPullRing(loggedCharacter.getPullRing() + (combatants[1].getPullRing() / 2));
+        getReward(loggedCharacter.getId());
+      } else {
+        loggedCharacter.setPullRing(loggedCharacter.getPullRing() - (loggedCharacter.getPullRing() / 2));
+      }
+      playerCharacters.save(loggedCharacter);
   }
 }
