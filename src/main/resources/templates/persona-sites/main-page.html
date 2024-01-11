@@ -88,7 +88,7 @@
                             <p th:text="${item.getLckBonus()}"></p>
                         </td>
                         <td>
-                            <button><a th:href="'/todo/delete?q=' + ${item.getId()}">Equip</a></button>
+                            <button><a th:href="'/character/me/equip?id=' + ${item.getId()}">(un)Equip</a></button>
                         </td>
 
                     </tr>

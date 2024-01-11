@@ -66,4 +66,10 @@ public class CharacterUI {
       return "persona-sites/main-page";
     }
   }
+  @RequestMapping("/me/equip")
+  public String toggleEquip(@RequestParam("id") long id) {
+    String confirmation = characterService.toggleEquip((long)id);
+    System.out.println(confirmation);
+    return "redirect:/character/me";
+  }
 }

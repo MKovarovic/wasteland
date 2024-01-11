@@ -2,6 +2,7 @@ package com.greenfox.tribes.persona.services;
 
 import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.misc.models.CharacterEquipment;
+import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
 import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.dtos.PersonaDTO;
 import com.greenfox.tribes.persona.repositories.PersonaRepo;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class CharacterService {
 
   @Autowired PersonaRepo playerCharacters;
+  @Autowired
+  CharacterEquipmentRepo pairingRepo;
 
   public void addCharacter(PersonaDTO dto) {
     Persona character = new Persona();
@@ -114,11 +117,13 @@ public class CharacterService {
     }
   }
 
-  public void toggleEquip(Long id) {
+  public String toggleEquip(Long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     Optional<Persona> loggedCharacter =
         playerCharacters.findPersonaByPlayer_Username(auth.getName());
     CharacterEquipment equipment = null;
+
+
     for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
       if (Objects.equals(e.getId(), id)) {
         equipment = e;
@@ -126,8 +131,22 @@ public class CharacterService {
     }
 
     if (equipment != null) {
-      equipment.setIsEquipped(!equipment.getIsEquipped());
+      if(equipment.getIsEquipped()) {  // equipped, equipable -> unequip
+        equipment.setIsEquipped(false);
+        pairingRepo.save(equipment);
+
+        return "Unequipped";
+      }
+      else{
+        if(canBeEquipped(equipment.getEquipment().getType())) { // not equipped, equipable -> equip
+          equipment.setIsEquipped(true);
+          pairingRepo.save(equipment);
+          return "Equipped";
+        }
+      }
+
     }
+    return "Can't have more then one of the same type";
   }
 
   public Boolean canBeEquipped(String type) {
@@ -135,7 +154,6 @@ public class CharacterService {
     Optional<Persona> loggedCharacter =
         playerCharacters.findPersonaByPlayer_Username(auth.getName());
 
-    List<Equipment> equipped = new ArrayList<>();
     if (loggedCharacter.isPresent()) {
       for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
         Equipment equipment = e.getEquipment();
@@ -148,8 +166,8 @@ public class CharacterService {
     }
     return true;
 
-
   }
+
 
 
 }
