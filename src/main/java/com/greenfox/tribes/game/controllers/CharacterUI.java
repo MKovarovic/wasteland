@@ -70,16 +70,16 @@ public class CharacterUI {
       int lckBonus = 0;
       int dmgBonus = 0;
 
-      if(dto.getEquipedItems() != null){
+      if (dto.getEquipedItems() != null) {
 
-
-      for(Equipment e:dto.getEquipedItems()){
-        atkBonus += e.getAtkBonus();
-        defBonus += e.getDefBonus();
-        hpBonus += e.getHpBonus();
-        lckBonus += e.getLckBonus();
-        dmgBonus += e.getDmgBonus();
-      }}
+        for (Equipment e : dto.getEquipedItems()) {
+          atkBonus += e.getAtkBonus();
+          defBonus += e.getDefBonus();
+          hpBonus += e.getHpBonus();
+          lckBonus += e.getLckBonus();
+          dmgBonus += e.getDmgBonus();
+        }
+      }
       model.addAttribute("atkBonus", atkBonus);
       model.addAttribute("defBonus", defBonus);
       model.addAttribute("hpBonus", hpBonus);
@@ -89,9 +89,10 @@ public class CharacterUI {
       return "persona-sites/main-page";
     }
   }
+
   @RequestMapping("/me/equip")
   public String toggleEquip(@RequestParam("id") long id) {
-    characterService.toggleEquip((long)id);
+    characterService.toggleEquip((long) id);
     return "redirect:/character/me";
   }
 }

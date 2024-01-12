@@ -4,7 +4,6 @@ import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.persona.models.Persona;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Data
@@ -19,7 +18,7 @@ public class CharacterEquipment {
   @JoinColumn(name = "equipment_id")
   Equipment equipment;
 
-  //@ColumnDefault("false")
+  // @ColumnDefault("false")
   Boolean isEquipped = false;
 
   public void setPair(Persona character, Equipment equipment) {
