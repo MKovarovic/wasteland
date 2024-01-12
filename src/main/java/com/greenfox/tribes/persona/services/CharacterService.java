@@ -81,6 +81,7 @@ public class CharacterService {
       dto.setLck(loggedCharacter.get().getLck());
       dto.setHp(loggedCharacter.get().getHp());
       dto.setInventory(loggedCharacter.get().getInventory());
+      dto.setEquipedItems(loggedCharacter.get().getInventory());
       System.out.println(dto.getInventory());
       dto.setPullRing(loggedCharacter.get().getPullRing());
     }

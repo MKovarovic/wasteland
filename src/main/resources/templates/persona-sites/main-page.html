@@ -23,18 +23,18 @@
                         </td>
                     <tr>
                         <td>
-                            <p th:text="'⨁:' + ${DTO.getAtk()}"></p>
+                            <p th:text="'⨁:' + ${DTO.getAtk()} + ' + ' + ${atkBonus}"></p>
                         </td>
                         <td>
-                            <p th:text="'𐃃:' + ${DTO.getDef()}"></p>
+                            <p th:text="'𐃃:' + ${DTO.getDef()} + ' + ' + ${defBonus}"></p>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <p th:text="'🗡:' + ${DTO.getDmg()}"></p>
+                            <p th:text="'🗡:' + ${DTO.getDmg()} + ' + ' + ${dmgBonus}"></p>
                         </td>
                         <td>
-                            <p th:text="'❤:' + ${DTO.getHp()}"></p>
+                            <p th:text="'❤:' + ${DTO.getHp()} + ' + ' + ${hpBonus}"></p>
                         </td>
                     </tr>
 
