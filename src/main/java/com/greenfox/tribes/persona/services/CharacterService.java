@@ -20,8 +20,7 @@ import java.util.Optional;
 public class CharacterService {
 
   @Autowired PersonaRepo playerCharacters;
-  @Autowired
-  CharacterEquipmentRepo pairingRepo;
+  @Autowired CharacterEquipmentRepo pairingRepo;
 
   public void addCharacter(PersonaDTO dto) {
     Persona character = new Persona();
@@ -123,33 +122,24 @@ public class CharacterService {
         playerCharacters.findPersonaByPlayer_Username(auth.getName());
     CharacterEquipment equipment = null;
 
-
     for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
-      if (Objects.equals(e.getId(), id)) {
+      if (Objects.equals(e.getEquipment().getId(), id)) {
         equipment = e;
       }
     }
 
     if (equipment != null) {
-      if(equipment.getIsEquipped()) {  // equipped, equipable -> unequip
+      if (equipment.getIsEquipped()) { // equipped, equipable -> unequip
         equipment.setIsEquipped(false);
         pairingRepo.save(equipment);
-        System.out.println("///////////////");
-        System.out.println("Unequipped");
-        System.out.println("///////////////");
-      }
-      else{
-        if(canBeEquipped(equipment.getEquipment().getType())) { // not equipped, equipable -> equip
+
+      } else {
+        if (canBeEquipped(equipment.getEquipment().getType())) { // not equipped, equipable -> equip
           equipment.setIsEquipped(true);
           pairingRepo.save(equipment);
-          System.out.println("///////////////");
-          System.out.println("Equipped") ;
-          System.out.println("///////////////");
         }
       }
-
     }
-
   }
 
   public Boolean canBeEquipped(String type) {
@@ -161,16 +151,12 @@ public class CharacterService {
       for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
         Equipment equipment = e.getEquipment();
         if (e.getIsEquipped()) {
-          if(Objects.equals(equipment.getType(), type)) {
+          if (Objects.equals(equipment.getType(), type)) {
             return false;
           }
         }
       }
     }
     return true;
-
   }
-
-
-
 }
