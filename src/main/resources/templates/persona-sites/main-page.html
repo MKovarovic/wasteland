@@ -23,18 +23,18 @@
                         </td>
                     <tr>
                         <td>
-                            <p th:text="'⨁:' + ${DTO.getAtk()}"></p>
+                            <p th:text="'⨁:' + ${DTO.getAtk()} + ' + ' + ${atkBonus}"></p>
                         </td>
                         <td>
-                            <p th:text="'𐃃:' + ${DTO.getDef()}"></p>
+                            <p th:text="'𐃃:' + ${DTO.getDef()} + ' + ' + ${defBonus}"></p>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <p th:text="'🗡:' + ${DTO.getDmg()}"></p>
+                            <p th:text="'🗡:' + ${DTO.getDmg()} + ' + ' + ${dmgBonus}"></p>
                         </td>
                         <td>
-                            <p th:text="'❤:' + ${DTO.getHp()}"></p>
+                            <p th:text="'❤:' + ${DTO.getHp()} + ' + ' + ${hpBonus}"></p>
                         </td>
                     </tr>
 
@@ -87,8 +87,9 @@
                         <td>
                             <p th:text="${item.getLckBonus()}"></p>
                         </td>
+
                         <td>
-                            <button><a th:href="'/todo/delete?q=' + ${item.getId()}">Equip</a></button>
+                            <button><a th:href="'/character/me/equip?id=' + ${item.getId()}">(un)Equip</a></button>
                         </td>
 
                     </tr>

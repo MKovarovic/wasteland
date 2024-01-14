@@ -1,5 +1,6 @@
 package com.greenfox.tribes.game.controllers;
 
+import com.greenfox.tribes.gameitems.models.Equipment;
 import com.greenfox.tribes.gameitems.services.EquipmentService;
 import com.greenfox.tribes.gameuser.models.WastelandUser;
 import com.greenfox.tribes.gameuser.repositories.UserRepository;
@@ -63,7 +64,35 @@ public class CharacterUI {
     } else {
       PersonaDTO dto = characterService.readCharacter();
       model.addAttribute("DTO", dto);
+      int atkBonus = 0;
+      int defBonus = 0;
+      int hpBonus = 0;
+      int lckBonus = 0;
+      int dmgBonus = 0;
+
+      if (dto.getEquipedItems() != null) {
+
+        for (Equipment e : dto.getEquipedItems()) {
+          atkBonus += e.getAtkBonus();
+          defBonus += e.getDefBonus();
+          hpBonus += e.getHpBonus();
+          lckBonus += e.getLckBonus();
+          dmgBonus += e.getDmgBonus();
+        }
+      }
+      model.addAttribute("atkBonus", atkBonus);
+      model.addAttribute("defBonus", defBonus);
+      model.addAttribute("hpBonus", hpBonus);
+      model.addAttribute("lckBonus", lckBonus);
+      model.addAttribute("dmgBonus", dmgBonus);
+
       return "persona-sites/main-page";
     }
+  }
+
+  @RequestMapping("/me/equip")
+  public String toggleEquip(@RequestParam("id") long id) {
+    characterService.toggleEquip((long) id);
+    return "redirect:/character/me";
   }
 }

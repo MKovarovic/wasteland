@@ -18,6 +18,9 @@ public class CharacterEquipment {
   @JoinColumn(name = "equipment_id")
   Equipment equipment;
 
+  // @ColumnDefault("false")
+  Boolean isEquipped = false;
+
   public void setPair(Persona character, Equipment equipment) {
     this.equipment = equipment;
     this.persona = character;

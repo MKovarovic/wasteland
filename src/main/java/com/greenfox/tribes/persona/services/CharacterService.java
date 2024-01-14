@@ -1,5 +1,8 @@
 package com.greenfox.tribes.persona.services;
 
+import com.greenfox.tribes.gameitems.models.Equipment;
+import com.greenfox.tribes.misc.models.CharacterEquipment;
+import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
 import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.dtos.PersonaDTO;
 import com.greenfox.tribes.persona.repositories.PersonaRepo;
@@ -8,12 +11,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class CharacterService {
 
   @Autowired PersonaRepo playerCharacters;
+  @Autowired CharacterEquipmentRepo pairingRepo;
 
   public void addCharacter(PersonaDTO dto) {
     Persona character = new Persona();
@@ -74,6 +79,7 @@ public class CharacterService {
       dto.setLck(loggedCharacter.get().getLck());
       dto.setHp(loggedCharacter.get().getHp());
       dto.setInventory(loggedCharacter.get().getInventory());
+      dto.setEquipedItems(loggedCharacter.get().getInventory());
       System.out.println(dto.getInventory());
       dto.setPullRing(loggedCharacter.get().getPullRing());
     }
@@ -107,5 +113,49 @@ public class CharacterService {
     } catch (Exception e) {
       throw new IllegalArgumentException("No such persona");
     }
+  }
+
+  public void toggleEquip(Long id) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Optional<Persona> loggedCharacter =
+        playerCharacters.findPersonaByPlayer_Username(auth.getName());
+    CharacterEquipment equipment = null;
+
+    for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
+      if (Objects.equals(e.getEquipment().getId(), id)) {
+        equipment = e;
+      }
+    }
+
+    if (equipment != null) {
+      if (equipment.getIsEquipped()) { // equipped, equipable -> unequip
+        equipment.setIsEquipped(false);
+        pairingRepo.save(equipment);
+
+      } else {
+        if (canBeEquipped(equipment.getEquipment().getType())) { // not equipped, equipable -> equip
+          equipment.setIsEquipped(true);
+          pairingRepo.save(equipment);
+        }
+      }
+    }
+  }
+
+  public Boolean canBeEquipped(String type) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Optional<Persona> loggedCharacter =
+        playerCharacters.findPersonaByPlayer_Username(auth.getName());
+
+    if (loggedCharacter.isPresent()) {
+      for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
+        Equipment equipment = e.getEquipment();
+        if (e.getIsEquipped()) {
+          if (Objects.equals(equipment.getType(), type)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 }

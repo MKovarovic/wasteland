@@ -24,12 +24,22 @@ public class PersonaDTO {
   private Integer pullRing;
 
   private List<Equipment> inventory = new ArrayList<>();
+  private List<Equipment> equipedItems = new ArrayList<>();
 
   public void setInventory(List<CharacterEquipment> bundle) {
     for (CharacterEquipment e : bundle) {
       Equipment equipment = e.getEquipment();
 
       inventory.add(equipment);
+    }
+  }
+
+  public void setEquipedItems(List<CharacterEquipment> bundle) {
+    for (CharacterEquipment e : bundle) {
+      if (e.getIsEquipped()) {
+        Equipment equipment = e.getEquipment();
+        equipedItems.add(equipment);
+      }
     }
   }
 }

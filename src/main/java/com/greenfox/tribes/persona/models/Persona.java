@@ -25,9 +25,6 @@ public class Persona {
   @ToString.Exclude
   WastelandUser player;
 
-
-
-
   // COMBAT STATS
   private Integer atk; // chance to hit
   private Integer def; // chance to not be hit
@@ -41,7 +38,6 @@ public class Persona {
   @ToString.Exclude
   @OneToMany(mappedBy = "persona", fetch = FetchType.EAGER)
   private List<CharacterEquipment> inventory;
-
 
   @ToString.Exclude
   @OneToOne

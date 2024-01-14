@@ -14,7 +14,11 @@ import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
 import com.greenfox.tribes.misc.repositories.MonsterRepo;
 import com.greenfox.tribes.persona.models.Persona;
 import com.greenfox.tribes.persona.repositories.PersonaRepo;
+
+import java.util.List;
 import java.util.Optional;
+
+import com.greenfox.tribes.persona.services.CharacterService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,6 +32,7 @@ import java.util.Random;
 public class ActivityService {
   private ActivityLogRepo activityLogRepo;
   @Autowired UserRepository userRepository;
+  @Autowired CharacterService characterService;
   @Autowired private PersonaRepo playerCharacters;
   @Autowired private MonsterRepo monsterRepo;
   @Autowired private EquipmentRepo equipmentRepo;
@@ -163,11 +168,34 @@ public class ActivityService {
         playerCharacters
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    if (characterService.readCharacter(attacker.getId()).getEquipedItems() != null) {
+
+      List<Equipment> equippedItems =
+          characterService.readCharacter(attacker.getId()).getEquipedItems();
+      for (Equipment e : equippedItems) {
+        attacker.setAtk(attacker.getAtk() + e.getAtkBonus());
+        attacker.setDef(attacker.getDef() + e.getDefBonus());
+        attacker.setHp(attacker.getHp() + e.getHpBonus());
+        attacker.setLck(attacker.getLck() + e.getLckBonus());
+        attacker.setDmg(attacker.getDmg() + e.getDmgBonus());
+      }
+    }
     Persona defender =
         playerCharacters
             .findById(
                 activityLogRepo.findActivityLogByPersonaId(attacker.getId()).get().getEnemyID())
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    if (characterService.readCharacter(defender.getId()).getEquipedItems() != null) {
+      List<Equipment> equippedItems2 =
+          characterService.readCharacter(defender.getId()).getEquipedItems();
+      for (Equipment e : equippedItems2) {
+        defender.setAtk(defender.getAtk() + e.getAtkBonus());
+        defender.setDef(defender.getDef() + e.getDefBonus());
+        defender.setHp(defender.getHp() + e.getHpBonus());
+        defender.setLck(defender.getLck() + e.getLckBonus());
+        defender.setDmg(defender.getDmg() + e.getDmgBonus());
+      }
+    }
     Random rnd = new Random();
     while (attacker.getHp() > 0 && defender.getHp() > 0) {
       int attack = rnd.nextInt((int) attacker.getAtk());
