@@ -1,11 +1,11 @@
 package com.greenfox.tribes;
 
-import com.greenfox.tribes.gameitems.services.EquipmentService;
-import com.greenfox.tribes.gameuser.models.WastelandUser;
-import com.greenfox.tribes.gameuser.repositories.UserRepository;
-import com.greenfox.tribes.misc.models.CharacterEquipment;
-import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
-import com.greenfox.tribes.persona.services.CharacterService;
+import com.greenfox.tribes.services.EquipmentService;
+import com.greenfox.tribes.models.WastelandUser;
+import com.greenfox.tribes.repositories.UserRepository;
+import com.greenfox.tribes.models.CharacterEquipment;
+import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
+import com.greenfox.tribes.services.CharacterService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class BaseIntegrationTest extends BaseTest {
   @Autowired private UserRepository userRepository;
   @Autowired private EquipmentService equipmentService;
   @Autowired private CharacterService characterService;
-  @Autowired private CharacterEquipmentRepo pairingRepo;
+  @Autowired private CharacterEquipmentRepository pairingRepo;
   @Autowired private PasswordEncoder passwordEncoder;
 
   @BeforeAll
