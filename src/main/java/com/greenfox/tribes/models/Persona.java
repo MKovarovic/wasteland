@@ -44,6 +44,11 @@ public class Persona extends Combatant {
   @JoinColumn(name = "activity_log_id")
   ActivityLog activityLog;
 
+  @ToString.Exclude
+  @OneToOne
+  @JoinColumn(name = "portrait_id")
+  Portrait portrait;
+
   // TECHNICAL STUFF
   private Boolean isBusy;
   Boolean isPremium = false;

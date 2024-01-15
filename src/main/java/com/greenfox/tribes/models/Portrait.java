@@ -1,12 +1,19 @@
 package com.greenfox.tribes.models;
 
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+
 public class Portrait {
     private Long id;
-    private int head;
-    private int hair;
-    private int eyes;
-    private int eyebrows;
-    private int nose;
-    private int mouth;
+    private String head;
+    private String hair;
+    private String eyes;
+    private String eyebrows;
+    private String nose;
+    private String mouth;
+
+    @OneToOne
+    @JoinColumn(name = "persona_id")
+    Persona persona;
 
 }
