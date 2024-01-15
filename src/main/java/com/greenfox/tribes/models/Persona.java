@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Persona {
+public class Persona extends Combatant {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

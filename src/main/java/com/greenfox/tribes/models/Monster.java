@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Monster {
+public class Monster extends Combatant {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   Long id;

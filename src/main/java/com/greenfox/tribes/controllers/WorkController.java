@@ -2,6 +2,7 @@ package com.greenfox.tribes.controllers;
 
 import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.enums.ActivityType;
+import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.services.ActivityService;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
@@ -48,7 +49,7 @@ public class WorkController {
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
     if (activityService.isFinished(userHero.getId())) {
-      Persona[] combatants = activityService.fightOutcome(userHero.getId());
+      Combatant[] combatants = activityService.fightStart(userHero.getId());
       activityService.arenaPrize(combatants);
     }
 
@@ -101,8 +102,8 @@ public class WorkController {
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
     if (activityService.isFinished(userHero.getId())) {
-      Persona[] combatants = activityService.fightOutcome(userHero.getId());
-      activityService.arenaPrize(combatants);
+      Combatant[] combatants = activityService.fightStart(userHero.getId());
+      activityService.huntPrize(combatants);
     }
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
