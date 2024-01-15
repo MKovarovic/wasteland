@@ -1,9 +1,14 @@
 package com.greenfox.tribes.models;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
+@Entity
 public class Portrait {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "equipment_id")
     private Long id;
     private String head;
     private String hair;
