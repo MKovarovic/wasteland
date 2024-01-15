@@ -1,6 +1,5 @@
 package com.greenfox.tribes.models;
 
-import jakarta.persistence.Entity;
 import lombok.Data;
 
 @Data

@@ -135,8 +135,12 @@ public class ActivityService {
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
     logActivity(ActivityType.PVE, attacker.getId());
-    activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().setEnemyID(defender.getId());
-    activityLogRepository.save(activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get());
+    activityLogRepository
+        .findActivityLogByPersonaId(attacker.getId())
+        .get()
+        .setEnemyID(defender.getId());
+    activityLogRepository.save(
+        activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get());
   }
 
   public void pveMatching(Long id) {
@@ -152,35 +156,54 @@ public class ActivityService {
                     .orElseThrow(() -> new IllegalArgumentException("No such Monster")))
             .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
     logActivity(ActivityType.PVE, attacker.getId());
-    activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().setEnemyID(defender.getId());
-    activityLogRepository.save(activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get());
+    activityLogRepository
+        .findActivityLogByPersonaId(attacker.getId())
+        .get()
+        .setEnemyID(defender.getId());
+    activityLogRepository.save(
+        activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get());
   }
 
   // COMBAT RESOLUTION
 
   public Combatant[] fightStart(Long id) {
-    Persona attacker = playerCharacters
+    Persona attacker =
+        playerCharacters
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     Combatant defender = new Combatant();
-    if(activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().getType() == ActivityType.PVP) {
-      defender = equipGladiator(activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().getEnemyID());
-    } else if(activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().getType() == ActivityType.PVE) {
-      defender = monsterRepository.findById(activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().getEnemyID()).get();
-
+    if (activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().getType()
+        == ActivityType.PVP) {
+      defender =
+          equipGladiator(
+              activityLogRepository
+                  .findActivityLogByPersonaId(attacker.getId())
+                  .get()
+                  .getEnemyID());
+    } else if (activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().getType()
+        == ActivityType.PVE) {
+      defender =
+          monsterRepository
+              .findById(
+                  activityLogRepository
+                      .findActivityLogByPersonaId(attacker.getId())
+                      .get()
+                      .getEnemyID())
+              .get();
     }
     return fightOutcome(attacker, defender);
   }
 
   public Persona equipGladiator(Long id) {
-    Persona gladiator = playerCharacters
+    Persona gladiator =
+        playerCharacters
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-PersonaDTO gladiatorDTO = new PersonaDTO();
+    PersonaDTO gladiatorDTO = new PersonaDTO();
     if (gladiatorDTO.getEquipedItems() != null) {
 
       List<Equipment> equippedItems =
-              characterService.readCharacter(gladiator.getId()).getEquipedItems();
+          characterService.readCharacter(gladiator.getId()).getEquipedItems();
       for (Equipment e : equippedItems) {
         gladiator.setAtk(gladiator.getAtk() + e.getAtkBonus());
         gladiator.setDef(gladiator.getDef() + e.getDefBonus());
@@ -191,8 +214,8 @@ PersonaDTO gladiatorDTO = new PersonaDTO();
     }
     return gladiator;
   }
-  public Combatant[] fightOutcome(Persona attacker, Combatant defender) {
 
+  public Combatant[] fightOutcome(Persona attacker, Combatant defender) {
 
     Random rnd = new Random();
     while (attacker.getHp() > 0 && defender.getHp() > 0) {
