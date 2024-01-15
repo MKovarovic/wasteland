@@ -1,13 +1,13 @@
 package com.greenfox.tribes.unit.services;
 
-import com.greenfox.tribes.game.services.ShopService;
-import com.greenfox.tribes.gameitems.dtos.EquipmentDTO;
-import com.greenfox.tribes.gameitems.models.Equipment;
-import com.greenfox.tribes.gameitems.repositories.EquipmentRepo;
-import com.greenfox.tribes.gameuser.models.WastelandUser;
-import com.greenfox.tribes.gameuser.repositories.UserRepository;
-import com.greenfox.tribes.misc.repositories.CharacterEquipmentRepo;
-import com.greenfox.tribes.persona.models.Persona;
+import com.greenfox.tribes.services.ShopService;
+import com.greenfox.tribes.dtos.EquipmentDTO;
+import com.greenfox.tribes.models.Equipment;
+import com.greenfox.tribes.repositories.EquipmentRepository;
+import com.greenfox.tribes.models.WastelandUser;
+import com.greenfox.tribes.repositories.UserRepository;
+import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
+import com.greenfox.tribes.models.Persona;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,9 +28,9 @@ public class ShopServiceTest {
 
   @InjectMocks private ShopService yourService;
 
-  @Mock private EquipmentRepo equipmentRepo;
+  @Mock private EquipmentRepository equipmentRepository;
 
-  @Mock private CharacterEquipmentRepo characterEquipmentRepo;
+  @Mock private CharacterEquipmentRepository characterEquipmentRepository;
 
   @Mock private UserRepository userRepository;
 
@@ -59,9 +59,9 @@ public class ShopServiceTest {
     equipment.setName("Test Equipment");
     ArrayList<Equipment> equipmentList = new ArrayList<>();
     equipmentList.add(equipment);
-    when(equipmentRepo.findAll()).thenReturn(equipmentList);
+    when(equipmentRepository.findAll()).thenReturn(equipmentList);
 
-    when(characterEquipmentRepo.countAllByEquipmentAndPersona(eq(equipment), any(Persona.class)))
+    when(characterEquipmentRepository.countAllByEquipmentAndPersona(eq(equipment), any(Persona.class)))
         .thenReturn(1);
 
     // Call the method to be tested
