@@ -90,68 +90,74 @@ function recalculate() {
 
 function updateFace() {
     document.getElementById('faceImg').src = face.get(currentFaceIndex);
+    document.getElementById('faceSave').value = face.get(currentFaceIndex);
 }
 
 function updateHair() {
     document.getElementById('hairImg').src = hair.get(currentHairIndex);
+    document.getElementById('hairSave').value = hair.get(currentHairIndex);
 }
 
 function updateEybrows() {
     document.getElementById('eyebrowsImg').src = eyebrows.get(currentEyebrowsIndex);
+    document.getElementById('eyebrowsSave').value = eyebrows.get(currentEyebrowsIndex);
 }
 
 function updateEyes() {
     document.getElementById('eyesImg').src = eyes.get(currentEyesIndex);
+    document.getElementById('eyesSave').value = eyes.get(currentEyesIndex);
 }
 
 function updateNose() {
     document.getElementById('noseImg').src = nose.get(currentNoseIndex);
+    document.getElementById('noseSave').value = nose.get(currentNoseIndex);
 }
 
 function updateMouth() {
     document.getElementById('mouthImg').src = mouth.get(currentMouthIndex);
+    document.getElementById('mouthSave').value = mouth.get(currentMouthIndex);
 }
 
 function nextFace() {
     currentFaceIndex++;
     if (currentFaceIndex > face.size) {
         currentFaceIndex = 1;
-    }
+    }updateFace()
 }
 
 function nextHair() {
     currentHairIndex++;
     if (currentHairIndex > hair.size) {
         currentHairIndex = 1;
-    }
+    }updateHair()
 }
 
 function nextEyes() {
     currentEyesIndex++;
     if (currentEyesIndex > eyes.size) {
         currentEyesIndex = 1;
-    }
+    }updateEyes()
 }
 
 function nextNose() {
     currentNoseIndex++;
     if (currentNoseIndex > nose.size) {
         currentNoseIndex = 1;
-    }
+    }updateNose()
 }
 
 function nextMouth() {
     currentMouthIndex++;
     if (currentMouthIndex > mouth.size) {
         currentMouthIndex = 1;
-    }
+    }updateMouth()
 }
 
 function nextEyebrows() {
     currentEyebrowsIndex++;
     if (currentEyebrowsIndex > eyebrows.size) {
         currentEyebrowsIndex = 1;
-    }
+    }updateEybrows()
 }
 
 //initial setup
