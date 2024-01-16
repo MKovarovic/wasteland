@@ -51,12 +51,13 @@
                 </table>
 
                 <section id="face">
-                    <img src="/PortraitParts/Face01.png" alt="">
-                    <img src="/PortraitParts/Eye01.png" alt="">
-                    <img src="/PortraitParts/Nose01.png" alt="">
-                    <img src="/PortraitParts/Mouth01.png" alt="">
-                    <img src="/PortraitParts/Hair01.png" alt="">
-                    <img src="/PortraitParts/Clothes_Settler.png" alt="">
+                    <img th:src="${portraitDTO.getHead()}" alt="">
+                    <img th:src="${portraitDTO.getEyes()}" alt="">
+                    <img th:src="${portraitDTO.getNose()}" alt="">
+                    <img th:src="${portraitDTO.getEyebrows()}" alt="">
+                    <img th:src="${portraitDTO.getHair()}" alt="">
+                    <img th:src="${portraitDTO.getMouth()}" alt="">
+                    <img th:src="${DTO.getFaction() == 'Raider'}? '/PortraitParts/Clothes_Raider.png' : '/PortraitParts/Clothes_Raider.png" alt="">
                 </section>
 
             </section>

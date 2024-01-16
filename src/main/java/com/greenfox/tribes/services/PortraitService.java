@@ -16,15 +16,17 @@ public class PortraitService {
     @Autowired
     PortraitRepository portraitRepository;
 
-    public void createPortrait(String head, String hair, String eyes, String nose, String mouth, Long personId) {
+    public Long createPortrait(String head, String hair, String eyes, String nose, String mouth, String eyebrows, Long personId) {
         Portrait portrait = new Portrait();
         portrait.setHead(head);
         portrait.setHair(hair);
         portrait.setEyes(eyes);
         portrait.setNose(nose);
+        portrait.setEyebrows(eyebrows);
         portrait.setMouth(mouth);
         portrait.setPersona(personaRepository.findById(personId).orElse(null));
         portraitRepository.save(portrait);
+        return portrait.getId();
 
     }
 

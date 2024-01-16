@@ -8,7 +8,6 @@ import lombok.Data;
 public class Portrait {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "equipment_id")
     private Long id;
     private String head;
     private String hair;

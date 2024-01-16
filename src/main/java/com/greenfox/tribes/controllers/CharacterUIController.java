@@ -1,6 +1,10 @@
 package com.greenfox.tribes.controllers;
 
+import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.models.Equipment;
+import com.greenfox.tribes.models.Portrait;
+import com.greenfox.tribes.repositories.PersonaRepository;
+import com.greenfox.tribes.repositories.PortraitRepository;
 import com.greenfox.tribes.services.EquipmentService;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
@@ -22,13 +26,14 @@ import org.springframework.web.bind.annotation.*;
 public class CharacterUIController {
 
   @Autowired CharacterService characterService;
+  @Autowired
+  PersonaRepository personaRepository;
   @Autowired CustomUserDetailService userService;
   @Autowired UserRepository userRepository;
-@Autowired
-PortraitService portraitService;
+  @Autowired PortraitService portraitService;
+  @Autowired PortraitRepository portraitRepository;
   @Autowired EquipmentService equipmentService;
-  @Autowired
-  CharacterEquipmentRepository pairingRepo;
+  @Autowired CharacterEquipmentRepository pairingRepo;
 
   @GetMapping("/new")
   public String newCharacter() {
@@ -43,31 +48,29 @@ PortraitService portraitService;
       @RequestParam("dmg") int dmg,
       @RequestParam("def") int def,
       @RequestParam("hp") int hp,
-      @RequestParam("lck") int lck) {
+      @RequestParam("lck") int lck,
+      @RequestParam("faceImg") String faceImg,
+      @RequestParam("eyeImg") String eyeImg,
+      @RequestParam("eyebrowsImg") String eyebrowsImg,
+      @RequestParam("noseImg") String noseImg,
+      @RequestParam("mouthImg") String mouthImg,
+      @RequestParam("hairImg") String hairImg) {
 
     Persona persona =
         characterService.addCharacter(characterName, hp, atk, dmg, def, lck, faction, 100);
     System.out.println(persona);
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+    Long idPortrait =
+        portraitService.createPortrait(
+            faceImg, eyeImg, eyebrowsImg, noseImg, mouthImg, hairImg, persona.getId());
+    persona.setPortrait(portraitRepository.findById(idPortrait).get());
+    personaRepository.save(persona);
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     user.setPersona(persona);
     userRepository.save(user);
 
     return "redirect:/character/me";
-  }
-
-  @GetMapping("/new/savePicture")
-  public String savePicture(
-@RequestParam("faceImg") String faceImg,
-@RequestParam("eyeImg") String eyeImg,
-@RequestParam("eyebrowsImg") String eyebrowsImg,
-@RequestParam("noseImg") String noseImg,
-@RequestParam("mouthImg") String mouthImg,
-@RequestParam("hairImg") String hairImg
-  ){
-    portraitService.createPortrait(faceImg, eyeImg, eyebrowsImg, noseImg, mouthImg, hairImg);
-    return "redirect:/character/new";
   }
 
   @GetMapping("/me")
@@ -101,6 +104,9 @@ PortraitService portraitService;
       model.addAttribute("hpBonus", hpBonus);
       model.addAttribute("lckBonus", lckBonus);
       model.addAttribute("dmgBonus", dmgBonus);
+
+      PortraitDTO portraitDTO = portraitService.findPortrait(user.getPersona().getId());
+      model.addAttribute("portraitDTO", portraitDTO);
 
       return "persona-sites/main-page";
     }
