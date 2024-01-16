@@ -9,6 +9,7 @@ import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.services.CharacterService;
+import com.greenfox.tribes.services.PortraitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +24,8 @@ public class CharacterUIController {
   @Autowired CharacterService characterService;
   @Autowired CustomUserDetailService userService;
   @Autowired UserRepository userRepository;
-
+@Autowired
+PortraitService portraitService;
   @Autowired EquipmentService equipmentService;
   @Autowired
   CharacterEquipmentRepository pairingRepo;
@@ -53,6 +55,19 @@ public class CharacterUIController {
     userRepository.save(user);
 
     return "redirect:/character/me";
+  }
+
+  @GetMapping("/new/savePicture")
+  public String savePicture(
+@RequestParam("faceImg") String faceImg,
+@RequestParam("eyeImg") String eyeImg,
+@RequestParam("eyebrowsImg") String eyebrowsImg,
+@RequestParam("noseImg") String noseImg,
+@RequestParam("mouthImg") String mouthImg,
+@RequestParam("hairImg") String hairImg
+  ){
+    portraitService.createPortrait(faceImg, eyeImg, eyebrowsImg, noseImg, mouthImg, hairImg);
+    return "redirect:/character/new";
   }
 
   @GetMapping("/me")
