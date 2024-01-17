@@ -59,23 +59,32 @@ public class WorkController {
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
     int noEnemy = 1;
-    if (dto != null) {
-      noEnemy = 0;
-      model.addAttribute(
-          "enemy",
-          characterService.readCharacter(
-              userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
-      model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
-    }
-    model.addAttribute("faction", user.getPersona().getFaction());
-    model.addAttribute("noEnemy", noEnemy);
+
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
-    model.addAttribute("portraitHero", portraitHero);
-    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+    model.addAttribute("faction", user.getPersona().getFaction());
+
+    if (dto != null) {
+      if(dto.getType().equals(ActivityType.PVP)){
+        noEnemy = 0;
+        model.addAttribute(
+            "enemy",
+            characterService.readCharacter(
+                userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
+        model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
+
+        model.addAttribute("noEnemy", noEnemy);
+
+        PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+        model.addAttribute("portraitHero", portraitHero);
+        model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+
+        return "game-sites/pvp";
+      }
+    }
 
 
-    return "game-sites/pvp";
+
+    return "game-sites/pvp-welcome";
   }
 
   @GetMapping("/pvp/log")
@@ -95,33 +104,23 @@ public class WorkController {
       Combatant[] combatants = activityService.fightStart(userHero.getId());
       activityService.huntPrize(combatants);
     }
-
+int noEnemy = 1;
     ActivityDTO dto = activityService.getActivity(userHero.getId());
     if (dto != null) {
-      model.addAttribute("enemyName", monsterRepository.findById(dto.getEnemyID()).get().getName());
-      model.addAttribute("enemyATK", monsterRepository.findById(dto.getEnemyID()).get().getAtk());
-      model.addAttribute("enemyHP", monsterRepository.findById(dto.getEnemyID()).get().getHp());
-      model.addAttribute("enemyDMG", monsterRepository.findById(dto.getEnemyID()).get().getDmg());
-      model.addAttribute("enemyDEF", monsterRepository.findById(dto.getEnemyID()).get().getDef());
-      model.addAttribute("enemyLCK", monsterRepository.findById(dto.getEnemyID()).get().getLck());
+      noEnemy = 0;
+      model.addAttribute(
+              "enemy",
+              monsterRepository.findById(dto.getEnemyID()).get());
 
-    } else {
-      model.addAttribute("enemyName", "????");
-      model.addAttribute("enemyATK", "????");
-      model.addAttribute("enemyHP", "????");
-      model.addAttribute("enemyDMG", "????");
-      model.addAttribute("enemyDEF", "????");
-      model.addAttribute("enemyLCK", "????");
+
     }
 
-    model.addAttribute("Name", userHero.getCharacterName());
-    model.addAttribute("ATK", userHero.getAtk());
-    model.addAttribute("HP", userHero.getHp());
-    model.addAttribute("DMG", userHero.getDmg());
-    model.addAttribute("DEF", userHero.getDef());
-    model.addAttribute("LCK", userHero.getLck());
-
     model.addAttribute("faction", user.getPersona().getFaction());
+    model.addAttribute("noEnemy", noEnemy);
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+    model.addAttribute("portraitHero", portraitHero);
+    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
     return "game-sites/pve";
   }
 

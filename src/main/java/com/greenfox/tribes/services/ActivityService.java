@@ -143,7 +143,7 @@ public class ActivityService {
                     .orElseThrow(() -> new IllegalArgumentException("Nobody on the other team")))
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
-    logActivity(ActivityType.PVE, attacker.getId());
+    logActivity(ActivityType.PVP, attacker.getId());
     activityLogRepository
         .findActivityLogByPersonaId(attacker.getId())
         .get()
