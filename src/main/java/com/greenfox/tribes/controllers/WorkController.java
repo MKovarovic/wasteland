@@ -67,6 +67,7 @@ public class WorkController {
               userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
       model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
     }
+    model.addAttribute("faction", user.getPersona().getFaction());
     model.addAttribute("noEnemy", noEnemy);
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
@@ -120,6 +121,7 @@ public class WorkController {
     model.addAttribute("DEF", userHero.getDef());
     model.addAttribute("LCK", userHero.getLck());
 
+    model.addAttribute("faction", user.getPersona().getFaction());
     return "game-sites/pve";
   }
 
