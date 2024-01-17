@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="portrait(portraitDTO)" class = "portrait">
+
+    <section id="face">
+        <img th:src="${portraitDTO.getHead()}" alt="">
+        <img th:src="${portraitDTO.getEyes()}" alt="">
+        <img th:src="${portraitDTO.getNose()}" alt="">
+        <img th:src="${portraitDTO.getEyebrows()}" alt="">
+        <img th:src="${portraitDTO.getHair()}" alt="">
+        <img th:src="${portraitDTO.getMouth()}" alt="">
+        <img th:src="${DTO.getFaction() == 'Raider' ? '/PortraitParts/Clothes_Raider.png' : '/PortraitParts/Clothes_Settler.png'}" alt="">
+    </section>
+</div>
+
+<div th:fragment="combatStatistics(CombatantDTO)" class = "portrait">
+    <table>
+
+        <tr>
+            <td>
+                <p th:text="'⨁:' + ${CombatantDTO.getAtk()}"></p>
+            </td>
+            <td>
+                <p th:text="'𐃃:' + ${CombatantDTO.getDef()}"></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <p th:text="'🗡:' + ${CombatantDTO.getDmg()}"></p>
+            </td>
+            <td>
+                <p th:text="'❤:' + ${CombatantDTO.getHp()}"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>⯎</p>
+            </td>
+            <td>
+                <p th:text="${CombatantDTO.getLck()}"></p>
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+
+</body>
+</html>
