@@ -8,6 +8,7 @@ import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.repositories.MonsterRepository;
 import com.greenfox.tribes.models.Persona;
+import com.greenfox.tribes.services.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,8 @@ public class WorkController {
   @Autowired ActivityService activityService;
   @Autowired
   MonsterRepository monsterRepository;
+  @Autowired
+  CharacterService characterService;
 
   @GetMapping("/work")
   public String work(Model model) {
@@ -54,8 +57,11 @@ public class WorkController {
     }
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
+    int noEnemy = 1;
     if (dto != null) {
-      model.addAttribute(
+      noEnemy = 0;
+      model.addAttribute("enemy", characterService.readCharacter(userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
+      /*model.addAttribute(
           "enemyName",
           userRepository.findById(dto.getEnemyID()).get().getPersona().getCharacterName());
       model.addAttribute(
@@ -67,23 +73,24 @@ public class WorkController {
       model.addAttribute(
           "enemyDEF", userRepository.findById(dto.getEnemyID()).get().getPersona().getDef());
       model.addAttribute(
-          "enemyLCK", userRepository.findById(dto.getEnemyID()).get().getPersona().getLck());
+          "enemyLCK", userRepository.findById(dto.getEnemyID()).get().getPersona().getLck());*/
 
-    } else {
+    } /*else {
       model.addAttribute("enemyName", "????");
       model.addAttribute("enemyATK", "????");
       model.addAttribute("enemyHP", "????");
       model.addAttribute("enemyDMG", "????");
       model.addAttribute("enemyDEF", "????");
       model.addAttribute("enemyLCK", "????");
-    }
-
-    model.addAttribute("Name", userHero.getCharacterName());
+    }*/
+    model.addAttribute("noEnemy", noEnemy);
+model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    /*model.addAttribute("Name", userHero.getCharacterName());
     model.addAttribute("ATK", userHero.getAtk());
     model.addAttribute("HP", userHero.getHp());
     model.addAttribute("DMG", userHero.getDmg());
     model.addAttribute("DEF", userHero.getDef());
-    model.addAttribute("LCK", userHero.getLck());
+    model.addAttribute("LCK", userHero.getLck());*/
 
     return "game-sites/pvp";
   }
