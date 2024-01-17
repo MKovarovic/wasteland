@@ -11,89 +11,29 @@
     <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
         <div id="content">
             <div id="box">
-<section class="combatant">
-                <div th:insert="/fragments/character-card.html :: portrait(${portraitHero}, ${hero})"></div>
-<h2 th:text="${hero.getCharacterName()}"></h2>
-                <div th:insert="/fragments/character-card.html :: combatStatistics(${hero})"></div>
+                <section class="combatant">
+                    <div th:insert="/fragments/character-card.html :: portrait(${portraitHero}, ${hero})"></div>
+                    <h2 th:text="${hero.getCharacterName()}"></h2>
+                    <div th:insert="/fragments/character-card.html :: combatStatistics(${hero})"></div>
 
-</section>
-<!--                <div class="combatant">
-                    <table>
-
-                        <tr>
-                            <td>
-                                <p th:text="${Name}"></p>
-                            </td>
-                        <tr>
-                            <td>
-                                <p th:text="'⨁:' + ${ATK}"></p>
-                            </td>
-                            <td>
-                                <p th:text="'𐃃:' + ${DEF}"></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p th:text="'🗡:' + ${DMG}"></p>
-                            </td>
-                            <td>
-                                <p th:text="'❤:' + ${HP}"></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>⯎</p>
-                            </td>
-                            <td>
-                                <p th:text="${LCK}"></p>
-                            </td>
-                        </tr>
-
-                    </table>
-                </div>
-
-
-                <div class="combatant">
-                    <table>
-
-                        <tr>
-                            <td>
-                                <p th:text="${enemyName}"></p>
-                            </td>
-                        <tr>
-                            <td>
-                                <p th:text="'⨁:' + ${enemyATK}"></p>
-                            </td>
-                            <td>
-                                <p th:text="'𐃃:' + ${enemyDEF}"></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p th:text="'🗡:' + ${enemyDMG}"></p>
-                            </td>
-                            <td>
-                                <p th:text="'❤:' + ${enemyHP}"></p>
-                            </td>
-                        </tr>
-
-
-                        <tr>
-                            <td>
-                                <p>⯎</p>
-                            </td>
-                            <td>
-                                <p th:text="${enemyLCK}"></p>
-                            </td>
-                        </tr>
-
-                    </table>
-                </div>-->
-
-
+                </section>
+                <section class="combatant">
+                    <h2> COMBAT IN PROGRESS</h2>
+                    <h4 th:text="${minutes + ' minute(s) remaining'}"></h4>
 
                     <a th:text="${faction == 'Raider'}? 'Go Raiding' : 'Collect Bounty'"
                        th:href="'/activity/pvp/log'" class="button"></a>
+                </section>
+
+                <div th:if="${noEnemy == 0}">
+                    <section class="combatant">
+                        <div th:insert="/fragments/character-card.html :: portrait(${portraitHero}, ${enemy})"></div>
+                        <h2 th:text="${enemy.getCharacterName()}"></h2>
+                        <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy})"></div>
+
+                    </section>
+                </div>
+
 
             </div>
 
