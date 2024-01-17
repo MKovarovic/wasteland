@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <title>Work</title>
     <link href="/resources/ActivityGraphics.css" rel="stylesheet"/>
+    <link href="/resources/style.css" rel="stylesheet"/>
 </head>
 <body>
 <div id="container">
     <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
         <div id="content">
             <div id="box">
-                <div id=" text">
+                <div id="text">
                     <h2 th:if="${faction == 'Raider'}">Scavanging</h2>
                     <h2 th:if="${faction == 'Settler'}">Farming</h2>
                     <div th:if="${isBusy != true}">
