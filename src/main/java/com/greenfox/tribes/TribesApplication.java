@@ -18,8 +18,7 @@ public class TribesApplication implements ApplicationRunner {
   @Autowired EquipmentService equipmentService;
   @Autowired CharacterService characterService;
 
-  @Autowired
-  CharacterEquipmentRepository pairingRepo;
+  @Autowired CharacterEquipmentRepository pairingRepo;
 
   public static void main(String[] args) {
     SpringApplication.run(TribesApplication.class, args);
@@ -36,9 +35,8 @@ public class TribesApplication implements ApplicationRunner {
                  Persona persona = characterService.returnCharacter(1L);
     */
 
-                equipmentService.newItem( "Rusty Sword", "Weapon", 10, 5, 0, 0, 0, 1);
-                equipmentService.newItem( "Wooden Shield", "Shield", 5, 0, 15, 0, 0, 5);
-                equipmentService.newItem( "Hard hat", "Helmet", 12, 0, 0, 0, 5, 0);
-
+    equipmentService.newItem("Rusty Sword", "Weapon", 10, 5, 0, 0, 0, 1);
+    equipmentService.newItem("Wooden Shield", "Shield", 5, 0, 15, 0, 0, 5);
+    equipmentService.newItem("Hard hat", "Helmet", 12, 0, 0, 0, 5, 0);
   }
 }
