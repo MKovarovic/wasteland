@@ -1,6 +1,7 @@
 package com.greenfox.tribes.controllers;
 
 import com.greenfox.tribes.dtos.ActivityDTO;
+import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
 import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.services.ActivityService;
@@ -9,6 +10,7 @@ import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.repositories.MonsterRepository;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.services.CharacterService;
+import com.greenfox.tribes.services.PortraitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +29,8 @@ public class WorkController {
   MonsterRepository monsterRepository;
   @Autowired
   CharacterService characterService;
+  @Autowired
+  PortraitService  portraitService;
 
   @GetMapping("/work")
   public String work(Model model) {
@@ -84,7 +88,9 @@ public class WorkController {
       model.addAttribute("enemyLCK", "????");
     }*/
     model.addAttribute("noEnemy", noEnemy);
-model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+    model.addAttribute("portraitHero", portraitHero);
     /*model.addAttribute("Name", userHero.getCharacterName());
     model.addAttribute("ATK", userHero.getAtk());
     model.addAttribute("HP", userHero.getHp());

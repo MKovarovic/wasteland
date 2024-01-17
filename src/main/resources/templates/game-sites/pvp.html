@@ -11,10 +11,12 @@
     <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
         <div id="content">
             <div id="box">
-
+<section class="combatant">
+                <div th:insert="/fragments/character-card.html :: portrait(${portraitHero}, ${hero})"></div>
+<h2 th:text="${hero.getCharacterName()}"></h2>
                 <div th:insert="/fragments/character-card.html :: combatStatistics(${hero})"></div>
 
-
+</section>
 <!--                <div class="combatant">
                     <table>
 

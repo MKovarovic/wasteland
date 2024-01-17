@@ -137,3 +137,16 @@ a {
   margin-right: auto;
   margin-left: auto;
 }
+
+#face{
+  width: 180px;
+  height: 180px;
+  position: relative;
+}
+
+#face img{
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
