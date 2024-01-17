@@ -62,7 +62,9 @@ public class CharacterUIController {
 
     Long idPortrait =
         portraitService.createPortrait(
-            faceImg, eyeImg, eyebrowsImg, noseImg, mouthImg, hairImg, persona.getId());
+            faceImg, hairImg, eyeImg, noseImg, mouthImg, eyebrowsImg, persona.getId());
+
+
     persona.setPortrait(portraitRepository.findById(idPortrait).get());
     personaRepository.save(persona);
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();

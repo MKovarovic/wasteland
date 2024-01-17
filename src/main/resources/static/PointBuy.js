@@ -104,8 +104,8 @@ function updateEybrows() {
 }
 
 function updateEyes() {
-    document.getElementById('eyesImg').src = eyes.get(currentEyesIndex);
-    document.getElementById('eyesSave').value = eyes.get(currentEyesIndex);
+    document.getElementById('eyeImg').src = eyes.get(currentEyesIndex);
+    document.getElementById('eyeSave').value = eyes.get(currentEyesIndex);
 }
 
 function updateNose() {
