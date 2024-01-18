@@ -27,7 +27,7 @@ public class MonsterService {
     Monster monster = monsterRepository.findById(id).get();
     MonsterDTO dto = new MonsterDTO();
     dto.setId(monster.getId());
-    dto.setName(monster.getName());
+    dto.setCharacterName(monster.getName());
     dto.setAtk(monster.getAtk());
     dto.setDmg(monster.getDmg());
     dto.setDef(monster.getDef());
