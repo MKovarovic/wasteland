@@ -64,7 +64,7 @@ public class WorkController {
     model.addAttribute("faction", user.getPersona().getFaction());
 
     if (dto != null) {
-      if(dto.getType().equals(ActivityType.PVP)){
+      if (dto.getType().equals(ActivityType.PVP)) {
         noEnemy = 0;
         model.addAttribute(
             "enemy",
@@ -81,8 +81,6 @@ public class WorkController {
         return "game-sites/pvp";
       }
     }
-
-
 
     return "game-sites/pvp-welcome";
   }
@@ -104,15 +102,11 @@ public class WorkController {
       Combatant[] combatants = activityService.fightStart(userHero.getId());
       activityService.huntPrize(combatants);
     }
-int noEnemy = 1;
+    int noEnemy = 1;
     ActivityDTO dto = activityService.getActivity(userHero.getId());
     if (dto != null) {
       noEnemy = 0;
-      model.addAttribute(
-              "enemy",
-              monsterRepository.findById(dto.getEnemyID()).get());
-
-
+      model.addAttribute("enemy", monsterRepository.findById(dto.getEnemyID()).get());
     }
 
     model.addAttribute("faction", user.getPersona().getFaction());
