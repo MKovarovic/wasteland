@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +33,7 @@ public class ActivityService {
   @Autowired private MonsterRepository monsterRepository;
   @Autowired private EquipmentRepository equipmentRepository;
   @Autowired private CharacterEquipmentRepository pairingRepo;
+
 
   public void logActivity(ActivityType type, Long personaId) {
     ActivityLog activity = new ActivityLog();
@@ -65,6 +67,9 @@ public class ActivityService {
     activityLogRepository.save(activity);
   }
 
+  public void deleteActivity(Long id) {
+    activityLogRepository.delete(activityLogRepository.findActivityLogByPersonaId(id).get());
+  }
   public ActivityDTO getActivity(Long id) {
     Optional<ActivityLog> activity = activityLogRepository.findActivityLogByPersonaId(id);
     // return activity;
@@ -96,15 +101,8 @@ public class ActivityService {
     if (activity.isEmpty()) {
       return false;
     }
-    if (System.currentTimeMillis()
-        >= activity.get().getTimestamp() + (activity.get().getTime() * 60 * 1000)) {
-      getReward(id);
-      Persona persona = activity.get().getPersona();
-      persona.setIsBusy(false);
-      activityLogRepository.delete(activity.get());
-      return true;
-    }
-    return false;
+      return System.currentTimeMillis()
+              >= activity.get().getTimestamp() + ((long) activity.get().getTime() * 60 * 1000);
   }
 
   public void getReward(Long id) {
@@ -200,7 +198,7 @@ public class ActivityService {
                       .getEnemyID())
               .get();
     }
-    return fightOutcome(attacker, defender);
+   return fightOutcome(attacker, defender);
   }
 
   public Persona equipGladiator(Long id) {
@@ -225,12 +223,12 @@ public class ActivityService {
   }
 
   public Combatant[] fightOutcome(Persona attacker, Combatant defender) {
-
+int doom = 0;
     Random rnd = new Random();
     while (attacker.getHp() > 0 && defender.getHp() > 0) {
       int attack = rnd.nextInt((int) attacker.getAtk());
-
-      if (attack >= defender.getDef()) {
+doom++;
+      if (attack >= defender.getDef()-doom) {
         if (rnd.nextInt(100) < attacker.getLck()) {
           defender.setHp(defender.getHp() - (attacker.getDmg() * 2));
         }
@@ -240,7 +238,7 @@ public class ActivityService {
         break;
       }
       int defense = rnd.nextInt((int) defender.getAtk());
-      if (defense >= attacker.getDef()) {
+      if (defense >= attacker.getDef()-doom) {
         if (rnd.nextInt(100) < attacker.getLck()) {
           attacker.setHp(attacker.getHp() - (defender.getDmg() * 2));
         }
@@ -278,6 +276,7 @@ public class ActivityService {
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
     getReward(winnerPersona.getId());
+
     winnerPersona.setPullRing(winnerPersona.getPullRing() + (loserPersona.getPullRing() / 2));
     loserPersona.setPullRing(loserPersona.getPullRing() / 2);
     playerCharacters.save(winnerPersona);

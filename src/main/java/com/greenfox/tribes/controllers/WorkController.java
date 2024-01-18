@@ -52,24 +52,33 @@ public class WorkController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
-    if (activityService.isFinished(userHero.getId())) {
-      Combatant[] combatants = activityService.fightStart(userHero.getId());
-      activityService.arenaPrize(combatants);
-    }
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
-    int noEnemy = 1;
-
+    ActivityType type;
+    if (dto != null && dto.getType() != null) {
+      type = dto.getType();
+    }
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     model.addAttribute("faction", user.getPersona().getFaction());
-
+int noEnemy = 1;
     if (dto != null) {
-      if (dto.getType().equals(ActivityType.PVP)) {
+      if (dto.getType() == ActivityType.PVP) {
+        if(activityService.isFinished(userHero.getId())){
+          int pullrings = userHero.getPullRing();
+          activityService.arenaPrize(activityService.fightStart(userHero.getId()));
+          int reward =  userHero.getPullRing() - pullrings;
+          System.out.println(reward);
+          model.addAttribute("reward", reward);
+          userHero.setIsBusy(false);
+          activityService.deleteActivity(userHero.getId());
+
+          return "game-sites/pvp-reward";
+        }
         noEnemy = 0;
         model.addAttribute(
-            "enemy",
-            characterService.readCharacter(
-                userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
+                "enemy",
+                characterService.readCharacter(
+                        userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
         model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
 
         model.addAttribute("noEnemy", noEnemy);
@@ -80,10 +89,15 @@ public class WorkController {
 
         return "game-sites/pvp";
       }
+      return "game-sites/work";
     }
+
+
 
     return "game-sites/pvp-welcome";
   }
+
+
 
   @GetMapping("/pvp/log")
   public String logPvp() {
@@ -98,7 +112,7 @@ public class WorkController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
-    if (activityService.isFinished(userHero.getId())) {
+    /*if (activityService.isFinished(userHero.getId())) {
       Combatant[] combatants = activityService.fightStart(userHero.getId());
       activityService.huntPrize(combatants);
     }
@@ -114,7 +128,7 @@ public class WorkController {
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
     model.addAttribute("portraitHero", portraitHero);
-    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));*/
     return "game-sites/pve";
   }
 
