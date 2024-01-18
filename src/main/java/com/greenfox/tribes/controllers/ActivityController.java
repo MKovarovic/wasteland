@@ -3,7 +3,6 @@ package com.greenfox.tribes.controllers;
 import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
-import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.services.ActivityService;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/activity")
-public class WorkController {
+public class ActivityController {
   @Autowired UserRepository userRepository;
   @Autowired ActivityService activityService;
   @Autowired MonsterRepository monsterRepository;
@@ -60,13 +59,13 @@ public class WorkController {
     }
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     model.addAttribute("faction", user.getPersona().getFaction());
-int noEnemy = 1;
+    int noEnemy = 1;
     if (dto != null) {
       if (dto.getType() == ActivityType.PVP) {
-        if(activityService.isFinished(userHero.getId())){
+        if (activityService.isFinished(userHero.getId())) {
           int pullrings = userHero.getPullRing();
           activityService.arenaPrize(activityService.fightStart(userHero.getId()));
-          int reward =  userHero.getPullRing() - pullrings;
+          int reward = userHero.getPullRing() - pullrings;
           System.out.println(reward);
           model.addAttribute("reward", reward);
           userHero.setIsBusy(false);
@@ -76,9 +75,9 @@ int noEnemy = 1;
         }
         noEnemy = 0;
         model.addAttribute(
-                "enemy",
-                characterService.readCharacter(
-                        userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
+            "enemy",
+            characterService.readCharacter(
+                userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
         model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
 
         model.addAttribute("noEnemy", noEnemy);
@@ -89,15 +88,11 @@ int noEnemy = 1;
 
         return "game-sites/pvp";
       }
-      return "game-sites/work";
+      return "redirect:/character/me";
     }
-
-
 
     return "game-sites/pvp-welcome";
   }
-
-
 
   @GetMapping("/pvp/log")
   public String logPvp() {
