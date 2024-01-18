@@ -3,7 +3,6 @@ package com.greenfox.tribes.controllers;
 import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
-import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.services.ActivityService;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/activity")
-public class WorkController {
+public class ActivityController {
   @Autowired UserRepository userRepository;
   @Autowired ActivityService activityService;
   @Autowired MonsterRepository monsterRepository;
@@ -52,19 +51,28 @@ public class WorkController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
-    if (activityService.isFinished(userHero.getId())) {
-      Combatant[] combatants = activityService.fightStart(userHero.getId());
-      activityService.arenaPrize(combatants);
-    }
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
-    int noEnemy = 1;
-
+    ActivityType type;
+    if (dto != null && dto.getType() != null) {
+      type = dto.getType();
+    }
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     model.addAttribute("faction", user.getPersona().getFaction());
-
+    int noEnemy = 1;
     if (dto != null) {
-      if (dto.getType().equals(ActivityType.PVP)) {
+      if (dto.getType() == ActivityType.PVP) {
+        if (activityService.isFinished(userHero.getId())) {
+          int pullrings = userHero.getPullRing();
+          activityService.arenaPrize(activityService.fightStart(userHero.getId()));
+          int reward = userHero.getPullRing() - pullrings;
+          System.out.println(reward);
+          model.addAttribute("reward", reward);
+          userHero.setIsBusy(false);
+          activityService.deleteActivity(userHero.getId());
+
+          return "game-sites/pvp-reward";
+        }
         noEnemy = 0;
         model.addAttribute(
             "enemy",
@@ -80,6 +88,7 @@ public class WorkController {
 
         return "game-sites/pvp";
       }
+      return "redirect:/character/me";
     }
 
     return "game-sites/pvp-welcome";
@@ -98,7 +107,7 @@ public class WorkController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
-    if (activityService.isFinished(userHero.getId())) {
+    /*if (activityService.isFinished(userHero.getId())) {
       Combatant[] combatants = activityService.fightStart(userHero.getId());
       activityService.huntPrize(combatants);
     }
@@ -114,7 +123,7 @@ public class WorkController {
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
     model.addAttribute("portraitHero", portraitHero);
-    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));*/
     return "game-sites/pve";
   }
 
