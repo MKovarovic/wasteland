@@ -11,99 +11,98 @@
     <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
         <div id="content">
 
-            <section id="stats">
-                <h1 th:text="${DTO.getCharacterName()}"></h1>
-                <table>
+            <div id="box">
+                <section class="combatant">
+                    <div id="alignmentLeft">
+                        <div th:insert="/fragments/character-card.html :: portrait(${portraitDTO}, ${DTO})"></div>
+                        <br>
+                        <h2 th:text="${DTO.getCharacterName()}"></h2>
+                        <table>
 
-                    <tr>
-                        <td>
-                            <p> Faction</p>
-                        </td>
-                        <td>
-                            <p th:text="${DTO.getFaction()}"></p>
-                        </td>
-                    <tr>
-                        <td>
-                            <p th:text="'⨁:' + ${DTO.getAtk()} + ' + ' + ${atkBonus}"></p>
-                        </td>
-                        <td>
-                            <p th:text="'𐃃:' + ${DTO.getDef()} + ' + ' + ${defBonus}"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p th:text="'🗡:' + ${DTO.getDmg()} + ' + ' + ${dmgBonus}"></p>
-                        </td>
-                        <td>
-                            <p th:text="'❤:' + ${DTO.getHp()} + ' + ' + ${hpBonus}"></p>
-                        </td>
-                    </tr>
+                            <tr>
+                                <td>
+                                    <p> Faction</p>
+                                </td>
+                                <td>
+                                    <p th:text="${DTO.getFaction()}"></p>
+                                </td>
+                            <tr>
+                                <td>
+                                    <p th:text="'⨁:' + ${DTO.getAtk()} + ' + ' + ${atkBonus}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="'𐃃:' + ${DTO.getDef()} + ' + ' + ${defBonus}"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p th:text="'🗡:' + ${DTO.getDmg()} + ' + ' + ${dmgBonus}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="'❤:' + ${DTO.getHp()} + ' + ' + ${hpBonus}"></p>
+                                </td>
+                            </tr>
 
 
-                    <tr>
-                        <td>
-                            <p>⯎</p>
-                        </td>
-                        <td>
-                            <p th:text="${DTO.getLck()}"></p>
-                        </td>
-                    </tr>
+                            <tr>
+                                <td>
+                                    <p>⯎</p>
+                                </td>
+                                <td>
+                                    <p th:text="${DTO.getLck()}"></p>
+                                </td>
+                            </tr>
 
-                </table>
+                        </table>
+                        <!--<div th:insert="/fragments/character-card.html :: combatStatistics(${DTO})"></div>-->
+                    </div>
+                </section>
+                <section class="combatant">
+                    <section id="inventory">
 
-                <section id="face">
-                    <img th:src="${portraitDTO.getHead()}" alt="">
-                    <img th:src="${portraitDTO.getEyes()}" alt="">
-                    <img th:src="${portraitDTO.getNose()}" alt="">
-                    <img th:src="${portraitDTO.getEyebrows()}" alt="">
-                    <img th:src="${portraitDTO.getHair()}" alt="">
-                    <img th:src="${portraitDTO.getMouth()}" alt="">
-                    <img th:src="${DTO.getFaction() == 'Raider' ? '/PortraitParts/Clothes_Raider.png' : '/PortraitParts/Clothes_Settler.png'}" alt="">
+                        <table>
+                            <tr>
+                                <th>Item</th>
+                                <th>ATK bonus</th>
+                                <th>DMG bonus</th>
+                                <th>DEF bonus</th>
+                                <th>HP bonus</th>
+                                <th>LCK bonus</th>
+                                <th>Equip?</th>
+
+                            </tr>
+                            <tr th:each="item: ${DTO.getInventory()}">
+
+                                <td>
+                                    <p th:text="${item.getName()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getAtkBonus()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getDmgBonus()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getDefBonus()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getHpBonus()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getLckBonus()}"></p>
+                                </td>
+
+                                <td>
+                                    <a th:href="'/character/me/equip?id=' + ${item.getId()}">(un)Equip</a>
+
+                                </td>
+
+                            </tr>
+                        </table>
+                    </section>
                 </section>
 
-            </section>
-
-            <section id="inventory">
-
-                <table>
-                    <tr>
-                        <th>Item</th>
-                        <th>ATK bonus</th>
-                        <th>DMG bonus</th>
-                        <th>DEF bonus</th>
-                        <th>HP bonus</th>
-                        <th>LCK bonus</th>
-                        <th>Equip?</th>
-
-                    </tr>
-                    <tr th:each="item: ${DTO.getInventory()}">
-
-                        <td>
-                            <p th:text="${item.getName()}"></p>
-                        </td>
-                        <td>
-                            <p th:text="${item.getAtkBonus()}"></p>
-                        </td>
-                        <td>
-                            <p th:text="${item.getDmgBonus()}"></p>
-                        </td>
-                        <td>
-                            <p th:text="${item.getDefBonus()}"></p>
-                        </td>
-                        <td>
-                            <p th:text="${item.getHpBonus()}"></p>
-                        </td>
-                        <td>
-                            <p th:text="${item.getLckBonus()}"></p>
-                        </td>
-
-                        <td>
-                            <button><a th:href="'/character/me/equip?id=' + ${item.getId()}">(un)Equip</a></button>
-                        </td>
-
-                    </tr>
-                </table>
-            </section>
+            </div>
         </div>
     </div>
 </div>

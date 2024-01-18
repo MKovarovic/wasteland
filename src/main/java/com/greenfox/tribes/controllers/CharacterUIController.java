@@ -108,7 +108,7 @@ public class CharacterUIController {
 
       PortraitDTO portraitDTO = portraitService.findPortrait(user.getPersona().getId());
       model.addAttribute("portraitDTO", portraitDTO);
-
+      model.addAttribute("faction", user.getPersona().getFaction());
       return "persona-sites/main-page";
     }
   }

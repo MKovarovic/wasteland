@@ -48,3 +48,17 @@
   height: 100%;
 }
 
+table{
+  width: 90%;
+  margin:10px;
+  text-align: center;
+
+
+}
+td { min-width: 50px;
+
+}
+
+td button{
+  margin-left:0px;
+}

@@ -3,7 +3,7 @@ package com.greenfox.tribes.dtos;
 import lombok.Data;
 
 @Data
-public class MonsterDTO {
+public class MonsterDTO extends CombatantDTO {
   private Long id;
   private String name;
   private int hp;

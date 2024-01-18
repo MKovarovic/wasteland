@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PersonaDTO {
+public class PersonaDTO extends CombatantDTO {
 
   private Long id;
 
   private String characterName;
   private String faction;
 
-  private Integer atk; // chance to hit
-  private Integer def; // chance to not be hit
-  private Integer dmg; // how much damage is dealt in case of hit
-  private Integer lck; // chance to crit, i.e. deal double damage
-  private Integer hp;
+  private int atk; // chance to hit
+  private int def; // chance to not be hit
+  private int dmg; // how much damage is dealt in case of hit
+  private int lck; // chance to crit, i.e. deal double damage
+  private int hp;
 
-  private Integer pullRing;
+  private int pullRing;
 
   private List<Equipment> inventory = new ArrayList<>();
   private List<Equipment> equipedItems = new ArrayList<>();

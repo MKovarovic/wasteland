@@ -82,6 +82,15 @@ public class ActivityService {
         activity.get().getPersona().getId());
   }
 
+  public Long timeRemaining(Long id) {
+    Optional<ActivityLog> activity = activityLogRepository.findActivityLogByPersonaId(id);
+    if (activity.isEmpty()) {
+      return null;
+    }
+    return (activity.get().getTimestamp() + (activity.get().getTime() * 60 * 1000)
+        - System.currentTimeMillis()) / 60000;
+  }
+
   public boolean isFinished(Long id) {
     Optional<ActivityLog> activity = activityLogRepository.findActivityLogByPersonaId(id);
     if (activity.isEmpty()) {
@@ -134,7 +143,7 @@ public class ActivityService {
                     .orElseThrow(() -> new IllegalArgumentException("Nobody on the other team")))
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
-    logActivity(ActivityType.PVE, attacker.getId());
+    logActivity(ActivityType.PVP, attacker.getId());
     activityLogRepository
         .findActivityLogByPersonaId(attacker.getId())
         .get()

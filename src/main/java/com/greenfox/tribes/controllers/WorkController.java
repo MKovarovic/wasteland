@@ -1,6 +1,7 @@
 package com.greenfox.tribes.controllers;
 
 import com.greenfox.tribes.dtos.ActivityDTO;
+import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
 import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.services.ActivityService;
@@ -8,6 +9,8 @@ import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.repositories.MonsterRepository;
 import com.greenfox.tribes.models.Persona;
+import com.greenfox.tribes.services.CharacterService;
+import com.greenfox.tribes.services.PortraitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class WorkController {
   @Autowired UserRepository userRepository;
   @Autowired ActivityService activityService;
-  @Autowired
-  MonsterRepository monsterRepository;
+  @Autowired MonsterRepository monsterRepository;
+  @Autowired CharacterService characterService;
+  @Autowired PortraitService portraitService;
 
   @GetMapping("/work")
   public String work(Model model) {
@@ -54,38 +58,31 @@ public class WorkController {
     }
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
-    if (dto != null) {
-      model.addAttribute(
-          "enemyName",
-          userRepository.findById(dto.getEnemyID()).get().getPersona().getCharacterName());
-      model.addAttribute(
-          "enemyATK", userRepository.findById(dto.getEnemyID()).get().getPersona().getAtk());
-      model.addAttribute(
-          "enemyHP", userRepository.findById(dto.getEnemyID()).get().getPersona().getHp());
-      model.addAttribute(
-          "enemyDMG", userRepository.findById(dto.getEnemyID()).get().getPersona().getDmg());
-      model.addAttribute(
-          "enemyDEF", userRepository.findById(dto.getEnemyID()).get().getPersona().getDef());
-      model.addAttribute(
-          "enemyLCK", userRepository.findById(dto.getEnemyID()).get().getPersona().getLck());
+    int noEnemy = 1;
 
-    } else {
-      model.addAttribute("enemyName", "????");
-      model.addAttribute("enemyATK", "????");
-      model.addAttribute("enemyHP", "????");
-      model.addAttribute("enemyDMG", "????");
-      model.addAttribute("enemyDEF", "????");
-      model.addAttribute("enemyLCK", "????");
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("faction", user.getPersona().getFaction());
+
+    if (dto != null) {
+      if (dto.getType().equals(ActivityType.PVP)) {
+        noEnemy = 0;
+        model.addAttribute(
+            "enemy",
+            characterService.readCharacter(
+                userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
+        model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
+
+        model.addAttribute("noEnemy", noEnemy);
+
+        PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+        model.addAttribute("portraitHero", portraitHero);
+        model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+
+        return "game-sites/pvp";
+      }
     }
 
-    model.addAttribute("Name", userHero.getCharacterName());
-    model.addAttribute("ATK", userHero.getAtk());
-    model.addAttribute("HP", userHero.getHp());
-    model.addAttribute("DMG", userHero.getDmg());
-    model.addAttribute("DEF", userHero.getDef());
-    model.addAttribute("LCK", userHero.getLck());
-
-    return "game-sites/pvp";
+    return "game-sites/pvp-welcome";
   }
 
   @GetMapping("/pvp/log")
@@ -105,32 +102,19 @@ public class WorkController {
       Combatant[] combatants = activityService.fightStart(userHero.getId());
       activityService.huntPrize(combatants);
     }
-
+    int noEnemy = 1;
     ActivityDTO dto = activityService.getActivity(userHero.getId());
     if (dto != null) {
-      model.addAttribute("enemyName", monsterRepository.findById(dto.getEnemyID()).get().getName());
-      model.addAttribute("enemyATK", monsterRepository.findById(dto.getEnemyID()).get().getAtk());
-      model.addAttribute("enemyHP", monsterRepository.findById(dto.getEnemyID()).get().getHp());
-      model.addAttribute("enemyDMG", monsterRepository.findById(dto.getEnemyID()).get().getDmg());
-      model.addAttribute("enemyDEF", monsterRepository.findById(dto.getEnemyID()).get().getDef());
-      model.addAttribute("enemyLCK", monsterRepository.findById(dto.getEnemyID()).get().getLck());
-
-    } else {
-      model.addAttribute("enemyName", "????");
-      model.addAttribute("enemyATK", "????");
-      model.addAttribute("enemyHP", "????");
-      model.addAttribute("enemyDMG", "????");
-      model.addAttribute("enemyDEF", "????");
-      model.addAttribute("enemyLCK", "????");
+      noEnemy = 0;
+      model.addAttribute("enemy", monsterRepository.findById(dto.getEnemyID()).get());
     }
 
-    model.addAttribute("Name", userHero.getCharacterName());
-    model.addAttribute("ATK", userHero.getAtk());
-    model.addAttribute("HP", userHero.getHp());
-    model.addAttribute("DMG", userHero.getDmg());
-    model.addAttribute("DEF", userHero.getDef());
-    model.addAttribute("LCK", userHero.getLck());
-
+    model.addAttribute("faction", user.getPersona().getFaction());
+    model.addAttribute("noEnemy", noEnemy);
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+    model.addAttribute("portraitHero", portraitHero);
+    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
     return "game-sites/pve";
   }
 
