@@ -117,7 +117,7 @@ public class ActivityController {
       type = dto.getType();
     }
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", user.getPersona().getFaction());
+
     int noEnemy = 1;
     if (dto != null) {
       if (dto.getType() == ActivityType.PVE) {
@@ -129,7 +129,7 @@ public class ActivityController {
           userHero.setIsBusy(false);
           activityService.deleteActivity(userHero.getId());
 
-          return "redirect:/character/me";
+          return "game-sites/pve-reward";
         }
         noEnemy = 0;
         model.addAttribute(
