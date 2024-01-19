@@ -225,6 +225,8 @@ public class ActivityService {
 
   public Combatant[] fightOutcome(Persona attacker, Combatant defender) {
     int doom = 0;
+    int initialHPAttacker = attacker.getHp();
+    int initialHPDefender = defender.getHp();
     Random rnd = new Random();
     while (attacker.getHp() > 0 && defender.getHp() > 0) {
       int attack = rnd.nextInt((int) attacker.getAtk());
@@ -261,6 +263,9 @@ public class ActivityService {
     Combatant[] result = new Combatant[2];
     result[0] = winner;
     result[1] = loser;
+
+    attacker.setHp(initialHPAttacker);
+    defender.setHp(initialHPDefender);
     return result;
   }
 
