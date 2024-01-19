@@ -284,6 +284,7 @@ public class ActivityService {
         }
         attacker.setHp(attacker.getHp() - defender.getDmg());
       }
+
     }
 
     CombatantDTO winner;

@@ -1,8 +1,10 @@
 package com.greenfox.tribes.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class CombatantDTO {
   private Long id;
   private String name;
