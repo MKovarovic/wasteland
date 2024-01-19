@@ -1,4 +1,3 @@
-/*
 package com.greenfox.tribes.services;
 
 import com.greenfox.tribes.dtos.CombatantDTO;
@@ -13,7 +12,7 @@ class ActivityServiceTest {
   ActivityService activityService;
 
   @Test
-  void fightOutcomeChances() {
+  void fightOutcomeChances() {/*
     int totalIterations = 10000; // Adjust the number of iterations based on your requirements
     Map<String, Integer> orderCount = new HashMap<>();
 
@@ -37,7 +36,6 @@ class ActivityServiceTest {
     // Implement based on your needs
     return new CombatantDTO(id, "test", 10, 30, 10, 16, 10, 100);
   }
-
+*/
   }
 }
-*/

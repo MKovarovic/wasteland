@@ -125,7 +125,8 @@ public class ActivityController {
       if (dto.getType() == ActivityType.PVE) {
         if (activityService.isFinished(userHero.getId())) {
           int pullrings = userHero.getPullRing();
-          activityService.huntPrize(activityService.fightStart(userHero.getId()));
+          Combatant[] combatants = activityService.fightStart(userHero.getId());
+          activityService.huntPrize(combatants);
           int reward = userHero.getPullRing() - pullrings;
           model.addAttribute("reward", reward);
           userHero.setIsBusy(false);

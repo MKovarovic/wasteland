@@ -112,7 +112,8 @@ public class ActivityService {
 
   public void getReward(Long id) {
     Persona initiator = userService.getLoggedUser().getPersona();
-    Persona persona = playerCharacters.findById(id).get();
+    Combatant persona = playerCharacters.findById(id).get();
+
     persona.setPullRing(
         persona.getPullRing()
             + activityLogRepository.findActivityLogByPersonaId(initiator.getId()).get().getPullRings());
