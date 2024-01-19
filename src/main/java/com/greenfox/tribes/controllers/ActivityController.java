@@ -9,6 +9,7 @@ import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.repositories.MonsterRepository;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.services.CharacterService;
+import com.greenfox.tribes.services.MonsterService;
 import com.greenfox.tribes.services.PortraitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,8 @@ public class ActivityController {
   @Autowired MonsterRepository monsterRepository;
   @Autowired CharacterService characterService;
   @Autowired PortraitService portraitService;
+  @Autowired
+  private MonsterService monsterService;
 
   @GetMapping("/work")
   public String work(Model model) {
@@ -66,7 +69,6 @@ public class ActivityController {
           int pullrings = userHero.getPullRing();
           activityService.arenaPrize(activityService.fightStart(userHero.getId()));
           int reward = userHero.getPullRing() - pullrings;
-          System.out.println(reward);
           model.addAttribute("reward", reward);
           userHero.setIsBusy(false);
           activityService.deleteActivity(userHero.getId());
@@ -107,6 +109,45 @@ public class ActivityController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
+
+
+    ActivityDTO dto = activityService.getActivity(userHero.getId());
+    ActivityType type;
+    if (dto != null && dto.getType() != null) {
+      type = dto.getType();
+    }
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+
+    int noEnemy = 1;
+    if (dto != null) {
+      if (dto.getType() == ActivityType.PVE) {
+        if (activityService.isFinished(userHero.getId())) {
+          int pullrings = userHero.getPullRing();
+          activityService.huntPrize(activityService.fightStart(userHero.getId()));
+          int reward = userHero.getPullRing() - pullrings;
+          model.addAttribute("reward", reward);
+          userHero.setIsBusy(false);
+          activityService.deleteActivity(userHero.getId());
+
+          return "game-sites/pve-reward";
+        }
+        noEnemy = 0;
+        model.addAttribute(
+                "enemy",monsterService.findMonster(dto.getEnemyID()));
+        //model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
+
+        model.addAttribute("noEnemy", noEnemy);
+
+        PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+        model.addAttribute("portraitHero", portraitHero);
+        model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+
+        return "game-sites/pve";
+      }
+      return "redirect:/character/me";
+    }
+
+    return "game-sites/pve-welcome";
     /*if (activityService.isFinished(userHero.getId())) {
       Combatant[] combatants = activityService.fightStart(userHero.getId());
       activityService.huntPrize(combatants);
@@ -124,7 +165,7 @@ public class ActivityController {
     PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
     model.addAttribute("portraitHero", portraitHero);
     model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));*/
-    return "game-sites/pve";
+
   }
 
   @GetMapping("/pve/log")

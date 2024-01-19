@@ -258,7 +258,7 @@ public class ActivityService {
       loser = defender;
     }
 
-    Combatant[] result = new Persona[2];
+    Combatant[] result = new Combatant[2];
     result[0] = winner;
     result[1] = loser;
     return result;

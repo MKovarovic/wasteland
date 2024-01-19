@@ -21,8 +21,6 @@
                     <h2> HUNT IN PROGRESS</h2>
                     <h4 th:text="${minutes + ' minute(s) remaining'}"></h4>
 
-                    <a th:text="${faction == 'Raider'}? 'Go Raiding' : 'Collect Bounty'"
-                       th:href="'/activity/pvp/log'" class="button"></a>
                 </section>
 
                 <div th:if="${noEnemy == 0}">
