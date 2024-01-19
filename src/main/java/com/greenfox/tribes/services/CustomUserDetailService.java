@@ -6,6 +6,8 @@ import com.greenfox.tribes.repositories.UserRepository;
 import java.util.Optional;
 import java.util.Set;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,5 +42,11 @@ public class CustomUserDetailService implements UserDetailsService {
     user.setPassword(passwordEncoder.encode(password));
 
     userRepository.save(user);
+  }
+
+  public WastelandUser getLoggedUser() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    return user;
   }
 }

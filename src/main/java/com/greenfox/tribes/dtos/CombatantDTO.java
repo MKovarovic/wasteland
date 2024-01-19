@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CombatantDTO {
+  private Long id;
   private String name;
   private int hp;
   private int atk;

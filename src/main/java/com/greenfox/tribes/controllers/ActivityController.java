@@ -3,6 +3,7 @@ package com.greenfox.tribes.controllers;
 import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
+import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.services.ActivityService;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
@@ -67,7 +68,8 @@ public class ActivityController {
       if (dto.getType() == ActivityType.PVP) {
         if (activityService.isFinished(userHero.getId())) {
           int pullrings = userHero.getPullRing();
-          activityService.arenaPrize(activityService.fightStart(userHero.getId()));
+          Combatant[] combatants = activityService.fightStart(userHero.getId());
+          activityService.arenaPrize(combatants);
           int reward = userHero.getPullRing() - pullrings;
           model.addAttribute("reward", reward);
           userHero.setIsBusy(false);
