@@ -175,10 +175,10 @@ public class ActivityService {
   // COMBAT RESOLUTION
 
   public Combatant[] fightStart(Long id) {
-    Persona attacker =
+    Persona attacker = equipGladiator(
         playerCharacters
             .findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+            .orElseThrow(() -> new IllegalArgumentException("No such persona")).getId());
     Combatant defender = new Combatant();
     if (activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().getType()
         == ActivityType.PVP) {
