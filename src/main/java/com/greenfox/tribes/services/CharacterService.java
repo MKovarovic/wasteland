@@ -6,20 +6,22 @@ import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.repositories.PersonaRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@AllArgsConstructor
 public class CharacterService {
 
-  @Autowired
   PersonaRepository playerCharacters;
-  @Autowired
   CharacterEquipmentRepository pairingRepo;
 
   public void addCharacter(PersonaDTO dto) {
@@ -37,6 +39,9 @@ public class CharacterService {
 
   public Persona addCharacter(
       String name, int hp, int atk, int dmg, int def, int lck, String faction, int gold) {
+    if (hp + atk + dmg + def + lck != 100) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
     Persona character = new Persona();
     character.setCharacterName(name);
     character.setHp(hp);
