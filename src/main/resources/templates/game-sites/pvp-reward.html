@@ -14,7 +14,7 @@
                 <div id="text">
                     <h2 th:if="${faction == 'Raider'}">Raiding</h2>
                     <h2 th:if="${faction == 'Settler'}">Bounty hunting</h2>
-                    <div th:if="${isBusy != true}">
+                    <!--<div th:if="${isBusy != true}">-->
 
                         <i>
                         <p th:text="${faction == 'Raider'} ? 'That was FUN! Here is your share.' : 'Good job! Here is your bounty.'"></p>
@@ -24,7 +24,7 @@
 
                         <a th:text="${faction == 'Raider'}? 'Take your share' : 'Take the reward'"
                            th:href="'/activity/pvp'" class="button"></a>
-                    </div>
+                    <!--</div>-->
                 </div>
 
                 <div id=picture>

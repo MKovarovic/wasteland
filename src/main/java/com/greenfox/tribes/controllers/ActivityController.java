@@ -56,50 +56,77 @@ public class ActivityController {
   // todo: way too long for a single controller method, try to make shorter
   @GetMapping("/pvp")
   public String pvp(Model model) {
+
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
-    ActivityType type;
+    ActivityType type = null;
     if (dto != null && dto.getType() != null) {
       type = dto.getType();
     }
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", user.getPersona().getFaction());
-    model.addAttribute("isBusy", !activityService.isFinished(user.getPersona().getId()));
-    int noEnemy = 1;
-    if (dto != null) {
-      if (dto.getType() == ActivityType.PVP) {
-        if (activityService.isFinished(userHero.getId())) {
-          int pullrings = userHero.getPullRing();
-          Combatant[] combatants = activityService.fightStart(userHero.getId());
-          activityService.arenaPrize(combatants);
-          int reward = userHero.getPullRing() - pullrings;
-          model.addAttribute("reward", reward);
-          activityService.deleteActivity(userHero.getId());
 
-          return "game-sites/pvp-reward";
-        }
-        noEnemy = 0;
-        model.addAttribute(
-            "enemy",
-            characterService.readCharacter(
-                userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
-        model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
+    if (type == null) {
+      return "redirect:/activity/pvp/welcome?id=" + userHero.getId();
+    } else if (type == ActivityType.PVP) {
 
-        model.addAttribute("noEnemy", noEnemy);
-
-        PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
-        model.addAttribute("portraitHero", portraitHero);
-        model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
-        // todo: instead of showing different pages from the same endpoint, redirect to a new endpoint
-        return "game-sites/pvp";
+      if (activityService.isFinished(userHero.getId())) {
+        return "redirect:/activity/pvp/reward?id=" + userHero.getId();
       }
-      return "redirect:/character/me";
+      return "redirect:/activity/pvp/fight?id=" + userHero.getId();
     }
+    return "redirect:/activity/notHere";
+  }
+
+  @GetMapping("/pvp/welcome")
+  public String pvpWelcome(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("faction", userHero.getFaction());
+    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
 
     return "game-sites/pvp-welcome";
+  }
+
+  @GetMapping("/pvp/reward")
+  public String pvpReward(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("faction", userHero.getFaction());
+    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+
+    int pullrings = userHero.getPullRing();
+    Combatant[] combatants = activityService.fightStart(userHero.getId());
+    activityService.arenaPrize(combatants);
+    int reward = userHero.getPullRing() - pullrings;
+    model.addAttribute("reward", reward);
+    activityService.deleteActivity(userHero.getId());
+
+    return "game-sites/pvp-reward";
+  }
+
+  @GetMapping("/pvp/fight")
+  public String pvpFight(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("faction", userHero.getFaction());
+    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+
+    ActivityDTO dto = activityService.getActivity(id);
+
+    model.addAttribute(
+        "enemy",
+        characterService.readCharacter(dto.getEnemyID()));
+    model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
+
+    PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+    model.addAttribute("portraitHero", portraitHero);
+    if(activityService.timeRemaining(userHero.getId())<1){
+      return "redirect:/activity/pvp/reward?id=" + userHero.getId();
+    }
+    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+    return "game-sites/pvp";
   }
 
   @GetMapping("/pvp/log")
