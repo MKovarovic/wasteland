@@ -94,7 +94,7 @@ public class ActivityController {
     Persona userHero = userRepository.findById(id).get().getPersona();
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     model.addAttribute("faction", userHero.getFaction());
-    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+    model.addAttribute("isBusy", !activityService.isFinished(userHero.getId()));
 
     int pullrings = userHero.getPullRing();
     Combatant[] combatants = activityService.fightStart(userHero.getId());
@@ -145,60 +145,71 @@ public class ActivityController {
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
-    ActivityType type;
+    ActivityType type = null;
     if (dto != null && dto.getType() != null) {
       type = dto.getType();
     }
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("isBusy", !activityService.isFinished(user.getPersona().getId()));
-    int noEnemy = 1;
-    if (dto != null) {
-      if (dto.getType() == ActivityType.PVE) {
-        if (activityService.isFinished(userHero.getId())) {
-          int pullrings = userHero.getPullRing();
-          Combatant[] combatants = activityService.fightStart(userHero.getId());
-          activityService.huntPrize(combatants);
-          int reward = userHero.getPullRing() - pullrings;
-          model.addAttribute("reward", reward);
-          activityService.deleteActivity(userHero.getId());
 
-          return "game-sites/pve-reward";
-        }
-        noEnemy = 0;
-        model.addAttribute("enemy", monsterService.findMonster(dto.getEnemyID()));
-        // model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
+    if (type == null) {
+      return "redirect:/activity/pve/welcome?id=" + userHero.getId();
+    } else if (type == ActivityType.PVE) {
 
-        model.addAttribute("noEnemy", noEnemy);
-
-        PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
-        model.addAttribute("portraitHero", portraitHero);
-        model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
-
-        return "game-sites/pve";
+      if (activityService.isFinished(userHero.getId())) {
+        return "redirect:/activity/pve/reward?id=" + userHero.getId();
       }
-      return "redirect:/character/me";
-    }
+      return "redirect:/activity/pve/fight?id=" + userHero.getId();
+    } else {
+      return "redirect:/activity/notHere";
+}
+  }
+
+  @GetMapping("/pve/welcome")
+  public String pveWelcome(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
 
     return "game-sites/pve-welcome";
-    /*if (activityService.isFinished(userHero.getId())) {
-      Combatant[] combatants = activityService.fightStart(userHero.getId());
-      activityService.huntPrize(combatants);
-    }
-    int noEnemy = 1;
-    ActivityDTO dto = activityService.getActivity(userHero.getId());
-    if (dto != null) {
-      noEnemy = 0;
-      model.addAttribute("enemy", monsterRepository.findById(dto.getEnemyID()).get());
-    }
+  }
 
-    model.addAttribute("faction", user.getPersona().getFaction());
-    model.addAttribute("noEnemy", noEnemy);
+  @GetMapping("/pve/reward")
+  public String pveReward(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("faction", userHero.getFaction());
+    model.addAttribute("isBusy", !activityService.isFinished(userHero.getId()));
+
+    int pullrings = userHero.getPullRing();
+    Combatant[] combatants = activityService.fightStart(userHero.getId());
+    activityService.huntPrize(combatants);
+    int reward = userHero.getPullRing() - pullrings;
+    model.addAttribute("reward", reward);
+    activityService.deleteActivity(userHero.getId());
+
+    return "game-sites/pve-reward";
+  }
+
+  @GetMapping("/pve/fight")
+  public String pveFight(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+
+    ActivityDTO dto = activityService.getActivity(id);
+
+    model.addAttribute("enemy", monsterService.findMonster(dto.getEnemyID()));
+
     PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
     model.addAttribute("portraitHero", portraitHero);
-    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));*/
-
+    if(activityService.timeRemaining(userHero.getId())<1){
+      return "redirect:/activity/pve/reward?id=" + userHero.getId();
+    }
+    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+    return "game-sites/pve";
   }
+
+
+
 
   @GetMapping("/pve/log")
   public String logPve() {
