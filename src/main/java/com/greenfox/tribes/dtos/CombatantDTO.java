@@ -1,6 +1,5 @@
 package com.greenfox.tribes.dtos;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

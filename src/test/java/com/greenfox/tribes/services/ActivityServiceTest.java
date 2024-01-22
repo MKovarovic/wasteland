@@ -1,13 +1,9 @@
 package com.greenfox.tribes.services;
 
-import com.greenfox.tribes.dtos.CombatantDTO;
-import com.greenfox.tribes.dtos.PersonaDTO;
+
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 class ActivityServiceTest {
   ActivityService activityService;
 

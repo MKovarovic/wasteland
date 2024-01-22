@@ -110,14 +110,16 @@ public class ActivityService {
         >= activity.get().getTimestamp() + ((long) activity.get().getTime() * 60 * 1000);
   }
 
-
   public void getReward(Long id) {
     Persona initiator = userService.getLoggedUser().getPersona();
     Combatant persona = playerCharacters.findById(id).get();
 
     persona.setPullRing(
         persona.getPullRing()
-            + activityLogRepository.findActivityLogByPersonaId(initiator.getId()).get().getPullRings());
+            + activityLogRepository
+                .findActivityLogByPersonaId(initiator.getId())
+                .get()
+                .getPullRings());
     if (activityLogRepository.findActivityLogByPersonaId(initiator.getId()).get().getGivesItem()) {
       Random rnd = new Random();
       int item = rnd.nextInt((int) equipmentRepository.count());
@@ -184,49 +186,38 @@ public class ActivityService {
   public Combatant[] fightStart(Long id) {
     PersonaDTO attacker = equipGladiator(id);
     CombatantDTO defender = new CombatantDTO();
-    if (activityLogRepository.findActivityLogByPersonaId(id).get().getType()
-        == ActivityType.PVP) {
+    if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVP) {
       defender =
-          equipGladiator(
-              activityLogRepository
-                  .findActivityLogByPersonaId(id)
-                  .get()
-                  .getEnemyID());
+          equipGladiator(activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID());
     } else if (activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().getType()
         == ActivityType.PVE) {
       defender =
-          monsterService
-              .findMonster(
-                  activityLogRepository
-                      .findActivityLogByPersonaId(id)
-                      .get()
-                      .getEnemyID());
+          monsterService.findMonster(
+              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID());
     }
 
     CombatantDTO[] combatants = fightOutcome(attacker, defender);
 
-    Combatant attackerCombatant = playerCharacters
+    Combatant attackerCombatant =
+        playerCharacters
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     Combatant defenderCombatant = new Combatant();
-    if(activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVP) {
-      defenderCombatant = playerCharacters
-              .findById(activityLogRepository
-                      .findActivityLogByPersonaId(id)
-                      .get()
-                      .getEnemyID())
+    if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVP) {
+      defenderCombatant =
+          playerCharacters
+              .findById(activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID())
               .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    } else if(activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVE) {
-      defenderCombatant = monsterRepository
-              .findById(activityLogRepository
-                      .findActivityLogByPersonaId(id)
-                      .get()
-                      .getEnemyID())
+    } else if (activityLogRepository.findActivityLogByPersonaId(id).get().getType()
+        == ActivityType.PVE) {
+      defenderCombatant =
+          monsterRepository
+              .findById(activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID())
               .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     }
 
     Combatant[] result = new Combatant[2];
-    if(Objects.equals(combatants[0].getId(), id)) {
+    if (Objects.equals(combatants[0].getId(), id)) {
       result[0] = attackerCombatant;
       result[1] = defenderCombatant;
     } else {
@@ -283,7 +274,6 @@ public class ActivityService {
         }
         attacker.setHp(attacker.getHp() - defender.getDmg());
       }
-
     }
 
     CombatantDTO winner;
