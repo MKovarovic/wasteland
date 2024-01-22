@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/activity")
 public class ActivityController {
+  // todo: autowired
   @Autowired UserRepository userRepository;
   @Autowired ActivityService activityService;
   @Autowired MonsterRepository monsterRepository;
@@ -53,6 +54,7 @@ public class ActivityController {
     return "redirect:/activity/work";
   }
 
+  // todo: way too long for a single controller method, try to make shorter
   @GetMapping("/pvp")
   public String pvp(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -92,7 +94,7 @@ public class ActivityController {
         PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
         model.addAttribute("portraitHero", portraitHero);
         model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
-
+        // todo: instead of showing different pages from the same endpoint, redirect to a new endpoint
         return "game-sites/pvp";
       }
       return "redirect:/character/me";
@@ -109,6 +111,7 @@ public class ActivityController {
     return "redirect:/activity/pvp";
   }
 
+  // todo: try to make it shorter
   @GetMapping("/pve")
   public String pve(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();

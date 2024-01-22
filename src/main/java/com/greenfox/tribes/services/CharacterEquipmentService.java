@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+// todo: delete this
 @Service
 public class CharacterEquipmentService {
   @Autowired

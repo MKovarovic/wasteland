@@ -28,6 +28,7 @@ import java.util.Random;
 @AllArgsConstructor
 public class ActivityService {
   private ActivityLogRepository activityLogRepository;
+  // todo: remove autowired
   @Autowired UserRepository userRepository;
   @Autowired CustomUserDetailService userService;
   @Autowired CharacterService characterService;
@@ -37,6 +38,7 @@ public class ActivityService {
   @Autowired private CharacterEquipmentRepository pairingRepo;
   @Autowired private MonsterService monsterService;
 
+  // todo: try to split this into three methods
   public void logActivity(ActivityType type, Long personaId) {
     ActivityLog activity = new ActivityLog();
     activity.setType(type);
@@ -80,6 +82,7 @@ public class ActivityService {
       return null;
     }
 
+    // todo: add constructor that creates dto from Activity
     return new ActivityDTO(
         activity.get().getType(),
         activity.get().getTimestamp(),
@@ -139,10 +142,13 @@ public class ActivityService {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     if (attacker.getFaction().equals("Raider")) {
+      // todo: use enum instead of string
       faction = "Settler";
     } else {
       faction = "Raider";
     }
+
+    // todo: make a methods findRandomEnemy to split this into smaller chunks
     Persona defender =
         playerCharacters
             .findById(
@@ -150,6 +156,7 @@ public class ActivityService {
                     .findRandomIdByFaction(faction)
                     .orElseThrow(() -> new IllegalArgumentException("Nobody on the other team")))
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    // -----------
 
     logActivity(ActivityType.PVP, attacker.getId());
     activityLogRepository
@@ -165,6 +172,8 @@ public class ActivityService {
         playerCharacters
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+
+    // todo: add method findRandomMonster
     Monster defender =
         monsterRepository
             .findById(
@@ -172,17 +181,18 @@ public class ActivityService {
                     .findRandomMonsterId()
                     .orElseThrow(() -> new IllegalArgumentException("No such Monster")))
             .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
+    // todo: make method that does all of this
+    // it can be logActivityPVE()
     logActivity(ActivityType.PVE, attacker.getId());
-    activityLogRepository
-        .findActivityLogByPersonaId(attacker.getId())
-        .get()
-        .setEnemyID(defender.getId());
-    activityLogRepository.save(
-        activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get());
+    ActivityLog activityLog =
+        activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get();
+    activityLog.setEnemyID(defender.getId());
+    activityLogRepository.save(activityLog);
   }
 
   // COMBAT RESOLUTION
 
+  // todo: use pair
   public Combatant[] fightStart(Long id) {
     PersonaDTO attacker = equipGladiator(id);
     CombatantDTO defender = new CombatantDTO();
