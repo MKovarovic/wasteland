@@ -3,6 +3,7 @@ package com.greenfox.tribes.controllers;
 import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
+import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.services.ActivityService;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
@@ -28,14 +29,17 @@ public class ActivityController {
   @Autowired MonsterRepository monsterRepository;
   @Autowired CharacterService characterService;
   @Autowired PortraitService portraitService;
-  @Autowired
-  private MonsterService monsterService;
+  @Autowired private MonsterService monsterService;
 
   @GetMapping("/work")
   public String work(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    activityService.isFinished(user.getPersona().getId());
+    if (activityService.isFinished(user.getPersona().getId())) {
+      user.getPersona().setIsBusy(false);
+      activityService.deleteActivity(user.getPersona().getId());
+    }
+
     model.addAttribute("name", user.getPersona().getCharacterName());
     model.addAttribute("faction", user.getPersona().getFaction());
     model.addAttribute("isBusy", user.getPersona().getIsBusy());
@@ -67,7 +71,8 @@ public class ActivityController {
       if (dto.getType() == ActivityType.PVP) {
         if (activityService.isFinished(userHero.getId())) {
           int pullrings = userHero.getPullRing();
-          activityService.arenaPrize(activityService.fightStart(userHero.getId()));
+          Combatant[] combatants = activityService.fightStart(userHero.getId());
+          activityService.arenaPrize(combatants);
           int reward = userHero.getPullRing() - pullrings;
           model.addAttribute("reward", reward);
           userHero.setIsBusy(false);
@@ -110,7 +115,6 @@ public class ActivityController {
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
 
-
     ActivityDTO dto = activityService.getActivity(userHero.getId());
     ActivityType type;
     if (dto != null && dto.getType() != null) {
@@ -123,7 +127,8 @@ public class ActivityController {
       if (dto.getType() == ActivityType.PVE) {
         if (activityService.isFinished(userHero.getId())) {
           int pullrings = userHero.getPullRing();
-          activityService.huntPrize(activityService.fightStart(userHero.getId()));
+          Combatant[] combatants = activityService.fightStart(userHero.getId());
+          activityService.huntPrize(combatants);
           int reward = userHero.getPullRing() - pullrings;
           model.addAttribute("reward", reward);
           userHero.setIsBusy(false);
@@ -132,9 +137,8 @@ public class ActivityController {
           return "game-sites/pve-reward";
         }
         noEnemy = 0;
-        model.addAttribute(
-                "enemy",monsterService.findMonster(dto.getEnemyID()));
-        //model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
+        model.addAttribute("enemy", monsterService.findMonster(dto.getEnemyID()));
+        // model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
 
         model.addAttribute("noEnemy", noEnemy);
 
