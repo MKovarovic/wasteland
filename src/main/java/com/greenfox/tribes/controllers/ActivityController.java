@@ -37,13 +37,12 @@ public class ActivityController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     if (activityService.isFinished(user.getPersona().getId())) {
-      user.getPersona().setIsBusy(false);
       activityService.deleteActivity(user.getPersona().getId());
     }
 
     model.addAttribute("name", user.getPersona().getCharacterName());
     model.addAttribute("faction", user.getPersona().getFaction());
-    model.addAttribute("isBusy", user.getPersona().getIsBusy());
+    model.addAttribute("isBusy", !activityService.isFinished(user.getPersona().getId()));
     model.addAttribute("id", user.getPersona().getId());
     return "game-sites/work";
   }
@@ -68,6 +67,7 @@ public class ActivityController {
     }
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     model.addAttribute("faction", user.getPersona().getFaction());
+    model.addAttribute("isBusy", !activityService.isFinished(user.getPersona().getId()));
     int noEnemy = 1;
     if (dto != null) {
       if (dto.getType() == ActivityType.PVP) {
@@ -77,7 +77,6 @@ public class ActivityController {
           activityService.arenaPrize(combatants);
           int reward = userHero.getPullRing() - pullrings;
           model.addAttribute("reward", reward);
-          userHero.setIsBusy(false);
           activityService.deleteActivity(userHero.getId());
 
           return "game-sites/pvp-reward";
@@ -124,7 +123,7 @@ public class ActivityController {
       type = dto.getType();
     }
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-
+    model.addAttribute("isBusy", !activityService.isFinished(user.getPersona().getId()));
     int noEnemy = 1;
     if (dto != null) {
       if (dto.getType() == ActivityType.PVE) {
@@ -134,7 +133,6 @@ public class ActivityController {
           activityService.huntPrize(combatants);
           int reward = userHero.getPullRing() - pullrings;
           model.addAttribute("reward", reward);
-          userHero.setIsBusy(false);
           activityService.deleteActivity(userHero.getId());
 
           return "game-sites/pve-reward";

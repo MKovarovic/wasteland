@@ -50,7 +50,6 @@ public class Persona extends Combatant {
   Portrait portrait;
 
   // TECHNICAL STUFF
-  // todo: remove isBusy and use ActivityService.isFinished() instead
-  private Boolean isBusy;
+
   Boolean isPremium = false;
 }

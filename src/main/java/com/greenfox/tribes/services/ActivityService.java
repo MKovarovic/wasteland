@@ -66,7 +66,6 @@ public class ActivityService {
         playerCharacters
             .findById(personaId)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    persona.setIsBusy(true);
     activity.setPersona(persona);
     activityLogRepository.save(activity);
   }
