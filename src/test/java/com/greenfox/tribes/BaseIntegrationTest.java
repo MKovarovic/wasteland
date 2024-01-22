@@ -31,7 +31,7 @@ public class BaseIntegrationTest extends BaseTest {
     equipmentService.newItem("Rusty Sword", "Weapon", 10, 5, 0, 0, 0, 1);
     equipmentService.newItem("Wooden Shield", "Shield", 0, 0, 15, 0, 0, 5);
     equipmentService.newItem("Hard hat", "Helmet", 0, 0, 0, 0, 5, 0);
-    characterService.addCharacter("MaidBot3000", 20, 30, 5, 80, 1, "Bots", 10);
+    characterService.addCharacter("MaidBot3000", 20, 30, 10, 30, 10, "Bots", 10);
     CharacterEquipment pair = new CharacterEquipment();
     pair.setPair(characterService.returnCharacter(1L), equipmentService.returnItem(1L));
     pairingRepo.save(pair);

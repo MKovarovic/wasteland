@@ -82,7 +82,28 @@ function set(id, value) {
 
 function recalculate() {
     let total = 0;
-    for (const input of document.querySelectorAll(".abilityBuy")) total += Number(input.value) - Number(input.min);
+    const inputs = document.querySelectorAll(".abilityBuy");
+
+    // Calculate the total sum of all ability values
+    for (const input of inputs) {
+        total += Number(input.value);
+    }
+
+    // If the total exceeds 100, adjust the value of the current input field
+    if (total > 100) {
+        // Find the input field that caused the total to exceed 100
+        const eventInput = event.target;
+        // Calculate the excess amount
+        let excess = total - 100;
+        // Adjust the value of the current input field
+        eventInput.value = Number(eventInput.value) - excess;
+    }
+
+    // Update the display of remaining points
+    total = 0; // Recalculate total since it might have changed
+    for (const input of inputs) {
+        total += Number(input.value);
+    }
     set("points", 100 - total);
 }
 

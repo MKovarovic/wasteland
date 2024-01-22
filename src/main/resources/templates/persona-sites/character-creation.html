@@ -11,77 +11,88 @@
     <div th:insert="/fragments/structure.html :: siteForm2(~{::#content})">
         <div id="content">
             <section id="creationBox">
-            <form id="characterSheet">
-                <div>
-                    <h3> Name</h3>
-                    <input type="text" id="nick" name="characterName"
-                           placeholder="Choose your name" required minlength="3" maxlength="20">
+                <form id="characterSheet" onsubmit="return validateCharacterCreation()">
+                    <div>
+                        <h3> Name</h3>
+                        <input type="text" id="nick" name="characterName"
+                               placeholder="Choose your name" required minlength="3" maxlength="20">
 
-                    <h3> Faction</h3>
-                    <input type="radio" id="settler" name="faction" value="Settler">
-                    <label for="settler">Settler</label><br>
+                        <h3> Faction</h3>
+                        <input type="radio" id="settler" name="faction" value="Settler" required>
+                        <label for="settler">Settler</label><br>
 
-                    <input type="radio" id="raider" name="faction" value="Raider">
-                    <label for="raider">Raider</label><br>
+                        <input type="radio" id="raider" name="faction" value="Raider">
+                        <label for="raider">Raider</label><br>
 
-                    <h3> Statistics</h3>
+                        <h3> Statistics</h3>
 
-                    remaining points:
-                    <output id="points">---</output>
-                    <br/>
-                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="atk"
-                           name="atk"/>Attack<br/>
-                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="dmg"
-                           name="dmg"/>Damage<br/>
-                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="def"
-                           name="def"/>Defense<br/>
-                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="hp"
-                           name="hp"/>Hit Points<br/>
-                    <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50" id="lck"
-                           name="lck"/>Luck<br/>
+                        remaining points:
+                        <output id="points">---</output>
+                        <br/>
+                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
+                               id="atk"
+                               name="atk"/>Attack<br/>
+                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
+                               id="dmg"
+                               name="dmg"/>Damage<br/>
+                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
+                               id="def"
+                               name="def"/>Defense<br/>
+                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
+                               id="hp"
+                               name="hp"/>Hit Points<br/>
+                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
+                               id="lck"
+                               name="lck"/>Luck<br/>
 
-                </div>
+                    </div>
 
-                <input id = "faceSave" type="text" name="faceImg" value="/PortraitParts/Face01.png" hidden="hidden"><br>
-                <input id = "eyeSave" type="text" name="eyeImg" value="/PortraitParts/Eye01.png" hidden="hidden"><br>
-                <input id = "noseSave" type="text" name="noseImg" value="/PortraitParts/Nose01.png" hidden="hidden"><br>
-                <input id = "mouthSave" type="text" name="mouthImg" value="/PortraitParts/Mouth01.png" hidden="hidden"><br>
-                <input id = "hairSave" type="text" name="hairImg" value="/PortraitParts/Hair01.png" hidden="hidden"><br>
-                <input id = "eyebrowsSave" type="text" name="eyebrowsImg" value="/PortraitParts/EyeBrow01.png" hidden="hidden"><br>
+                    <input id="faceSave" type="text" name="faceImg" value="/PortraitParts/Face01.png"
+                           hidden="hidden"><br>
+                    <input id="eyeSave" type="text" name="eyeImg" value="/PortraitParts/Eye01.png" hidden="hidden"><br>
+                    <input id="noseSave" type="text" name="noseImg" value="/PortraitParts/Nose01.png"
+                           hidden="hidden"><br>
+                    <input id="mouthSave" type="text" name="mouthImg" value="/PortraitParts/Mouth01.png"
+                           hidden="hidden"><br>
+                    <input id="hairSave" type="text" name="hairImg" value="/PortraitParts/Hair01.png"
+                           hidden="hidden"><br>
+                    <input id="eyebrowsSave" type="text" name="eyebrowsImg" value="/PortraitParts/EyeBrow01.png"
+                           hidden="hidden"><br>
 
 
+                </form>
 
-            </form>
+                <h3> Face</h3>
+                <section id="DressUP">
 
-            <h3> Face</h3>
-            <section id="DressUP">
+                    <section id="face">
+                        <img id="faceImg" src="/PortraitParts/Face01.png" alt="">
+                        <img id="eyeImg" src="/PortraitParts/Eye01.png" alt="">
+                        <img id="eyebrowsImg" src="/PortraitParts/EyeBrow01.png" alt="">
+                        <img id="noseImg" src="/PortraitParts/Nose01.png" alt="">
+                        <img id="mouthImg" src="/PortraitParts/Mouth01.png" alt="">
+                        <img id="hairImg" src="/PortraitParts/Hair01.png" alt="">
+                        <img id="clothesImg" src="/PortraitParts/Clothes_Settler.png" alt="">
+                    </section>
+                    <div id="faceButtons">
+                        <button type="button" onclick="nextFace()">Head</button>
+                        <button type="button" onclick="nextHair()">Hair</button>
+                        <button type="button" onclick="nextEyebrows()">Eyebrows</button>
+                        <button type="button" onclick="nextEyes()">Eyes</button>
+                        <button type="button" onclick="nextNose()">Nose</button>
+                        <button type="button" onclick="nextMouth()">Mouth</button>
+                    </div>
 
-                <section id="face">
-                    <img id="faceImg" src="/PortraitParts/Face01.png" alt="">
-                    <img id="eyeImg" src="/PortraitParts/Eye01.png" alt="">
-                    <img id="eyebrowsImg" src="/PortraitParts/EyeBrow01.png" alt="">
-                    <img id="noseImg" src="/PortraitParts/Nose01.png" alt="">
-                    <img id="mouthImg" src="/PortraitParts/Mouth01.png" alt="">
-                    <img id="hairImg" src="/PortraitParts/Hair01.png" alt="">
-                    <img id="clothesImg" src="/PortraitParts/Clothes_Settler.png" alt="">
+
+                    <button type="submit" form="characterSheet" formaction="/character/new/create" formmethod="get"> Send
+                    </button>
+                    -->
                 </section>
-                <div id="faceButtons">
-                    <button type="button" onclick="nextFace()">Head</button>
-                    <button type="button" onclick="nextHair()">Hair</button>
-                    <button type="button" onclick="nextEyebrows()">Eyebrows</button>
-                    <button type="button" onclick="nextEyes()">Eyes</button>
-                    <button type="button" onclick="nextNose()">Nose</button>
-                    <button type="button" onclick="nextMouth()">Mouth</button>
-                </div>
-
-
-                <button type="submit" form="characterSheet" formaction="/character/new/create" formmethod="get"> Send </button>
--->
-            </section>
 
             </section>
 
             <script src="/PointBuy.js"></script>
+            <script src="/FormValidation.js"></script>
         </div>
     </div>
 </div>
