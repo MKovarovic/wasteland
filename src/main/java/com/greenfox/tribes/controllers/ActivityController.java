@@ -53,7 +53,7 @@ public class ActivityController {
     return "redirect:/activity/work";
   }
 
-  // todo: way too long for a single controller method, try to make shorter
+
   @GetMapping("/pvp")
   public String pvp(Model model) {
 
@@ -137,7 +137,7 @@ public class ActivityController {
     return "redirect:/activity/pvp";
   }
 
-  // todo: try to make it shorter
+
   @GetMapping("/pve")
   public String pve(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();

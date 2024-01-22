@@ -80,16 +80,23 @@ public class ActivityService {
     if (activity.isEmpty()) {
       return null;
     }
+    return makeDTO(activity.get().getId());
 
     // todo: add constructor that creates dto from Activity
+
+  }
+
+  public ActivityDTO makeDTO(Long id){
+    Optional<ActivityLog> activity = activityLogRepository.findById(id);
     return new ActivityDTO(
-        activity.get().getType(),
-        activity.get().getTimestamp(),
-        activity.get().getTime(),
-        activity.get().getPullRings(),
-        activity.get().getGivesItem(),
-        activity.get().getEnemyID(),
-        activity.get().getPersona().getId());
+            activity.get().getType(),
+            activity.get().getTimestamp(),
+            activity.get().getTime(),
+            activity.get().getPullRings(),
+            activity.get().getGivesItem(),
+            activity.get().getEnemyID(),
+            activity.get().getPersona().getId());
+
   }
 
   public Long timeRemaining(Long id) {
