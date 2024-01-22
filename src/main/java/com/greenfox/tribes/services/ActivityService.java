@@ -110,6 +110,7 @@ public class ActivityService {
         >= activity.get().getTimestamp() + ((long) activity.get().getTime() * 60 * 1000);
   }
 
+
   public void getReward(Long id) {
     Persona initiator = userService.getLoggedUser().getPersona();
     Combatant persona = playerCharacters.findById(id).get();
@@ -181,10 +182,7 @@ public class ActivityService {
   // COMBAT RESOLUTION
 
   public Combatant[] fightStart(Long id) {
-    PersonaDTO attacker = equipGladiator(
-        playerCharacters
-            .findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("No such persona")).getId());
+    PersonaDTO attacker = equipGladiator(id);
     CombatantDTO defender = new CombatantDTO();
     if (activityLogRepository.findActivityLogByPersonaId(id).get().getType()
         == ActivityType.PVP) {
@@ -245,7 +243,7 @@ public class ActivityService {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
-    PersonaDTO gladiatorDTO = new PersonaDTO();
+    PersonaDTO gladiatorDTO = characterService.readCharacter();
     if (gladiatorDTO.getEquipedItems() != null) {
 
       List<Equipment> equippedItems =

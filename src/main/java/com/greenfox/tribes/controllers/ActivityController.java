@@ -36,7 +36,11 @@ public class ActivityController {
   public String work(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    activityService.isFinished(user.getPersona().getId());
+    if(activityService.isFinished(user.getPersona().getId())) {
+      user.getPersona().setIsBusy(false);
+      activityService.deleteActivity( user.getPersona().getId());
+    }
+
     model.addAttribute("name", user.getPersona().getCharacterName());
     model.addAttribute("faction", user.getPersona().getFaction());
     model.addAttribute("isBusy", user.getPersona().getIsBusy());

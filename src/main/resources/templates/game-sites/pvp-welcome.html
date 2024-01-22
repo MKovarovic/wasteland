@@ -17,7 +17,7 @@
                     <div th:if="${isBusy != true}">
 
                         <i>
-                        <p th:text="${faction == 'Raider'} ? 'Hello ' + ${hero.getName()} +  ', you look like someoone that needs some quick cash. I know a guy who has more then enough, but is unwilling to share. We could take him, together, and split the profit. What do you say?' : 'Hello ' + ${name} +  ', you seem like a good fighter. Tell you what, there is a nuisance of a guy that steals, robs, and vandalises. I will give you pull rings if you go and take him out. You in?'"></p>
+                        <p th:text="${faction == 'Raider'} ? 'Hello ' + ${hero.getCharacterName()} +  ', you look like someoone that needs some quick cash. I know a guy who has more then enough, but is unwilling to share. We could take him, together, and split the profit. What do you say?' : 'Hello ' + ${name} +  ', you seem like a good fighter. Tell you what, there is a nuisance of a guy that steals, robs, and vandalises. I will give you pull rings if you go and take him out. You in?'"></p>
                         </i><a th:text="${faction == 'Raider'}? 'Let\'s go!' : 'I\'m on it.'"
                            th:href="'/activity/pvp/log'" class="button"></a>
                     </div>
