@@ -3,12 +3,14 @@ package com.greenfox.tribes.services;
 import com.greenfox.tribes.dtos.MonsterDTO;
 import com.greenfox.tribes.models.Monster;
 import com.greenfox.tribes.repositories.MonsterRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class MonsterService {
-  @Autowired
+
   MonsterRepository monsterRepository;
 
   public void createMonster(String name, int hp, int atk, int dmg, int def, int lck, int gold) {

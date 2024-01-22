@@ -21,8 +21,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @AllArgsConstructor
 public class AuthController {
 
-  AuthenticationManager provider;
-  CustomUserDetailService userDetailsService;
+  private AuthenticationManager provider;
+  private CustomUserDetailService userDetailsService;
 
   @GetMapping("/welcome")
   public String welcome() {

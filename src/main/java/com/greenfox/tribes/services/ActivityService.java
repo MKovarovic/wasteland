@@ -28,15 +28,15 @@ import java.util.Random;
 @AllArgsConstructor
 public class ActivityService {
   private ActivityLogRepository activityLogRepository;
-  // todo: remove autowired
-  @Autowired UserRepository userRepository;
-  @Autowired CustomUserDetailService userService;
-  @Autowired CharacterService characterService;
-  @Autowired private PersonaRepository playerCharacters;
-  @Autowired private MonsterRepository monsterRepository;
-  @Autowired private EquipmentRepository equipmentRepository;
-  @Autowired private CharacterEquipmentRepository pairingRepo;
-  @Autowired private MonsterService monsterService;
+
+  UserRepository userRepository;
+  CustomUserDetailService userService;
+  CharacterService characterService;
+  private PersonaRepository playerCharacters;
+  private MonsterRepository monsterRepository;
+  private EquipmentRepository equipmentRepository;
+  private CharacterEquipmentRepository pairingRepo;
+  private MonsterService monsterService;
 
   // todo: try to split this into three methods
   public void logActivity(ActivityType type, Long personaId) {
@@ -81,22 +81,18 @@ public class ActivityService {
       return null;
     }
     return makeDTO(activity.get().getId());
-
-    // todo: add constructor that creates dto from Activity
-
   }
 
-  public ActivityDTO makeDTO(Long id){
+  public ActivityDTO makeDTO(Long id) {
     Optional<ActivityLog> activity = activityLogRepository.findById(id);
     return new ActivityDTO(
-            activity.get().getType(),
-            activity.get().getTimestamp(),
-            activity.get().getTime(),
-            activity.get().getPullRings(),
-            activity.get().getGivesItem(),
-            activity.get().getEnemyID(),
-            activity.get().getPersona().getId());
-
+        activity.get().getType(),
+        activity.get().getTimestamp(),
+        activity.get().getTime(),
+        activity.get().getPullRings(),
+        activity.get().getGivesItem(),
+        activity.get().getEnemyID(),
+        activity.get().getPersona().getId());
   }
 
   public Long timeRemaining(Long id) {

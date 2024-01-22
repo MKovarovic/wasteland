@@ -12,6 +12,7 @@ import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.services.CharacterService;
 import com.greenfox.tribes.services.MonsterService;
 import com.greenfox.tribes.services.PortraitService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,15 +23,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/activity")
 public class ActivityController {
   // todo: autowired
-  @Autowired UserRepository userRepository;
-  @Autowired ActivityService activityService;
-  @Autowired MonsterRepository monsterRepository;
-  @Autowired CharacterService characterService;
-  @Autowired PortraitService portraitService;
-  @Autowired private MonsterService monsterService;
+  private UserRepository userRepository;
+  private ActivityService activityService;
+  private MonsterRepository monsterRepository;
+  private CharacterService characterService;
+  private PortraitService portraitService;
+  private MonsterService monsterService;
 
   @GetMapping("/work")
   public String work(Model model) {
@@ -52,7 +54,6 @@ public class ActivityController {
     activityService.logActivity(ActivityType.WORK, id);
     return "redirect:/activity/work";
   }
-
 
   @GetMapping("/pvp")
   public String pvp(Model model) {
@@ -115,14 +116,12 @@ public class ActivityController {
 
     ActivityDTO dto = activityService.getActivity(id);
 
-    model.addAttribute(
-        "enemy",
-        characterService.readCharacter(dto.getEnemyID()));
+    model.addAttribute("enemy", characterService.readCharacter(dto.getEnemyID()));
     model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
 
     PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
     model.addAttribute("portraitHero", portraitHero);
-    if(activityService.timeRemaining(userHero.getId())<1){
+    if (activityService.timeRemaining(userHero.getId()) < 1) {
       return "redirect:/activity/pvp/reward?id=" + userHero.getId();
     }
     model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
@@ -136,7 +135,6 @@ public class ActivityController {
     activityService.pvpMatching(user.getPersona().getId());
     return "redirect:/activity/pvp";
   }
-
 
   @GetMapping("/pve")
   public String pve(Model model) {
@@ -160,7 +158,7 @@ public class ActivityController {
       return "redirect:/activity/pve/fight?id=" + userHero.getId();
     } else {
       return "redirect:/activity/notHere";
-}
+    }
   }
 
   @GetMapping("/pve/welcome")
@@ -201,15 +199,12 @@ public class ActivityController {
 
     PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
     model.addAttribute("portraitHero", portraitHero);
-    if(activityService.timeRemaining(userHero.getId())<1){
+    if (activityService.timeRemaining(userHero.getId()) < 1) {
       return "redirect:/activity/pve/reward?id=" + userHero.getId();
     }
     model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
     return "game-sites/pve";
   }
-
-
-
 
   @GetMapping("/pve/log")
   public String logPve() {

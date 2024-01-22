@@ -8,6 +8,7 @@ import com.greenfox.tribes.models.CharacterEquipment;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.repositories.EquipmentRepository;
 import com.greenfox.tribes.repositories.PersonaRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,15 +17,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
+@AllArgsConstructor
 public class ShopService {
 
-  @Autowired
   EquipmentRepository equipmentRepository;
-  @Autowired EquipmentService equipmentService;
-  @Autowired UserRepository userRepository;
-  @Autowired
+  EquipmentService equipmentService;
+  UserRepository userRepository;
+
   PersonaRepository personaRepository;
-  @Autowired
+
   CharacterEquipmentRepository characterEquipmentRepository;
 
   public ArrayList<EquipmentDTO> getShoppingList() {

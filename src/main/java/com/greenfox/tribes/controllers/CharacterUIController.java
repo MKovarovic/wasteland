@@ -13,6 +13,7 @@ import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.services.CharacterService;
 import com.greenfox.tribes.services.PortraitService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,18 +22,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/character")
 public class CharacterUIController {
 
-  @Autowired CharacterService characterService;
-  @Autowired
-  PersonaRepository personaRepository;
-  @Autowired CustomUserDetailService userService;
-  @Autowired UserRepository userRepository;
-  @Autowired PortraitService portraitService;
-  @Autowired PortraitRepository portraitRepository;
-  @Autowired EquipmentService equipmentService;
-  @Autowired CharacterEquipmentRepository pairingRepo;
+  private CharacterService characterService;
+
+  private PersonaRepository personaRepository;
+  private CustomUserDetailService userService;
+  private UserRepository userRepository;
+  private PortraitService portraitService;
+  private PortraitRepository portraitRepository;
+  private EquipmentService equipmentService;
+  private CharacterEquipmentRepository pairingRepo;
 
   @GetMapping("/new")
   public String newCharacter() {
@@ -63,7 +65,6 @@ public class CharacterUIController {
     Long idPortrait =
         portraitService.createPortrait(
             faceImg, hairImg, eyeImg, noseImg, mouthImg, eyebrowsImg, persona.getId());
-
 
     persona.setPortrait(portraitRepository.findById(idPortrait).get());
     personaRepository.save(persona);
