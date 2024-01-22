@@ -4,7 +4,6 @@ import com.greenfox.tribes.services.ShopService;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/shop")
 public class ShopController {
 
-   ShopService shopService;
-   UserRepository userRepository;
+  ShopService shopService;
+  UserRepository userRepository;
 
   @GetMapping("")
   public String browseShop(Model model, Long id) {

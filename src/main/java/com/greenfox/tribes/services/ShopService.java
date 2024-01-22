@@ -9,7 +9,6 @@ import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.repositories.EquipmentRepository;
 import com.greenfox.tribes.repositories.PersonaRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

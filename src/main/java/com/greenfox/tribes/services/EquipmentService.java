@@ -4,7 +4,6 @@ import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.repositories.EquipmentRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -5,7 +5,6 @@ import com.greenfox.tribes.models.Portrait;
 import com.greenfox.tribes.repositories.PersonaRepository;
 import com.greenfox.tribes.repositories.PortraitRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

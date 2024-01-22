@@ -14,7 +14,6 @@ import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.services.CharacterService;
 import com.greenfox.tribes.services.PortraitService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

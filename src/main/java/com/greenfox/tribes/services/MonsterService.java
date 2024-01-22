@@ -4,7 +4,6 @@ import com.greenfox.tribes.dtos.MonsterDTO;
 import com.greenfox.tribes.models.Monster;
 import com.greenfox.tribes.repositories.MonsterRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
