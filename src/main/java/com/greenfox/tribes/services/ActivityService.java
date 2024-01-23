@@ -163,7 +163,15 @@ public class ActivityService {
       faction = Faction.RAIDER;
     }
 
-    // todo: make a methods findRandomEnemy to split this into smaller chunks
+
+    Persona defender = randomEnemy(faction);
+    logPVP(attacker.getId(), defender.getId());
+    // -----------
+
+
+  }
+
+  public Persona randomEnemy(Faction faction) {
     Persona defender =
         playerCharacters
             .findById(
@@ -171,15 +179,17 @@ public class ActivityService {
                     .findRandomIdByFaction(faction)
                     .orElseThrow(() -> new IllegalArgumentException("Nobody on the other team")))
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    // -----------
+    return defender;
+  }
 
-    logActivity(ActivityType.PVP, attacker.getId());
+  public void logPVP(Long attackerId, Long defenderId) {
+    logActivity(ActivityType.PVP, attackerId);
     activityLogRepository
-        .findActivityLogByPersonaId(attacker.getId())
-        .get()
-        .setEnemyID(defender.getId());
+            .findActivityLogByPersonaId(attackerId)
+            .get()
+            .setEnemyID(defenderId);
     activityLogRepository.save(
-        activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get());
+            activityLogRepository.findActivityLogByPersonaId(attackerId).get());
   }
 
   public void pveMatching(Long id) {
@@ -204,8 +214,6 @@ public class ActivityService {
     activityLog.setEnemyID(defender.getId());
     activityLogRepository.save(activityLog);
   }
-
-
 
   // COMBAT RESOLUTION
 
