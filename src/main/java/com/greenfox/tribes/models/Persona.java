@@ -1,5 +1,6 @@
 package com.greenfox.tribes.models;
 
+import com.greenfox.tribes.enums.Faction;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ public class Persona extends Combatant {
 
   public Persona(
       String characterName,
-      String faction,
+      Faction faction,
       Integer atk,
       Integer def,
       Integer dmg,
@@ -38,7 +39,7 @@ public class Persona extends Combatant {
 
   private String characterName;
 
-  private String faction;
+  private Faction faction;
 
   @OneToOne(mappedBy = "persona")
   @ToString.Exclude

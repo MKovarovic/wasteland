@@ -1,5 +1,6 @@
 package com.greenfox.tribes.services;
 
+import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.PersonaMapping;
 import com.greenfox.tribes.models.CharacterEquipment;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
@@ -28,7 +29,9 @@ public class CharacterService {
     if (hp + atk + dmg + def + lck != 100) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
-    Persona character = new Persona(name, faction, atk, def, dmg, lck, hp, pullRing);
+    Faction actualFaction = Faction.valueOf(faction.toUpperCase());
+
+    Persona character = new Persona(name, actualFaction, atk, def, dmg, lck, hp, pullRing);
     playerCharacters.save(character);
     return character;
   }

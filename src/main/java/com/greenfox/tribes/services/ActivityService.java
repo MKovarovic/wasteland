@@ -4,6 +4,7 @@ import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.dtos.CombatantDTO;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.enums.ActivityType;
+import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.models.*;
 import com.greenfox.tribes.repositories.ActivityLogRepository;
 import com.greenfox.tribes.repositories.EquipmentRepository;
@@ -155,8 +156,7 @@ public class ActivityService {
         playerCharacters
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    if (attacker.getFaction().equals("Raider")) {
-      // todo: use enum instead of string
+    if (attacker.getFaction() == Faction.RAIDER) {
       faction = "Settler";
     } else {
       faction = "Raider";

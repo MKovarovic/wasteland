@@ -1,5 +1,6 @@
 package com.greenfox.tribes.dtos;
 
+import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.models.CharacterEquipment;
 import lombok.Data;

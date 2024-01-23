@@ -8,7 +8,7 @@ public class PersonaMapping {
     PersonaDTO dto = new PersonaDTO();
     dto.setId(persona.getId());
     dto.setCharacterName(persona.getCharacterName());
-    dto.setFaction(persona.getFaction());
+    dto.setFaction(persona.getFaction().toString());
     dto.setAtk(persona.getAtk());
     dto.setDmg(persona.getDmg());
     dto.setDef(persona.getDef());
