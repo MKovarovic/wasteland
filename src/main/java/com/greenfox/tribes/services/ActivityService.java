@@ -163,11 +163,9 @@ public class ActivityService {
       faction = Faction.RAIDER;
     }
 
-
     Persona defender = randomEnemy(faction);
     logPVP(attacker.getId(), defender.getId());
     // -----------
-
 
   }
 
@@ -184,12 +182,8 @@ public class ActivityService {
 
   public void logPVP(Long attackerId, Long defenderId) {
     logActivity(ActivityType.PVP, attackerId);
-    activityLogRepository
-            .findActivityLogByPersonaId(attackerId)
-            .get()
-            .setEnemyID(defenderId);
-    activityLogRepository.save(
-            activityLogRepository.findActivityLogByPersonaId(attackerId).get());
+    activityLogRepository.findActivityLogByPersonaId(attackerId).get().setEnemyID(defenderId);
+    activityLogRepository.save(activityLogRepository.findActivityLogByPersonaId(attackerId).get());
   }
 
   public void pveMatching(Long id) {
@@ -199,6 +193,14 @@ public class ActivityService {
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
     // todo: add method findRandomMonster
+Monster defender = randomMonster();
+    // todo: make method that does all of this
+    logPVE(attacker.getId(), defender.getId());
+    // it can be logActivityPVE()
+
+  }
+
+  public Monster randomMonster() {
     Monster defender =
         monsterRepository
             .findById(
@@ -206,12 +208,14 @@ public class ActivityService {
                     .findRandomMonsterId()
                     .orElseThrow(() -> new IllegalArgumentException("No such Monster")))
             .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
-    // todo: make method that does all of this
-    // it can be logActivityPVE()
-    logActivity(ActivityType.PVE, attacker.getId());
+    return defender;
+  }
+
+  public void logPVE(Long attackerId, Long defenderId) {
+    logActivity(ActivityType.PVE, attackerId);
     ActivityLog activityLog =
-        activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get();
-    activityLog.setEnemyID(defender.getId());
+            activityLogRepository.findActivityLogByPersonaId(attackerId).get();
+    activityLog.setEnemyID(defenderId);
     activityLogRepository.save(activityLog);
   }
 
