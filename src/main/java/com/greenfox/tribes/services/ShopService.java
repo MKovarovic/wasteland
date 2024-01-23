@@ -56,8 +56,11 @@ public class ShopService {
     Equipment equipment = equipmentService.returnItem(id);
     CharacterEquipment pair =
         characterEquipmentRepository.findFirstByEquipmentAndPersona(equipment, user.getPersona());
-    characterEquipmentRepository.delete(pair);
-    user.getPersona().setPullRing(user.getPersona().getPullRing() + (equipment.getPrice() / 2));
+    if(pair != null) {
+      characterEquipmentRepository.delete(pair);
+      user.getPersona().setPullRing(user.getPersona().getPullRing() + (equipment.getPrice() / 2));
+    }
+
     userRepository.save(user);
   }
 }

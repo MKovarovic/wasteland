@@ -206,7 +206,7 @@ public class ActivityService {
 
   // COMBAT RESOLUTION
 
-  // todo: use pair
+  //??? todo: use pair
   public Combatant[] fightStart(Long id) {
     PersonaDTO attacker = equipGladiator(id);
     CombatantDTO defender = new CombatantDTO();
