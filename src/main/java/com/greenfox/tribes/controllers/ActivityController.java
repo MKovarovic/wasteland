@@ -34,6 +34,16 @@ public class ActivityController {
   private PortraitService portraitService;
   private MonsterService monsterService;
 
+  public Model commonData(Model model){
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("faction", userHero.getFaction().toString());
+    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+    return model;
+  }
+
   @GetMapping("/work")
   public String work(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -83,9 +93,7 @@ public class ActivityController {
   @GetMapping("/pvp/welcome")
   public String pvpWelcome(Model model, @RequestParam("id") long id) {
     Persona userHero = userRepository.findById(id).get().getPersona();
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", userHero.getFaction().toString());
-    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+    model = commonData(model);
 
     return "game-sites/pvp-welcome";
   }
@@ -93,9 +101,7 @@ public class ActivityController {
   @GetMapping("/pvp/reward")
   public String pvpReward(Model model, @RequestParam("id") long id) {
     Persona userHero = userRepository.findById(id).get().getPersona();
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", userHero.getFaction().toString());
-    model.addAttribute("isBusy", !activityService.isFinished(userHero.getId()));
+    model = commonData(model);
 
     int pullrings = userHero.getPullRing();
     Combatant[] combatants = activityService.fightStart(userHero.getId());
@@ -110,9 +116,7 @@ public class ActivityController {
   @GetMapping("/pvp/fight")
   public String pvpFight(Model model, @RequestParam("id") long id) {
     Persona userHero = userRepository.findById(id).get().getPersona();
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", userHero.getFaction().toString());
-    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+    model = commonData(model);
 
     ActivityDTO dto = activityService.getActivity(id);
 
@@ -166,19 +170,16 @@ public class ActivityController {
   @GetMapping("/pve/welcome")
   public String pveWelcome(Model model, @RequestParam("id") long id) {
     Persona userHero = userRepository.findById(id).get().getPersona();
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+    model = commonData(model);
 
     return "game-sites/pve-welcome";
   }
 
   @GetMapping("/pve/reward")
   public String pveReward(Model model, @RequestParam("id") long id) {
-    // todo: remove duplicite code
+
     Persona userHero = userRepository.findById(id).get().getPersona();
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", userHero.getFaction().toString());
-    model.addAttribute("isBusy", !activityService.isFinished(userHero.getId()));
+    model = commonData(model);
 
     int pullrings = userHero.getPullRing();
     Combatant[] combatants = activityService.fightStart(userHero.getId());
@@ -190,12 +191,13 @@ public class ActivityController {
     return "game-sites/pve-reward";
   }
 
+
+
   @GetMapping("/pve/fight")
   public String pveFight(Model model, @RequestParam("id") long id) {
     // todo: I think this is also duplicite code
     Persona userHero = userRepository.findById(id).get().getPersona();
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+    model = commonData(model);
 
     ActivityDTO dto = activityService.getActivity(id);
 

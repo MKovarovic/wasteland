@@ -25,7 +25,7 @@ public class ShopController {
   public String browseShop(Model model, Long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    model.addAttribute("faction", user.getPersona().getFaction());
+    model.addAttribute("faction", user.getPersona().getFaction().toString());
     model.addAttribute("DTO", shopService.getShoppingList());
     model.addAttribute("rings", user.getPersona().getPullRing());
     return "game-sites/shop";

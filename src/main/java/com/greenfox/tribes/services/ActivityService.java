@@ -205,6 +205,8 @@ public class ActivityService {
     activityLogRepository.save(activityLog);
   }
 
+
+
   // COMBAT RESOLUTION
 
   //??? todo: use pair

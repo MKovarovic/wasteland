@@ -110,7 +110,7 @@ public class CharacterUIController {
 
     PortraitDTO portraitDTO = PortraitMapper.remap(user.getPersona().getPortrait());
     model.addAttribute("portraitDTO", portraitDTO);
-    model.addAttribute("faction", user.getPersona().getFaction());
+    model.addAttribute("faction", user.getPersona().getFaction().toString());
     return "persona-sites/main-page";
   }
 
