@@ -195,7 +195,7 @@ public class ActivityController {
 
   @GetMapping("/pve/fight")
   public String pveFight(Model model, @RequestParam("id") long id) {
-    // todo: I think this is also duplicite code
+
     Persona userHero = userRepository.findById(id).get().getPersona();
     model = commonData(model);
 

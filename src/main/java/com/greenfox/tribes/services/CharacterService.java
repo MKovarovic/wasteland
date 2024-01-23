@@ -3,6 +3,7 @@ package com.greenfox.tribes.services;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.PersonaMapping;
 import com.greenfox.tribes.models.CharacterEquipment;
+import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.dtos.PersonaDTO;
@@ -79,5 +80,27 @@ public class CharacterService {
             () ->
                 new ResponseStatusException(
                     HttpStatus.UNAUTHORIZED, "No logged in character found"));
+  }
+
+  public int[] getBonuses(PersonaDTO dto){
+    int atkBonus = 0;
+    int defBonus = 0;
+    int hpBonus = 0;
+    int lckBonus = 0;
+    int dmgBonus = 0;
+    if (dto.getEquipedItems() != null) {
+
+      for (Equipment e : dto.getEquipedItems()) {
+        atkBonus += e.getAtkBonus();
+        defBonus += e.getDefBonus();
+        hpBonus += e.getHpBonus();
+        lckBonus += e.getLckBonus();
+        dmgBonus += e.getDmgBonus();
+      }
+    }
+
+    int[] bonuses = {atkBonus, defBonus, hpBonus, lckBonus, dmgBonus};
+    return bonuses;
+
   }
 }

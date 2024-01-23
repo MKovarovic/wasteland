@@ -86,27 +86,13 @@ public class CharacterUIController {
 
     PersonaDTO dto = characterService.readCharacter();
     model.addAttribute("DTO", dto);
-    // todo: do this in a service
-    int atkBonus = 0;
-    int defBonus = 0;
-    int hpBonus = 0;
-    int lckBonus = 0;
-    int dmgBonus = 0;
-    if (dto.getEquipedItems() != null) {
 
-      for (Equipment e : dto.getEquipedItems()) {
-        atkBonus += e.getAtkBonus();
-        defBonus += e.getDefBonus();
-        hpBonus += e.getHpBonus();
-        lckBonus += e.getLckBonus();
-        dmgBonus += e.getDmgBonus();
-      }
-    }
-    model.addAttribute("atkBonus", atkBonus);
-    model.addAttribute("defBonus", defBonus);
-    model.addAttribute("hpBonus", hpBonus);
-    model.addAttribute("lckBonus", lckBonus);
-    model.addAttribute("dmgBonus", dmgBonus);
+    int[] bonuses = characterService.getBonuses(dto);
+    model.addAttribute("atkBonus", bonuses[0]);
+    model.addAttribute("defBonus", bonuses[1]);
+    model.addAttribute("hpBonus", bonuses[2]);
+    model.addAttribute("lckBonus", bonuses[3]);
+    model.addAttribute("dmgBonus", bonuses[4]);
 
     PortraitDTO portraitDTO = PortraitMapper.remap(user.getPersona().getPortrait());
     model.addAttribute("portraitDTO", portraitDTO);
