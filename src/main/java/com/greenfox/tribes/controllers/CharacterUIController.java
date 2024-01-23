@@ -1,6 +1,7 @@
 package com.greenfox.tribes.controllers;
 
 import com.greenfox.tribes.dtos.PortraitDTO;
+import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.repositories.PersonaRepository;
 import com.greenfox.tribes.repositories.PortraitRepository;
@@ -106,7 +107,7 @@ public class CharacterUIController {
       model.addAttribute("lckBonus", lckBonus);
       model.addAttribute("dmgBonus", dmgBonus);
 
-      PortraitDTO portraitDTO = portraitService.findPortrait(user.getPersona().getId());
+      PortraitDTO portraitDTO = PortraitMapper.remap(user.getPersona().getPortrait());
       model.addAttribute("portraitDTO", portraitDTO);
       model.addAttribute("faction", user.getPersona().getFaction());
       return "persona-sites/main-page";

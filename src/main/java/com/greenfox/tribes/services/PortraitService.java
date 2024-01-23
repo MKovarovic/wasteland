@@ -1,6 +1,7 @@
 package com.greenfox.tribes.services;
 
 import com.greenfox.tribes.dtos.PortraitDTO;
+import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.models.Portrait;
 import com.greenfox.tribes.repositories.PersonaRepository;
 import com.greenfox.tribes.repositories.PortraitRepository;
@@ -37,13 +38,6 @@ public class PortraitService {
 
   public PortraitDTO findPortrait(long id) {
     Portrait portrait = portraitRepository.findById(id).get();
-    PortraitDTO dto = new PortraitDTO();
-    dto.setPersonaId(portrait.getPersona().getId());
-    dto.setHead(portrait.getHead());
-    dto.setHair(portrait.getHair());
-    dto.setEyes(portrait.getEyes());
-    dto.setNose(portrait.getNose());
-    dto.setMouth(portrait.getMouth());
-    return dto;
+    return PortraitMapper.remap(portrait);
   }
 }
