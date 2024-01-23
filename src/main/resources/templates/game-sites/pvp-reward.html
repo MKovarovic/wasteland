@@ -12,24 +12,24 @@
         <div id="content">
             <div id="box">
                 <div id="text">
-                    <h2 th:if="${faction == 'Raider'}">Raiding</h2>
-                    <h2 th:if="${faction == 'Settler'}">Bounty hunting</h2>
+                    <h2 th:if="${faction == 'RAIDER'}">Raiding</h2>
+                    <h2 th:if="${faction == 'SETTLER'}">Bounty hunting</h2>
                     <!--<div th:if="${isBusy != true}">-->
 
                         <i>
-                        <p th:text="${faction == 'Raider'} ? 'That was FUN! Here is your share.' : 'Good job! Here is your bounty.'"></p>
+                        <p th:text="${faction == 'RAIDER'} ? 'That was FUN! Here is your share.' : 'Good job! Here is your bounty.'"></p>
                         </i>
 
                         <h3 th:text="${reward}"></h3><img src="/pullRing.png" height="20" width="20"/>
 
-                        <a th:text="${faction == 'Raider'}? 'Take your share' : 'Take the reward'"
+                        <a th:text="${faction == 'RAIDER'}? 'Take your share' : 'Take the reward'"
                            th:href="'/activity/pvp'" class="button"></a>
                     <!--</div>-->
                 </div>
 
                 <div id=picture>
-                    <img th:if="${faction == 'Raider'}" src="/resources/Raider.png" alt="raider"/>
-                    <img th:if="${faction == 'Settler'}" src="/resources/TheColonel.jpg" alt="settler"/>
+                    <img th:if="${faction == 'RAIDER'}" src="/resources/Raider.png" alt="raider"/>
+                    <img th:if="${faction == 'SETTLER'}" src="/resources/TheColonel.jpg" alt="settler"/>
 
                 </div>
 

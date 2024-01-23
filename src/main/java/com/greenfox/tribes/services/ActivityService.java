@@ -151,15 +151,16 @@ public class ActivityService {
   // TARGET SELECTION
 
   public void pvpMatching(Long id) {
-    String faction;
+
     Persona attacker =
         playerCharacters
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Faction faction;
     if (attacker.getFaction() == Faction.RAIDER) {
-      faction = "Settler";
+      faction = Faction.SETTLER;
     } else {
-      faction = "Raider";
+      faction = Faction.RAIDER;
     }
 
     // todo: make a methods findRandomEnemy to split this into smaller chunks

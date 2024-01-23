@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @AllArgsConstructor
 @RequestMapping("/activity")
 public class ActivityController {
-  // todo: autowired
+
   private UserRepository userRepository;
   private ActivityService activityService;
   private MonsterRepository monsterRepository;
@@ -43,7 +43,7 @@ public class ActivityController {
     }
 
     model.addAttribute("name", user.getPersona().getCharacterName());
-    model.addAttribute("faction", user.getPersona().getFaction());
+    model.addAttribute("faction", user.getPersona().getFaction().toString());
     model.addAttribute("isBusy", activityService.activityInProgress(user.getPersona().getId()));
     model.addAttribute("id", user.getPersona().getId());
     return "game-sites/work";
@@ -84,7 +84,7 @@ public class ActivityController {
   public String pvpWelcome(Model model, @RequestParam("id") long id) {
     Persona userHero = userRepository.findById(id).get().getPersona();
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", userHero.getFaction());
+    model.addAttribute("faction", userHero.getFaction().toString());
     model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
 
     return "game-sites/pvp-welcome";
@@ -94,7 +94,7 @@ public class ActivityController {
   public String pvpReward(Model model, @RequestParam("id") long id) {
     Persona userHero = userRepository.findById(id).get().getPersona();
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", userHero.getFaction());
+    model.addAttribute("faction", userHero.getFaction().toString());
     model.addAttribute("isBusy", !activityService.isFinished(userHero.getId()));
 
     int pullrings = userHero.getPullRing();
@@ -111,7 +111,7 @@ public class ActivityController {
   public String pvpFight(Model model, @RequestParam("id") long id) {
     Persona userHero = userRepository.findById(id).get().getPersona();
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", userHero.getFaction());
+    model.addAttribute("faction", userHero.getFaction().toString());
     model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
 
     ActivityDTO dto = activityService.getActivity(id);
@@ -177,7 +177,7 @@ public class ActivityController {
     // todo: remove duplicite code
     Persona userHero = userRepository.findById(id).get().getPersona();
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", userHero.getFaction());
+    model.addAttribute("faction", userHero.getFaction().toString());
     model.addAttribute("isBusy", !activityService.isFinished(userHero.getId()));
 
     int pullrings = userHero.getPullRing();
