@@ -2,7 +2,6 @@ package com.greenfox.tribes.controllers;
 
 import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.mappers.PortraitMapper;
-import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.repositories.PersonaRepository;
 import com.greenfox.tribes.repositories.PortraitRepository;
 import com.greenfox.tribes.services.EquipmentService;

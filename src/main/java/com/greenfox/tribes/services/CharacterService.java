@@ -82,7 +82,7 @@ public class CharacterService {
                     HttpStatus.UNAUTHORIZED, "No logged in character found"));
   }
 
-  public int[] getBonuses(PersonaDTO dto){
+  public int[] getBonuses(PersonaDTO dto) {
     int atkBonus = 0;
     int defBonus = 0;
     int hpBonus = 0;
@@ -101,6 +101,5 @@ public class CharacterService {
 
     int[] bonuses = {atkBonus, defBonus, hpBonus, lckBonus, dmgBonus};
     return bonuses;
-
   }
 }

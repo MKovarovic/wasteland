@@ -192,12 +192,8 @@ public class ActivityService {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
-    // todo: add method findRandomMonster
-Monster defender = randomMonster();
-    // todo: make method that does all of this
+    Monster defender = randomMonster();
     logPVE(attacker.getId(), defender.getId());
-    // it can be logActivityPVE()
-
   }
 
   public Monster randomMonster() {
@@ -213,8 +209,7 @@ Monster defender = randomMonster();
 
   public void logPVE(Long attackerId, Long defenderId) {
     logActivity(ActivityType.PVE, attackerId);
-    ActivityLog activityLog =
-            activityLogRepository.findActivityLogByPersonaId(attackerId).get();
+    ActivityLog activityLog = activityLogRepository.findActivityLogByPersonaId(attackerId).get();
     activityLog.setEnemyID(defenderId);
     activityLogRepository.save(activityLog);
   }

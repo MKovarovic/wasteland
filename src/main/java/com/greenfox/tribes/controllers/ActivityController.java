@@ -34,7 +34,7 @@ public class ActivityController {
   private PortraitService portraitService;
   private MonsterService monsterService;
 
-  public Model commonData(Model model){
+  public Model commonData(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
@@ -190,8 +190,6 @@ public class ActivityController {
 
     return "game-sites/pve-reward";
   }
-
-
 
   @GetMapping("/pve/fight")
   public String pveFight(Model model, @RequestParam("id") long id) {
