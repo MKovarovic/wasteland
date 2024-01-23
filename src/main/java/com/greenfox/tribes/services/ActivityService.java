@@ -105,13 +105,26 @@ public class ActivityService {
         / 60000;
   }
 
+  // todo: check which one to use where
+  public boolean activityInProgress(Long id) {
+    Optional<ActivityLog> activity = activityLogRepository.findActivityLogByPersonaId(id);
+    if (activity.isEmpty()) {
+      return false;
+    }
+    return !isExpired(activity.get());
+  }
+
   public boolean isFinished(Long id) {
     Optional<ActivityLog> activity = activityLogRepository.findActivityLogByPersonaId(id);
     if (activity.isEmpty()) {
       return false;
     }
+    return isExpired(activity.get());
+  }
+
+  private boolean isExpired(ActivityLog activityLog) {
     return System.currentTimeMillis()
-        >= activity.get().getTimestamp() + ((long) activity.get().getTime() * 60 * 1000);
+        >= activityLog.getTimestamp() + ((long) activityLog.getTime() * 60 * 1000);
   }
 
   public void getReward(Long id) {

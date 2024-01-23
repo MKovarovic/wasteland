@@ -44,7 +44,7 @@ public class ActivityController {
 
     model.addAttribute("name", user.getPersona().getCharacterName());
     model.addAttribute("faction", user.getPersona().getFaction());
-    model.addAttribute("isBusy", !activityService.isFinished(user.getPersona().getId()));
+    model.addAttribute("isBusy", activityService.activityInProgress(user.getPersona().getId()));
     model.addAttribute("id", user.getPersona().getId());
     return "game-sites/work";
   }
@@ -150,14 +150,16 @@ public class ActivityController {
 
     if (type == null) {
       return "redirect:/activity/pve/welcome?id=" + userHero.getId();
-    } else if (type == ActivityType.PVE) {
+    }
 
-      if (activityService.isFinished(userHero.getId())) {
-        return "redirect:/activity/pve/reward?id=" + userHero.getId();
-      }
-      return "redirect:/activity/pve/fight?id=" + userHero.getId();
-    } else {
+    if (type != ActivityType.PVE) {
       return "redirect:/activity/notHere";
+    }
+
+    if (activityService.isFinished(userHero.getId())) {
+      return "redirect:/activity/pve/reward?id=" + userHero.getId();
+    } else {
+      return "redirect:/activity/pve/fight?id=" + userHero.getId();
     }
   }
 
@@ -172,6 +174,7 @@ public class ActivityController {
 
   @GetMapping("/pve/reward")
   public String pveReward(Model model, @RequestParam("id") long id) {
+    // todo: remove duplicite code
     Persona userHero = userRepository.findById(id).get().getPersona();
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     model.addAttribute("faction", userHero.getFaction());
@@ -189,6 +192,7 @@ public class ActivityController {
 
   @GetMapping("/pve/fight")
   public String pveFight(Model model, @RequestParam("id") long id) {
+    // todo: I think this is also duplicite code
     Persona userHero = userRepository.findById(id).get().getPersona();
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));

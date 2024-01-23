@@ -82,36 +82,36 @@ public class CharacterUIController {
 
     if (user.getPersona() == null) {
       return "persona-sites/character-creation";
-    } else {
-      PersonaDTO dto = characterService.readCharacter();
-      model.addAttribute("DTO", dto);
-      int atkBonus = 0;
-      int defBonus = 0;
-      int hpBonus = 0;
-      int lckBonus = 0;
-      int dmgBonus = 0;
-
-      if (dto.getEquipedItems() != null) {
-
-        for (Equipment e : dto.getEquipedItems()) {
-          atkBonus += e.getAtkBonus();
-          defBonus += e.getDefBonus();
-          hpBonus += e.getHpBonus();
-          lckBonus += e.getLckBonus();
-          dmgBonus += e.getDmgBonus();
-        }
-      }
-      model.addAttribute("atkBonus", atkBonus);
-      model.addAttribute("defBonus", defBonus);
-      model.addAttribute("hpBonus", hpBonus);
-      model.addAttribute("lckBonus", lckBonus);
-      model.addAttribute("dmgBonus", dmgBonus);
-
-      PortraitDTO portraitDTO = PortraitMapper.remap(user.getPersona().getPortrait());
-      model.addAttribute("portraitDTO", portraitDTO);
-      model.addAttribute("faction", user.getPersona().getFaction());
-      return "persona-sites/main-page";
     }
+
+    PersonaDTO dto = characterService.readCharacter();
+    model.addAttribute("DTO", dto);
+    // todo: do this in a service
+    int atkBonus = 0;
+    int defBonus = 0;
+    int hpBonus = 0;
+    int lckBonus = 0;
+    int dmgBonus = 0;
+    if (dto.getEquipedItems() != null) {
+
+      for (Equipment e : dto.getEquipedItems()) {
+        atkBonus += e.getAtkBonus();
+        defBonus += e.getDefBonus();
+        hpBonus += e.getHpBonus();
+        lckBonus += e.getLckBonus();
+        dmgBonus += e.getDmgBonus();
+      }
+    }
+    model.addAttribute("atkBonus", atkBonus);
+    model.addAttribute("defBonus", defBonus);
+    model.addAttribute("hpBonus", hpBonus);
+    model.addAttribute("lckBonus", lckBonus);
+    model.addAttribute("dmgBonus", dmgBonus);
+
+    PortraitDTO portraitDTO = PortraitMapper.remap(user.getPersona().getPortrait());
+    model.addAttribute("portraitDTO", portraitDTO);
+    model.addAttribute("faction", user.getPersona().getFaction());
+    return "persona-sites/main-page";
   }
 
   @RequestMapping("/me/equip")

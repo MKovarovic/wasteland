@@ -41,7 +41,7 @@ public class AuthController {
       ra.addFlashAttribute("alreadyExists", true);
       return new RedirectView("/welcome");
     }
-
+    // todo: extract this into a service
     // Authenticate user programmatically after registration
     Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
     Authentication authenticated = provider.authenticate(authentication);
@@ -49,7 +49,9 @@ public class AuthController {
     SecurityContextHolder.getContext().setAuthentication(authenticated);
 
     HttpSession session = request.getSession(true);
-    session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+    session.setAttribute(
+        HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+        SecurityContextHolder.getContext());
 
     ra.addAttribute("username", username);
     return new RedirectView("/character/new");
