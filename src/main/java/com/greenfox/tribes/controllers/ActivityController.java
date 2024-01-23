@@ -3,6 +3,7 @@ package com.greenfox.tribes.controllers;
 import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
+import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.services.ActivityService;
 import com.greenfox.tribes.models.WastelandUser;
@@ -118,7 +119,7 @@ public class ActivityController {
     model.addAttribute("enemy", characterService.readCharacter(dto.getEnemyID()));
     model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
 
-    PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+    PortraitDTO portraitHero = PortraitMapper.remap(userHero.getPortrait());
     model.addAttribute("portraitHero", portraitHero);
     if (activityService.timeRemaining(userHero.getId()) < 1) {
       return "redirect:/activity/pvp/reward?id=" + userHero.getId();
@@ -196,7 +197,7 @@ public class ActivityController {
 
     model.addAttribute("enemy", monsterService.findMonster(dto.getEnemyID()));
 
-    PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+    PortraitDTO portraitHero = PortraitMapper.remap(userHero.getPortrait());
     model.addAttribute("portraitHero", portraitHero);
     if (activityService.timeRemaining(userHero.getId()) < 1) {
       return "redirect:/activity/pve/reward?id=" + userHero.getId();

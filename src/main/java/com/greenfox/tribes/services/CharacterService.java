@@ -1,6 +1,6 @@
 package com.greenfox.tribes.services;
 
-import com.greenfox.tribes.models.Equipment;
+import com.greenfox.tribes.mappers.PersonaMapping;
 import com.greenfox.tribes.models.CharacterEquipment;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.models.Persona;
@@ -23,138 +23,58 @@ public class CharacterService {
   PersonaRepository playerCharacters;
   CharacterEquipmentRepository pairingRepo;
 
-  public void addCharacter(PersonaDTO dto) {
-    Persona character = new Persona();
-    character.setCharacterName(dto.getCharacterName());
-    character.setHp(dto.getHp());
-    character.setAtk(dto.getAtk());
-    character.setDmg(dto.getDmg());
-    character.setDef(dto.getDef());
-    character.setLck(dto.getLck());
-    character.setFaction(dto.getFaction());
-    character.setPullRing(dto.getPullRing());
-    playerCharacters.save(character);
-  }
-
   public Persona addCharacter(
-      String name, int hp, int atk, int dmg, int def, int lck, String faction, int gold) {
+      String name, int hp, int atk, int dmg, int def, int lck, String faction, int pullRing) {
     if (hp + atk + dmg + def + lck != 100) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
-    Persona character = new Persona();
-    character.setCharacterName(name);
-    character.setHp(hp);
-    character.setAtk(atk);
-    character.setDmg(dmg);
-    character.setDef(def);
-    character.setLck(lck);
-    character.setFaction(faction);
-    character.setPullRing(gold);
+    Persona character = new Persona(name, faction, atk, def, dmg, lck, hp, pullRing);
     playerCharacters.save(character);
     return character;
   }
 
   public PersonaDTO readCharacter(Long id) {
     Persona character = playerCharacters.findById(id).get();
-    PersonaDTO dto = new PersonaDTO();
-    dto.setId(character.getId());
-    dto.setCharacterName(character.getCharacterName());
-    dto.setFaction(character.getFaction());
-    dto.setAtk(character.getAtk());
-    dto.setDmg(character.getDmg());
-    dto.setDef(character.getDef());
-    dto.setLck(character.getLck());
-    dto.setHp(character.getHp());
-    dto.setPullRing(character.getPullRing());
-
-    return dto;
+    return PersonaMapping.remap(character);
   }
 
   public PersonaDTO readCharacter() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Optional<Persona> loggedCharacter =
-        playerCharacters.findPersonaByPlayer_Username(auth.getName());
-    PersonaDTO dto = new PersonaDTO();
-    if (loggedCharacter.isPresent()) {
-      dto.setId(loggedCharacter.get().getId());
-      dto.setCharacterName(loggedCharacter.get().getCharacterName());
-      dto.setFaction(loggedCharacter.get().getFaction());
-      dto.setAtk(loggedCharacter.get().getAtk());
-      dto.setDmg(loggedCharacter.get().getDmg());
-      dto.setDef(loggedCharacter.get().getDef());
-      dto.setLck(loggedCharacter.get().getLck());
-      dto.setHp(loggedCharacter.get().getHp());
-      dto.setInventory(loggedCharacter.get().getInventory());
-      dto.setEquipedItems(loggedCharacter.get().getInventory());
-      System.out.println(dto.getInventory());
-      dto.setPullRing(loggedCharacter.get().getPullRing());
-    }
-
-    // dto.setInventory(character.getInventory());
-
-    return dto;
-  }
-
-  public void updateCharacter(PersonaDTO dto) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Optional<Persona> loggedCharacter =
-        playerCharacters.findPersonaByPlayer_Username(auth.getName());
-    if (loggedCharacter.isPresent()) {
-      loggedCharacter.get().setAtk(dto.getAtk());
-      loggedCharacter.get().setDmg(dto.getDmg());
-      loggedCharacter.get().setDef(dto.getDef());
-      loggedCharacter.get().setLck(dto.getLck());
-      loggedCharacter.get().setPullRing(dto.getPullRing());
-      playerCharacters.save(loggedCharacter.get());
-    }
+    Persona loggedCharacter = getLoggedInCharacter();
+    return readCharacter(loggedCharacter.getId());
   }
 
   public Persona returnCharacter(Long id) {
     return playerCharacters.findById(id).get();
   }
 
-
   public void toggleEquip(Long id) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Optional<Persona> loggedCharacter =
-        playerCharacters.findPersonaByPlayer_Username(auth.getName());
-    CharacterEquipment equipment = null;
-
-    for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
-      if (Objects.equals(e.getEquipment().getId(), id)) {
-        equipment = e;
-      }
-    }
-
-    if (equipment != null) {
-      if (equipment.getIsEquipped()) { // equipped, equipable -> unequip
-        equipment.setIsEquipped(false);
+    Persona character = getLoggedInCharacter();
+    Optional<CharacterEquipment> equipmentOptional =
+        character.getInventory().stream()
+            .filter(e -> Objects.equals(e.getEquipment().getId(), id))
+            .findFirst();
+    if (equipmentOptional.isPresent()) {
+      CharacterEquipment equipment = equipmentOptional.get();
+      if (equipment.getIsEquipped() || canBeEquipped(equipment.getEquipment().getType())) {
+        equipment.setIsEquipped(!equipment.getIsEquipped());
         pairingRepo.save(equipment);
-
-      } else {
-        if (canBeEquipped(equipment.getEquipment().getType())) { // not equipped, equipable -> equip
-          equipment.setIsEquipped(true);
-          pairingRepo.save(equipment);
-        }
       }
     }
   }
 
   public Boolean canBeEquipped(String type) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Optional<Persona> loggedCharacter =
-        playerCharacters.findPersonaByPlayer_Username(auth.getName());
+    return getLoggedInCharacter().getInventory().stream()
+        .filter(CharacterEquipment::getIsEquipped)
+        .noneMatch(e -> e.getEquipment().getType().equals(type));
+  }
 
-    if (loggedCharacter.isPresent()) {
-      for (CharacterEquipment e : loggedCharacter.get().getInventory()) {
-        Equipment equipment = e.getEquipment();
-        if (e.getIsEquipped()) {
-          if (Objects.equals(equipment.getType(), type)) {
-            return false;
-          }
-        }
-      }
-    }
-    return true;
+  private Persona getLoggedInCharacter() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    return playerCharacters
+        .findPersonaByPlayer_Username(auth.getName())
+        .orElseThrow(
+            () ->
+                new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED, "No logged in character found"));
   }
 }
