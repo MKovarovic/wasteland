@@ -22,14 +22,16 @@
                            th:href="'/activity/work/log'" class="button"></a>
                     </div>
                     <div th:if="${isBusy == true}">
-                        <p> Activity in progress!</p>
-
+                        <h2 th:text="${faction == 'Raider'} ? 'Scavanging in progress': 'Farming in progress'"> </h2>
+                        <p> Honest work may not be as easy as you think.</p>
+                        <p> It certainly takes more time than expected.</p>
+                        <h4 th:text="${minutes + ' minute(s) remaining'}"></h4>
                     </div>
                 </div>
 
                 <div id=picture>
-                    <img th:if="${faction == 'Raider'}" src="/resources/scavangingwork.jpg" alt="raider"/>
-                    <img th:if="${faction == 'Settler'}" src="/resources/fieldwork.jpg" alt="settler"/>
+                    <img th:if="${faction == 'RAIDER'}" src="/resources/scavangingwork.jpg" alt="raider"/>
+                    <img th:if="${faction == 'SETTLER'}" src="/resources/fieldwork.jpg" alt="settler"/>
 
                 </div>
 
