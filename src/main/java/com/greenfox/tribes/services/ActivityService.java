@@ -204,43 +204,43 @@ public class ActivityService {
   // todo try to make this method shorter if possible
   public Pair<Combatant, Combatant> fightStart(Long id) {
     PersonaDTO attacker = equipGladiator(id);
-    CombatantDTO defender = new CombatantDTO();
-    if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVP) {
-      defender =
-          equipGladiator(activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID());
-    } else if (activityLogRepository.findActivityLogByPersonaId(attacker.getId()).get().getType()
-        == ActivityType.PVE) {
-      defender =
-          monsterService.findMonster(
-              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID());
-    }
+    CombatantDTO defender = getDefender(id);
 
     Pair<CombatantDTO, CombatantDTO> combatants = fightOutcome(attacker, defender);
 
-    Combatant attackerCombatant =
-        playerCharacters
-            .findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    Combatant defenderCombatant = new Combatant();
-    if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVP) {
-      defenderCombatant =
-          playerCharacters
-              .findById(activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID())
-              .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    } else if (activityLogRepository.findActivityLogByPersonaId(id).get().getType()
-        == ActivityType.PVE) {
-      defenderCombatant =
-          monsterRepository
-              .findById(activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID())
-              .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Combatant attackerCombatant = getCombatant(id, "Persona");
+    Combatant defenderCombatant;
+    if(activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVE) {
+      defenderCombatant = getCombatant(activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), "Monster");
+    } else {
+      defenderCombatant = getCombatant(activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), "Persona");
     }
-
     if (Objects.equals(combatants.getFirst(), id)) {
-      return Pair.of(attackerCombatant, defenderCombatant);
+        return Pair.of(attackerCombatant, defenderCombatant);
     } else {
       return Pair.of(defenderCombatant, attackerCombatant);
     }
   }
+
+  private CombatantDTO getDefender(Long id) {
+    ActivityLog activityLog = activityLogRepository.findActivityLogByPersonaId(id).get();
+    if (activityLog.getType() == ActivityType.PVP) {
+      return equipGladiator(activityLog.getEnemyID());
+    } else if (activityLog.getType() == ActivityType.PVE) {
+      return monsterService.findMonster(activityLog.getEnemyID());
+    }
+    return null;
+  }
+  private Combatant getCombatant(Long id, String combatantType) {
+    if (combatantType == "Persona") {
+      return playerCharacters.findById(id).orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    } else if (combatantType == "Monster") {
+      return monsterRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such monster"));
+    }
+    return null;
+  }
+
+
 
   public PersonaDTO equipGladiator(Long id) {
     Persona gladiator =
@@ -264,7 +264,7 @@ public class ActivityService {
     return gladiatorDTO;
   }
 
-  // todo use pair like in fightStart
+
   public Pair<CombatantDTO, CombatantDTO> fightOutcome(PersonaDTO attacker, CombatantDTO defender) {
     int doom = 0;
     int initialHPAttacker = attacker.getHp();
