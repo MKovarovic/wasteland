@@ -43,6 +43,11 @@ public class ActivityController {
     return model;
   }
 
+  @GetMapping("/notHere")
+  public String notHere() {
+    return "game-sites/not-here";
+  }
+
   @GetMapping("/work")
   public String work(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
