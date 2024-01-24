@@ -182,16 +182,13 @@ public class CombatService {
                 playerCharacters
                         .findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-        Faction faction;
-        if (attacker.getFaction() == Faction.RAIDER) {
-            faction = Faction.SETTLER;
-        } else {
-            faction = Faction.RAIDER;
-        }
+
+        Faction faction = attacker.getFaction() == Faction.RAIDER ? Faction.SETTLER : Faction.RAIDER;
+
 
         Persona defender = randomEnemy(faction);
         activityService.logPVPActivity(defender.getId());
-        // -----------
+
 
     }
 
