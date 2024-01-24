@@ -81,14 +81,14 @@ public class ActivityController {
 
     if (type == null) {
       return "redirect:/activity/pvp/welcome?id=" + userHero.getId();
-    } else if (type == ActivityType.PVP) {
-
-      if (activityService.isFinished(userHero.getId())) {
-        return "redirect:/activity/pvp/reward?id=" + userHero.getId();
-      }
-      return "redirect:/activity/pvp/fight?id=" + userHero.getId();
     }
-    return "redirect:/activity/notHere";
+    if (type != ActivityType.PVP) {
+      return "redirect:/activity/notHere";
+    }
+    if (activityService.isFinished(userHero.getId())) {
+      return "redirect:/activity/pvp/reward?id=" + userHero.getId();
+    }
+    return "redirect:/activity/pvp/fight?id=" + userHero.getId();
   }
 
   @GetMapping("/pvp/welcome")
