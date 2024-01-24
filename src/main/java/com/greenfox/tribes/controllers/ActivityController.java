@@ -104,6 +104,7 @@ public class ActivityController {
   public String pvpWelcome(Model model, @RequestParam("id") long id) {
     Persona userHero = userRepository.findById(id).get().getPersona();
     model = commonData(model);
+    model.addAttribute("name", userHero.getCharacterName());
 
     return "game-sites/pvp-welcome";
   }
