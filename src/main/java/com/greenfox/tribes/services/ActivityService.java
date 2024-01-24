@@ -38,7 +38,6 @@ public class ActivityService {
   private CharacterEquipmentRepository pairingRepo;
   private MonsterService monsterService;
 
-  // todo: try to split this into three methods
   public void logWorkActivity() {
     logActivity(ActivityType.WORK, 20, 10, false);
   }
@@ -107,7 +106,6 @@ public class ActivityService {
         / 60000;
   }
 
-  // todo: check which one to use where
   public boolean activityInProgress(Long id) {
     Optional<ActivityLog> activity = activityLogRepository.findActivityLogByPersonaId(id);
     if (activity.isEmpty()) {
@@ -217,7 +215,7 @@ public class ActivityService {
               activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID());
     }
 
-    CombatantDTO[] combatants = fightOutcome(attacker, defender);
+    Pair<CombatantDTO, CombatantDTO> combatants = fightOutcome(attacker, defender);
 
     Combatant attackerCombatant =
         playerCharacters
@@ -237,7 +235,7 @@ public class ActivityService {
               .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     }
 
-    if (Objects.equals(combatants[0].getId(), id)) {
+    if (Objects.equals(combatants.getFirst(), id)) {
       return Pair.of(attackerCombatant, defenderCombatant);
     } else {
       return Pair.of(defenderCombatant, attackerCombatant);
@@ -267,7 +265,7 @@ public class ActivityService {
   }
 
   // todo use pair like in fightStart
-  public CombatantDTO[] fightOutcome(PersonaDTO attacker, CombatantDTO defender) {
+  public Pair<CombatantDTO, CombatantDTO> fightOutcome(PersonaDTO attacker, CombatantDTO defender) {
     int doom = 0;
     int initialHPAttacker = attacker.getHp();
     int initialHPDefender = defender.getHp();
@@ -296,21 +294,19 @@ public class ActivityService {
     CombatantDTO winner;
     CombatantDTO loser;
 
+
+
+
+
     if (attacker.getHp() <= 0) {
-      winner = defender;
-      loser = attacker;
+      return Pair.of(defender, attacker);
+
     } else {
-      winner = attacker;
-      loser = defender;
+
+      return Pair.of(attacker, defender);
+
     }
 
-    CombatantDTO[] result = new CombatantDTO[2];
-    result[0] = winner;
-    result[1] = loser;
-
-    attacker.setHp(initialHPAttacker);
-    defender.setHp(initialHPDefender);
-    return result;
   }
 
   // REWARD - STEAL OR HAVE STOLEN
