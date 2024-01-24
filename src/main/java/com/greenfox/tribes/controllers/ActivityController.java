@@ -113,10 +113,10 @@ public class ActivityController {
     Persona userHero = userRepository.findById(id).get().getPersona();
     model = commonData(model);
 
-    int pullrings = userHero.getPullRing();
+    int initialPullRings  = userHero.getPullRing();
     Pair<Combatant, Combatant> combatants = combatService.fightStart(userHero.getId());
     combatService.arenaPrize(combatants);
-    int reward = userHero.getPullRing() - pullrings;
+    int reward = userHero.getPullRing() - initialPullRings ;
     model.addAttribute("reward", reward);
     activityService.deleteActivity(userHero.getId());
 
@@ -191,10 +191,10 @@ public class ActivityController {
     Persona userHero = userRepository.findById(id).get().getPersona();
     model = commonData(model);
 
-    int pullrings = userHero.getPullRing();
+    int initialPullRings  = userHero.getPullRing();
     Pair<Combatant, Combatant> combatants = combatService.fightStart(userHero.getId());
     combatService.huntPrize(combatants);
-    int reward = userHero.getPullRing() - pullrings;
+    int reward = userHero.getPullRing() - initialPullRings ;
     model.addAttribute("reward", reward);
     activityService.deleteActivity(userHero.getId());
 
