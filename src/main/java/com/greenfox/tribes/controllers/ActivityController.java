@@ -5,14 +5,11 @@ import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
 import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.models.Combatant;
-import com.greenfox.tribes.services.ActivityService;
+import com.greenfox.tribes.services.*;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.repositories.MonsterRepository;
 import com.greenfox.tribes.models.Persona;
-import com.greenfox.tribes.services.CharacterService;
-import com.greenfox.tribes.services.MonsterService;
-import com.greenfox.tribes.services.PortraitService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.security.core.Authentication;
@@ -31,6 +28,7 @@ public class ActivityController {
   private UserRepository userRepository;
   private ActivityService activityService;
   private MonsterRepository monsterRepository;
+  private CombatService combatService;
   private CharacterService characterService;
   private PortraitService portraitService;
   private MonsterService monsterService;
@@ -105,8 +103,8 @@ public class ActivityController {
     model = commonData(model);
 
     int pullrings = userHero.getPullRing();
-    Pair<Combatant, Combatant> combatants = activityService.fightStart(userHero.getId());
-    activityService.arenaPrize(combatants);
+    Pair<Combatant, Combatant> combatants = combatService.fightStart(userHero.getId());
+    combatService.arenaPrize(combatants);
     int reward = userHero.getPullRing() - pullrings;
     model.addAttribute("reward", reward);
     activityService.deleteActivity(userHero.getId());
@@ -137,7 +135,7 @@ public class ActivityController {
   public String logPvp() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    activityService.pvpMatching(user.getPersona().getId());
+    combatService.pvpMatching(user.getPersona().getId());
     return "redirect:/activity/pvp";
   }
 
@@ -183,8 +181,8 @@ public class ActivityController {
     model = commonData(model);
 
     int pullrings = userHero.getPullRing();
-    Pair<Combatant, Combatant> combatants = activityService.fightStart(userHero.getId());
-    activityService.huntPrize(combatants);
+    Pair<Combatant, Combatant> combatants = combatService.fightStart(userHero.getId());
+    combatService.huntPrize(combatants);
     int reward = userHero.getPullRing() - pullrings;
     model.addAttribute("reward", reward);
     activityService.deleteActivity(userHero.getId());
@@ -215,7 +213,7 @@ public class ActivityController {
   public String logPve() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    activityService.pveMatching(user.getPersona().getId());
+    combatService.pveMatching(user.getPersona().getId());
     return "redirect:/activity/pve";
   }
 }
