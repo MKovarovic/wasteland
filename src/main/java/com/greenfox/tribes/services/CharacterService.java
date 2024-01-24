@@ -43,7 +43,7 @@ public class CharacterService {
   }
 
   public PersonaDTO readCharacter() {
-    Persona loggedCharacter = getLoggedInCharacter();
+    Persona loggedCharacter = getLoggedInPersona();
     return readCharacter(loggedCharacter.getId());
   }
 
@@ -52,7 +52,7 @@ public class CharacterService {
   }
 
   public void toggleEquip(Long id) {
-    Persona character = getLoggedInCharacter();
+    Persona character = getLoggedInPersona();
     Optional<CharacterEquipment> equipmentOptional =
         character.getInventory().stream()
             .filter(e -> Objects.equals(e.getEquipment().getId(), id))
@@ -67,12 +67,12 @@ public class CharacterService {
   }
 
   public Boolean canBeEquipped(String type) {
-    return getLoggedInCharacter().getInventory().stream()
+    return getLoggedInPersona().getInventory().stream()
         .filter(CharacterEquipment::getIsEquipped)
         .noneMatch(e -> e.getEquipment().getType().equals(type));
   }
 
-  private Persona getLoggedInCharacter() {
+  public Persona getLoggedInPersona() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     return playerCharacters
         .findPersonaByPlayer_Username(auth.getName())

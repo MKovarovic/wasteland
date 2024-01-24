@@ -40,33 +40,34 @@ public class ActivityService {
   private MonsterService monsterService;
 
   // todo: try to split this into three methods
-  public void logActivity(ActivityType type, Long personaId) {
+  public void logWorkActivity() {
+    logActivity(ActivityType.WORK, 20, 10, false);
+  }
+
+  public void logPVPActivity(Long defenderId) {
+    logActivity(ActivityType.PVP, 5, 100, false);
+    Long attackerId = characterService.getLoggedInPersona().getId();
+    activityLogRepository.findActivityLogByPersonaId(attackerId).get().setEnemyID(defenderId);
+    activityLogRepository.save(activityLogRepository.findActivityLogByPersonaId(attackerId).get());
+  }
+
+  public void logPVEActivity(Long defenderId) {
+    logActivity(ActivityType.PVE, 10, 100, false);
+    Long attackerId = characterService.getLoggedInPersona().getId();
+    ActivityLog activityLog = activityLogRepository.findActivityLogByPersonaId(attackerId).get();
+    activityLog.setEnemyID(defenderId);
+    activityLogRepository.save(activityLog);
+  }
+
+  public void logActivity(ActivityType type, Integer time, Integer pullRings,
+                          Boolean givesItem) {
     ActivityLog activity = new ActivityLog();
     activity.setType(type);
     activity.setTimestamp(System.currentTimeMillis());
-    switch (type) {
-      case WORK:
-        activity.setTime(20);
-        activity.setPullRings(10);
-        activity.setGivesItem(false);
-        break;
-      case PVP:
-        activity.setTime(5);
-        activity.setPullRings(100);
-        activity.setGivesItem(false);
-        break;
-      case PVE:
-        activity.setTime(10);
-        activity.setPullRings(200);
-        activity.setGivesItem(true);
-        break;
-      default:
-        break;
-    }
-    Persona persona =
-        playerCharacters
-            .findById(personaId)
-            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    activity.setTime(time);
+    activity.setPullRings(pullRings);
+    activity.setGivesItem(givesItem);
+    Persona persona = characterService.getLoggedInPersona();
     activity.setPersona(persona);
     activityLogRepository.save(activity);
   }
@@ -136,9 +137,9 @@ public class ActivityService {
     persona.setPullRing(
         persona.getPullRing()
             + activityLogRepository
-                .findActivityLogByPersonaId(initiator.getId())
-                .get()
-                .getPullRings());
+            .findActivityLogByPersonaId(initiator.getId())
+            .get()
+            .getPullRings());
     if (activityLogRepository.findActivityLogByPersonaId(initiator.getId()).get().getGivesItem()) {
       Random rnd = new Random();
       int item = rnd.nextInt((int) equipmentRepository.count());
@@ -165,7 +166,7 @@ public class ActivityService {
     }
 
     Persona defender = randomEnemy(faction);
-    logPVP(attacker.getId(), defender.getId());
+    logPVPActivity(defender.getId());
     // -----------
 
   }
@@ -181,12 +182,6 @@ public class ActivityService {
     return defender;
   }
 
-  public void logPVP(Long attackerId, Long defenderId) {
-    logActivity(ActivityType.PVP, attackerId);
-    activityLogRepository.findActivityLogByPersonaId(attackerId).get().setEnemyID(defenderId);
-    activityLogRepository.save(activityLogRepository.findActivityLogByPersonaId(attackerId).get());
-  }
-
   public void pveMatching(Long id) {
     Persona attacker =
         playerCharacters
@@ -194,7 +189,7 @@ public class ActivityService {
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
     Monster defender = randomMonster();
-    logPVE(attacker.getId(), defender.getId());
+    logPVEActivity(defender.getId());
   }
 
   public Monster randomMonster() {
@@ -206,13 +201,6 @@ public class ActivityService {
                     .orElseThrow(() -> new IllegalArgumentException("No such Monster")))
             .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
     return defender;
-  }
-
-  public void logPVE(Long attackerId, Long defenderId) {
-    logActivity(ActivityType.PVE, attackerId);
-    ActivityLog activityLog = activityLogRepository.findActivityLogByPersonaId(attackerId).get();
-    activityLog.setEnemyID(defenderId);
-    activityLogRepository.save(activityLog);
   }
 
   // COMBAT RESOLUTION

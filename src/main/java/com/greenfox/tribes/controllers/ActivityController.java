@@ -61,8 +61,8 @@ public class ActivityController {
   }
 
   @GetMapping("/work/log")
-  public String logWork(@RequestParam("id") long id) {
-    activityService.logActivity(ActivityType.WORK, id);
+  public String logWork() {
+    activityService.logWorkActivity();
     return "redirect:/activity/work";
   }
 
