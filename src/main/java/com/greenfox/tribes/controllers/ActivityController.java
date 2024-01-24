@@ -56,7 +56,11 @@ public class ActivityController {
       activityService.deleteActivity(user.getPersona().getId());
     }
 
-    model.addAttribute("name", user.getPersona().getCharacterName());
+    if (activityService.activityInProgress(user.getPersona().getId()) && activityService.getActivity(user.getPersona().getId()).getType() != ActivityType.WORK) {
+      return "redirect:/activity/notHere";
+
+    }
+      model.addAttribute("name", user.getPersona().getCharacterName());
     model.addAttribute("faction", user.getPersona().getFaction().toString());
     model.addAttribute("isBusy", activityService.activityInProgress(user.getPersona().getId()));
     model.addAttribute("id", user.getPersona().getId());
