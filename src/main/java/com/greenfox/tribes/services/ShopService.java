@@ -44,16 +44,16 @@ public class ShopService {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     CharacterEquipment pair = new CharacterEquipment();
-    pair.setPair(user.getPersona(), equipmentService.returnItem(id));
+    pair.setPair(user.getPersona(), equipmentService.getItem(id));
     user.getPersona()
-        .setPullRing(user.getPersona().getPullRing() - equipmentService.returnItem(id).getPrice());
+        .setPullRing(user.getPersona().getPullRing() - equipmentService.getItem(id).getPrice());
     characterEquipmentRepository.save(pair);
   }
 
   public void sellStuff(Long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    Equipment equipment = equipmentService.returnItem(id);
+    Equipment equipment = equipmentService.getItem(id);
     CharacterEquipment pair =
         characterEquipmentRepository.findFirstByEquipmentAndPersona(equipment, user.getPersona());
     if (pair != null) {

@@ -33,7 +33,7 @@ public class BaseIntegrationTest extends BaseTest {
     equipmentService.newItem("Hard hat", "Helmet", 0, 0, 0, 0, 5, 0);
     characterService.addCharacter("MaidBot3000", 20, 30, 10, 30, 10, "Bots", 10);
     CharacterEquipment pair = new CharacterEquipment();
-    pair.setPair(characterService.returnCharacter(1L), equipmentService.returnItem(1L));
+    pair.setPair(characterService.returnCharacter(1L), equipmentService.getItem(1L));
     pairingRepo.save(pair);
   }
 }
