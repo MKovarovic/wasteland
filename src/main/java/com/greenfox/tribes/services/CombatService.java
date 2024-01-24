@@ -99,8 +99,9 @@ public class CombatService {
 
     public Pair<CombatantDTO, CombatantDTO> fightOutcome(PersonaDTO attacker, CombatantDTO defender) {
         int doom = 0;
-        int initialHPAttacker = attacker.getHp();
-        int initialHPDefender = defender.getHp();
+        CombatantDTO winner;
+        CombatantDTO loser;
+
         Random rnd = new Random();
         while (attacker.getHp() > 0 && defender.getHp() > 0) {
             int attack = rnd.nextInt((int) attacker.getAtk());
@@ -123,21 +124,15 @@ public class CombatService {
             }
         }
 
-        CombatantDTO winner;
-        CombatantDTO loser;
-
-
-
-
-
         if (attacker.getHp() <= 0) {
-            return Pair.of(defender, attacker);
-
+            winner = defender;
+            loser = attacker;
         } else {
-
-            return Pair.of(attacker, defender);
-
+            winner = attacker;
+            loser = defender;
         }
+
+        return Pair.of(winner, loser);
 
     }
 
