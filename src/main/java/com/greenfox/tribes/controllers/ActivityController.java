@@ -14,6 +14,7 @@ import com.greenfox.tribes.services.CharacterService;
 import com.greenfox.tribes.services.MonsterService;
 import com.greenfox.tribes.services.PortraitService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -104,7 +105,7 @@ public class ActivityController {
     model = commonData(model);
 
     int pullrings = userHero.getPullRing();
-    Combatant[] combatants = activityService.fightStart(userHero.getId());
+    Pair<Combatant, Combatant> combatants = activityService.fightStart(userHero.getId());
     activityService.arenaPrize(combatants);
     int reward = userHero.getPullRing() - pullrings;
     model.addAttribute("reward", reward);
@@ -182,7 +183,7 @@ public class ActivityController {
     model = commonData(model);
 
     int pullrings = userHero.getPullRing();
-    Combatant[] combatants = activityService.fightStart(userHero.getId());
+    Pair<Combatant, Combatant> combatants = activityService.fightStart(userHero.getId());
     activityService.huntPrize(combatants);
     int reward = userHero.getPullRing() - pullrings;
     model.addAttribute("reward", reward);

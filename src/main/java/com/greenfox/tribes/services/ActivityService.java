@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -215,9 +216,8 @@ public class ActivityService {
   }
 
   // COMBAT RESOLUTION
-
-  // todo: use pair  ???
-  public Combatant[] fightStart(Long id) {
+  // todo try to make this method shorter if possible
+  public Pair<Combatant, Combatant> fightStart(Long id) {
     PersonaDTO attacker = equipGladiator(id);
     CombatantDTO defender = new CombatantDTO();
     if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVP) {
@@ -250,16 +250,11 @@ public class ActivityService {
               .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     }
 
-    Combatant[] result = new Combatant[2];
     if (Objects.equals(combatants[0].getId(), id)) {
-      result[0] = attackerCombatant;
-      result[1] = defenderCombatant;
+      return Pair.of(attackerCombatant, defenderCombatant);
     } else {
-      result[0] = defenderCombatant;
-      result[1] = attackerCombatant;
+      return Pair.of(defenderCombatant, attackerCombatant);
     }
-
-    return result;
   }
 
   public PersonaDTO equipGladiator(Long id) {
@@ -284,6 +279,7 @@ public class ActivityService {
     return gladiatorDTO;
   }
 
+  // todo use pair like in fightStart
   public CombatantDTO[] fightOutcome(PersonaDTO attacker, CombatantDTO defender) {
     int doom = 0;
     int initialHPAttacker = attacker.getHp();
@@ -332,14 +328,14 @@ public class ActivityService {
 
   // REWARD - STEAL OR HAVE STOLEN
 
-  public void arenaPrize(Combatant[] combatants) {
+  public void arenaPrize(Pair<Combatant, Combatant> combatants) {
     Persona winnerPersona =
         playerCharacters
-            .findById(combatants[0].getId())
+            .findById(combatants.getFirst().getId())
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     Persona loserPersona =
         playerCharacters
-            .findById(combatants[1].getId())
+            .findById(combatants.getSecond().getId())
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
     getReward(winnerPersona.getId());
@@ -350,13 +346,13 @@ public class ActivityService {
     playerCharacters.save(loserPersona);
   }
 
-  public void huntPrize(Combatant[] combatants) {
+  public void huntPrize(Pair<Combatant, Combatant> combatants) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona loggedCharacter = user.getPersona();
-    if (combatants[0] == loggedCharacter) {
+    if (combatants.getFirst() == loggedCharacter) {
       loggedCharacter.setPullRing(
-          loggedCharacter.getPullRing() + (combatants[1].getPullRing() / 2));
+          loggedCharacter.getPullRing() + (combatants.getSecond().getPullRing() / 2));
       getReward(loggedCharacter.getId());
     } else {
       loggedCharacter.setPullRing(
