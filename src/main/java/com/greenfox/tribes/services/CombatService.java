@@ -18,7 +18,9 @@ import java.util.Random;
 
 @Service
 @AllArgsConstructor
+
 public class CombatService {
+
     private ActivityLogRepository activityLogRepository;
     private UserRepository userRepository;
     private CustomUserDetailService userService;
@@ -218,4 +220,7 @@ public class CombatService {
                         .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
         return defender;
     }
+
+
+
     }

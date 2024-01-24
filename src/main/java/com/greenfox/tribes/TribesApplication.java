@@ -4,6 +4,7 @@ import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 
 import com.greenfox.tribes.services.CharacterService;
+import com.greenfox.tribes.services.CombatService;
 import com.greenfox.tribes.services.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -17,7 +18,8 @@ public class TribesApplication implements ApplicationRunner {
   @Autowired UserRepository userRepository;
   @Autowired EquipmentService equipmentService;
   @Autowired CharacterService characterService;
-
+@Autowired
+  CombatService combatService;
   @Autowired CharacterEquipmentRepository pairingRepo;
 
   public static void main(String[] args) {
