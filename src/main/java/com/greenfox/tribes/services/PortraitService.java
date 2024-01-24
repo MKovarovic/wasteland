@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class PortraitService {
 
-  PersonaRepository personaRepository;
+  private PersonaRepository personaRepository;
 
-  PortraitRepository portraitRepository;
+  private PortraitRepository portraitRepository;
 
   public Long createPortrait(
       String head,

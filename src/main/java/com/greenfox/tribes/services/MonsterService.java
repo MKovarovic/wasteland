@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class MonsterService {
 
-  MonsterRepository monsterRepository;
+  private MonsterRepository monsterRepository;
 
   public void createMonster(String name, int hp, int atk, int dmg, int def, int lck, int gold) {
     Monster monster = new Monster();

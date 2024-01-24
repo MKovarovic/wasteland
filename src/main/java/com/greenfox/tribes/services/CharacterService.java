@@ -22,8 +22,8 @@ import org.springframework.web.server.ResponseStatusException;
 @AllArgsConstructor
 public class CharacterService {
 
-  PersonaRepository playerCharacters;
-  CharacterEquipmentRepository pairingRepo;
+  private PersonaRepository playerCharacters;
+  private CharacterEquipmentRepository pairingRepo;
 
   public Persona addCharacter(
       String name, int hp, int atk, int dmg, int def, int lck, String faction, int pullRing) {

@@ -11,7 +11,7 @@ import java.util.Random;
 @Service
 @AllArgsConstructor
 public class EquipmentService {
-  EquipmentRepository equipmentRepository;
+  private EquipmentRepository equipmentRepository;
 
   public Equipment randomEquipment() {
     List<Equipment> equipmentList = equipmentRepository.findAll();

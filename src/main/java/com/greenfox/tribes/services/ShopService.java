@@ -7,7 +7,6 @@ import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.models.CharacterEquipment;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.repositories.EquipmentRepository;
-import com.greenfox.tribes.repositories.PersonaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,13 +18,10 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class ShopService {
 
-  EquipmentRepository equipmentRepository;
-  EquipmentService equipmentService;
-  UserRepository userRepository;
-
-  PersonaRepository personaRepository;
-
-  CharacterEquipmentRepository characterEquipmentRepository;
+  private EquipmentRepository equipmentRepository;
+  private EquipmentService equipmentService;
+  private UserRepository userRepository;
+  private CharacterEquipmentRepository characterEquipmentRepository;
 
   public ArrayList<EquipmentDTO> getShoppingList() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();

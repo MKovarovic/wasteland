@@ -29,10 +29,9 @@ import java.util.Random;
 @AllArgsConstructor
 public class ActivityService {
   private ActivityLogRepository activityLogRepository;
-
-  UserRepository userRepository;
-  CustomUserDetailService userService;
-  CharacterService characterService;
+  private UserRepository userRepository;
+  private CustomUserDetailService userService;
+  private CharacterService characterService;
   private PersonaRepository playerCharacters;
   private MonsterRepository monsterRepository;
   private EquipmentRepository equipmentRepository;
