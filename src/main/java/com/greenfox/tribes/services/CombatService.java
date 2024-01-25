@@ -50,7 +50,7 @@ public class CombatService {
           getCombatant(
               activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), "Persona");
     }
-    if (Objects.equals(combatants.getFirst(), id)) {
+    if (Objects.equals(combatants.getFirst().getId(), id)) {
       return Pair.of(attackerCombatant, defenderCombatant);
     } else {
       return Pair.of(defenderCombatant, attackerCombatant);
@@ -68,11 +68,11 @@ public class CombatService {
   }
 
   private Combatant getCombatant(Long id, String combatantType) {
-    if (combatantType == "Persona") {
+    if (combatantType.equals("Persona")) {
       return playerCharacters
           .findById(id)
           .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    } else if (combatantType == "Monster") {
+    } else if (combatantType.equals("Monster")) {
       return monsterRepository
           .findById(id)
           .orElseThrow(() -> new IllegalArgumentException("No such monster"));

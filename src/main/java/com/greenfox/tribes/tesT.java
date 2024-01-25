@@ -18,26 +18,30 @@ public class tesT {
     public String test(){
         PersonaDTO attacker = new PersonaDTO();
         CombatantDTO defender = new CombatantDTO();
-        attacker.setHp(100);
+        attacker.setHp(50);
         attacker.setAtk(50);
-        attacker.setDef(30);
-        attacker.setDmg(20);
-        attacker.setLck(60);
-        defender.setHp(100);
+        attacker.setDef(10);
+        attacker.setDmg(10);
+        attacker.setLck(10);
+        defender.setHp(50);
         defender.setAtk(50);
-        defender.setDef(30);
-        defender.setDmg(20);
-        defender.setLck(60);
+        defender.setDef(10);
+        defender.setDmg(10);
+        defender.setLck(10);
 
-        PersonaDTO attacker2 = characterService.readCharacter(1L);
-        CombatantDTO defender2 = characterService.readCharacter(2L);
+       /* PersonaDTO attacker2 = characterService.readCharacter(1L);
+        CombatantDTO defender2 = characterService.readCharacter(2L);*/
 
         int totalRounds = 10000;
         int attackerWins = 0;
 
         for (int i = 0; i < totalRounds; i++) {
+            PersonaDTO attacker2 = characterService.readCharacter(1L);
+            CombatantDTO defender2 = characterService.readCharacter(2L);
+/*            attacker.setHp(50);
+            defender.setHp(50);*/
             Pair<CombatantDTO, CombatantDTO> outcome = combatService.fightOutcome(attacker2, defender2);
-            if (outcome.getFirst() == attacker) {
+            if (outcome.getFirst() == attacker2) {
                 attackerWins++;
             }
         }
