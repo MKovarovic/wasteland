@@ -3,12 +3,14 @@ package com.greenfox.tribes.models;
 import com.greenfox.tribes.enums.Faction;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @NoArgsConstructor
 public class Persona extends Combatant {

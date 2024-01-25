@@ -53,15 +53,18 @@ public class PersonaService {
 
   public void toggleEquip(Long equipmentId) {
 
-      Persona persona = getLoggedInPersona();
-      Optional<CharacterEquipment> equipmentOptional = persona.getInventory().stream()
-              .filter(e -> Objects.equals(e.getEquipment().getId(), equipmentId))
-              .findFirst();
-      equipmentOptional.ifPresent(equipment -> {
-        if (equipment.getIsEquipped() || canBeEquipped(equipment.getEquipment().getType())) {
-          equipment.setIsEquipped(!equipment.getIsEquipped());
-          pairingRepo.save(equipment);
-        }});
+    Persona persona = getLoggedInPersona();
+    Optional<CharacterEquipment> equipmentOptional =
+        persona.getInventory().stream()
+            .filter(e -> Objects.equals(e.getEquipment().getId(), equipmentId))
+            .findFirst();
+    equipmentOptional.ifPresent(
+        equipment -> {
+          if (equipment.getIsEquipped() || canBeEquipped(equipment.getEquipment().getType())) {
+            equipment.setIsEquipped(!equipment.getIsEquipped());
+            pairingRepo.save(equipment);
+          }
+        });
   }
 
   public Boolean canBeEquipped(String type) {

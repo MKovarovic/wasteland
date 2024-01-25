@@ -39,20 +39,20 @@ public class ShopService {
   public void buyStuff(Long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    CharacterEquipment characterEquipment  = new CharacterEquipment();
-    characterEquipment .setPair(user.getPersona(), equipmentService.getItem(id));
+    CharacterEquipment characterEquipment = new CharacterEquipment();
+    characterEquipment.setPair(user.getPersona(), equipmentService.getItem(id));
     user.getPersona()
         .setPullRing(user.getPersona().getPullRing() - equipmentService.getItem(id).getPrice());
-    characterEquipmentRepository.save(characterEquipment );
+    characterEquipmentRepository.save(characterEquipment);
   }
 
   public void sellStuff(Long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Equipment equipment = equipmentService.getItem(id);
-    CharacterEquipment characterEquipment  =
+    CharacterEquipment characterEquipment =
         characterEquipmentRepository.findFirstByEquipmentAndPersona(equipment, user.getPersona());
-    if (characterEquipment  != null) {
+    if (characterEquipment != null) {
       characterEquipmentRepository.delete(characterEquipment);
       user.getPersona().setPullRing(user.getPersona().getPullRing() + (equipment.getPrice() / 2));
     }

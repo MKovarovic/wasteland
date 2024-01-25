@@ -1,10 +1,7 @@
 package com.greenfox.tribes.services;
 
 import com.greenfox.tribes.dtos.ActivityDTO;
-import com.greenfox.tribes.dtos.CombatantDTO;
-import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.enums.ActivityType;
-import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.models.*;
 import com.greenfox.tribes.repositories.ActivityLogRepository;
 import com.greenfox.tribes.repositories.EquipmentRepository;
@@ -13,14 +10,11 @@ import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.repositories.MonsterRepository;
 import com.greenfox.tribes.repositories.PersonaRepository;
 
-import java.util.List;
-import java.util.Objects;
+
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.util.Pair;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Random;

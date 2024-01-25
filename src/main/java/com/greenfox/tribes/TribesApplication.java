@@ -16,10 +16,8 @@ public class TribesApplication implements ApplicationRunner {
 
   @Autowired UserRepository userRepository;
   @Autowired EquipmentService equipmentService;
-  @Autowired
-  PersonaService characterService;
-@Autowired
-  CombatService combatService;
+  @Autowired PersonaService characterService;
+  @Autowired CombatService combatService;
   @Autowired CharacterEquipmentRepository pairingRepo;
 
   public static void main(String[] args) {

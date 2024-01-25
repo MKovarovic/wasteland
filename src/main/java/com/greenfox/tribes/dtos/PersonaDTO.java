@@ -3,11 +3,13 @@ package com.greenfox.tribes.dtos;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.models.CharacterEquipment;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class PersonaDTO extends CombatantDTO {
 
   private Long id;

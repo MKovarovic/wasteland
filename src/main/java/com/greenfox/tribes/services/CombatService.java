@@ -36,24 +36,28 @@ public class CombatService {
 
   public Pair<Combatant, Combatant> fightStart(Long id) {
     PersonaDTO attacker = equipGladiator(id);
-    PersonaDTO defender = getDefender(id);
+    CombatantDTO defender = getDefender(id);
 
-    Pair<PersonaDTO, PersonaDTO> combatants = fightOutcome(attacker, defender);
+    Pair<CombatantDTO, CombatantDTO> combatants = fightOutcome(attacker, defender);
 
-    Persona attackerCombatant = personaRepository
+    Persona attackerCombatant =
+        personaRepository
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    Combatant defenderCombatant = personaRepository.findById(id)
+    Combatant defenderCombatant =
+        personaRepository
+            .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVE) {
       defenderCombatant =
           getCombatant(
-              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), CombatantType.MONSTER);
+              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(),
+              CombatantType.MONSTER);
     } else {
       defenderCombatant =
           getCombatant(
-              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), CombatantType.PERSONA);
-
+              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(),
+              CombatantType.PERSONA);
     }
     if (Objects.equals(combatants.getFirst().getId(), id)) {
 
@@ -73,7 +77,6 @@ public class CombatService {
     return null;
   }
 
-
   private Combatant getCombatant(Long id, CombatantType combatantType) {
     if (combatantType == CombatantType.PERSONA) {
       return personaRepository
@@ -86,7 +89,6 @@ public class CombatService {
     }
     return null;
   }
-
 
   public PersonaDTO equipGladiator(Long id) {
     Persona gladiator =
@@ -215,9 +217,10 @@ public class CombatService {
 
   public Monster randomMonster() {
     Monster defender =
-            monsterRepository
+        monsterRepository
             .findById(
-                monsterRepository.findRandomMonsterId()
+                monsterRepository
+                    .findRandomMonsterId()
                     .orElseThrow(() -> new IllegalArgumentException("No such Monster")))
             .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
     return defender;

@@ -56,9 +56,9 @@ public class ActivityController {
       activityService.deleteActivity(user.getPersona().getId());
     }
 
-    if (activityService.activityInProgress(user.getPersona().getId()) && activityService.getActivity(user.getPersona().getId()).getType() != ActivityType.WORK) {
+    if (activityService.activityInProgress(user.getPersona().getId())
+        && activityService.getActivity(user.getPersona().getId()).getType() != ActivityType.WORK) {
       return "redirect:/activity/notHere";
-
     }
     model.addAttribute("name", user.getPersona().getCharacterName());
     model.addAttribute("faction", user.getPersona().getFaction().toString());
@@ -114,10 +114,10 @@ public class ActivityController {
     Persona userHero = userRepository.findById(id).get().getPersona();
     model = commonData(model);
 
-    int initialPullRings  = userHero.getPullRing();
+    int initialPullRings = userHero.getPullRing();
     Pair<Combatant, Combatant> combatants = combatService.fightStart(userHero.getId());
     combatService.arenaPrize(combatants);
-    int reward = userHero.getPullRing() - initialPullRings ;
+    int reward = userHero.getPullRing() - initialPullRings;
     model.addAttribute("reward", reward);
     activityService.deleteActivity(userHero.getId());
 
@@ -192,10 +192,10 @@ public class ActivityController {
     Persona userHero = userRepository.findById(id).get().getPersona();
     model = commonData(model);
 
-    int initialPullRings  = userHero.getPullRing();
+    int initialPullRings = userHero.getPullRing();
     Pair<Combatant, Combatant> combatants = combatService.fightStart(userHero.getId());
     combatService.huntPrize(combatants);
-    int reward = userHero.getPullRing() - initialPullRings ;
+    int reward = userHero.getPullRing() - initialPullRings;
     model.addAttribute("reward", reward);
     activityService.deleteActivity(userHero.getId());
 
