@@ -2,10 +2,9 @@ package com.greenfox.tribes;
 
 import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
-
-import com.greenfox.tribes.services.CharacterService;
 import com.greenfox.tribes.services.CombatService;
 import com.greenfox.tribes.services.EquipmentService;
+import com.greenfox.tribes.services.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -17,7 +16,8 @@ public class TribesApplication implements ApplicationRunner {
 
   @Autowired UserRepository userRepository;
   @Autowired EquipmentService equipmentService;
-  @Autowired CharacterService characterService;
+  @Autowired
+  PersonaService characterService;
 @Autowired
   CombatService combatService;
   @Autowired CharacterEquipmentRepository pairingRepo;

@@ -11,7 +11,6 @@ import com.greenfox.tribes.services.CustomUserDetailService;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.models.Persona;
-import com.greenfox.tribes.services.CharacterService;
 import com.greenfox.tribes.services.PersonaService;
 import com.greenfox.tribes.services.PortraitService;
 import lombok.AllArgsConstructor;

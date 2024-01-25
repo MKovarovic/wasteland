@@ -23,7 +23,7 @@ public class CombatService {
   private ActivityLogRepository activityLogRepository;
   private UserRepository userRepository;
   private CustomUserDetailService userService;
-  private CharacterService characterService;
+  private PersonaService characterService;
   private PersonaRepository personaRepository;
   private MonsterRepository monsterRepository;
   private EquipmentRepository equipmentRepository;
@@ -35,13 +35,16 @@ public class CombatService {
 
   public Pair<Combatant, Combatant> fightStart(Long id) {
     PersonaDTO attacker = equipGladiator(id);
-    CombatantDTO defender = getDefender(id);
+    PersonaDTO defender = getDefender(id);
 
-    Pair<CombatantDTO, CombatantDTO> combatants = fightOutcome(attacker, defender);
+    Pair<PersonaDTO, PersonaDTO> combatants = fightOutcome(attacker, defender);
 
-    Combatant attackerCombatant = getCombatant(id, "Persona");
-    Combatant defenderCombatant;
-    if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVE) {
+    Persona attackerCombatant = personaRepository
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Persona defenderCombatant = personaRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+/*    if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVE) {
       defenderCombatant =
           getCombatant(
               activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), "Monster");
@@ -49,7 +52,7 @@ public class CombatService {
       defenderCombatant =
           getCombatant(
               activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), "Persona");
-    }
+    }*/
     if (Objects.equals(combatants.getFirst().getId(), id)) {
       return Pair.of(attackerCombatant, defenderCombatant);
     } else {
@@ -57,28 +60,17 @@ public class CombatService {
     }
   }
 
-  private CombatantDTO getDefender(Long id) {
+  private PersonaDTO getDefender(Long id) {
     ActivityLog activityLog = activityLogRepository.findActivityLogByPersonaId(id).get();
     if (activityLog.getType() == ActivityType.PVP) {
       return equipGladiator(activityLog.getEnemyID());
     } else if (activityLog.getType() == ActivityType.PVE) {
-      return monsterService.findMonster(activityLog.getEnemyID());
+      return characterService.readCharacter(activityLog.getEnemyID());
     }
     return null;
   }
 
-  private Combatant getCombatant(Long id, String combatantType) {
-    if (combatantType.equals("Persona")) {
-      return personaRepository
-          .findById(id)
-          .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    } else if (combatantType.equals("Monster")) {
-      return monsterRepository
-          .findById(id)
-          .orElseThrow(() -> new IllegalArgumentException("No such monster"));
-    }
-    return null;
-  }
+
 
   public PersonaDTO equipGladiator(Long id) {
     Persona gladiator =
@@ -102,7 +94,7 @@ public class CombatService {
     return gladiatorDTO;
   }
 
-  public Pair<CombatantDTO, CombatantDTO> fightOutcome(PersonaDTO attacker, CombatantDTO defender) {
+  public Pair<PersonaDTO, PersonaDTO> fightOutcome(PersonaDTO attacker, PersonaDTO defender) {
 
     int maxRounds = 100; // Maximum number of rounds to prevent stalemates
     Random rnd = new Random();
@@ -201,16 +193,16 @@ public class CombatService {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
-    Monster defender = randomMonster();
+    Persona defender = randomMonster();
     activityService.logPVEActivity(defender.getId());
   }
 
-  public Monster randomMonster() {
-    Monster defender =
-        monsterRepository
+  public Persona randomMonster() {
+    Persona defender =
+            personaRepository
             .findById(
-                monsterRepository
-                    .findRandomMonsterId()
+                personaRepository
+                    .findRandomIdByFaction(Faction.MONSTER)
                     .orElseThrow(() -> new IllegalArgumentException("No such Monster")))
             .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
     return defender;

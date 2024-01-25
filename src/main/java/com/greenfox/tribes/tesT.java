@@ -2,8 +2,8 @@ package com.greenfox.tribes;
 
 import com.greenfox.tribes.dtos.CombatantDTO;
 import com.greenfox.tribes.dtos.PersonaDTO;
-import com.greenfox.tribes.services.CharacterService;
 import com.greenfox.tribes.services.CombatService;
+import com.greenfox.tribes.services.PersonaService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class tesT {
     CombatService combatService;
-    CharacterService characterService;
+    PersonaService characterService;
     @GetMapping("/test")
     public String test(){
         PersonaDTO attacker = new PersonaDTO();
@@ -37,10 +37,10 @@ public class tesT {
 
         for (int i = 0; i < totalRounds; i++) {
             PersonaDTO attacker2 = characterService.readCharacter(1L);
-            CombatantDTO defender2 = characterService.readCharacter(2L);
+            PersonaDTO defender2 = characterService.readCharacter(2L);
 /*            attacker.setHp(50);
             defender.setHp(50);*/
-            Pair<CombatantDTO, CombatantDTO> outcome = combatService.fightOutcome(attacker2, defender2);
+            Pair<PersonaDTO, PersonaDTO> outcome = combatService.fightOutcome(attacker2, defender2);
             if (outcome.getFirst() == attacker2) {
                 attackerWins++;
             }

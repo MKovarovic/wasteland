@@ -5,7 +5,7 @@ import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.models.CharacterEquipment;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
-import com.greenfox.tribes.services.CharacterService;
+
 import com.greenfox.tribes.services.PersonaService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;

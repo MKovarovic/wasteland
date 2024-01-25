@@ -29,7 +29,7 @@ public class ActivityController {
   private ActivityService activityService;
   private MonsterRepository monsterRepository;
   private CombatService combatService;
-  private CharacterService characterService;
+  private PersonaService characterService;
   private PortraitService portraitService;
   private MonsterService monsterService;
 
@@ -210,7 +210,7 @@ public class ActivityController {
 
     ActivityDTO dto = activityService.getActivity(id);
 
-    model.addAttribute("enemy", monsterService.findMonster(dto.getEnemyID()));
+    model.addAttribute("enemy", characterService.readCharacter(dto.getEnemyID()));
 
     PortraitDTO portraitHero = PortraitMapper.remap(userHero.getPortrait());
     model.addAttribute("portraitHero", portraitHero);
