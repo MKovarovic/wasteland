@@ -1,5 +1,6 @@
 package com.greenfox.tribes.models;
 
+import com.greenfox.tribes.enums.Faction;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +21,8 @@ public class Monster extends Combatant {
   private Integer lck; // chance to crit, i.e. deal double damage
   private Integer hp;
   private String name;
+
+  private Faction faction = Faction.MONSTER;
   // INVENTORY
   private Integer pullRing;
 }

@@ -3,6 +3,7 @@ package com.greenfox.tribes.services;
 import com.greenfox.tribes.dtos.CombatantDTO;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.enums.ActivityType;
+import com.greenfox.tribes.enums.CombatantType;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.models.*;
 import com.greenfox.tribes.repositories.*;
@@ -42,34 +43,49 @@ public class CombatService {
     Persona attackerCombatant = personaRepository
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    Persona defenderCombatant = personaRepository.findById(id)
+    Combatant defenderCombatant = personaRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-/*    if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVE) {
+    if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVE) {
       defenderCombatant =
           getCombatant(
-              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), "Monster");
+              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), CombatantType.MONSTER);
     } else {
       defenderCombatant =
           getCombatant(
-              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), "Persona");
-    }*/
+              activityLogRepository.findActivityLogByPersonaId(id).get().getEnemyID(), CombatantType.PERSONA);
+
+    }
     if (Objects.equals(combatants.getFirst().getId(), id)) {
+
       return Pair.of(attackerCombatant, defenderCombatant);
     } else {
       return Pair.of(defenderCombatant, attackerCombatant);
     }
   }
 
-  private PersonaDTO getDefender(Long id) {
+  private CombatantDTO getDefender(Long id) {
     ActivityLog activityLog = activityLogRepository.findActivityLogByPersonaId(id).get();
     if (activityLog.getType() == ActivityType.PVP) {
       return equipGladiator(activityLog.getEnemyID());
     } else if (activityLog.getType() == ActivityType.PVE) {
-      return characterService.readCharacter(activityLog.getEnemyID());
+      return monsterService.findMonster(activityLog.getEnemyID());
     }
     return null;
   }
 
+
+  private Combatant getCombatant(Long id, CombatantType combatantType) {
+    if (combatantType == CombatantType.PERSONA) {
+      return personaRepository
+          .findById(id)
+          .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    } else if (combatantType == CombatantType.MONSTER) {
+      return monsterRepository
+          .findById(id)
+          .orElseThrow(() -> new IllegalArgumentException("No such monster"));
+    }
+    return null;
+  }
 
 
   public PersonaDTO equipGladiator(Long id) {
@@ -94,7 +110,7 @@ public class CombatService {
     return gladiatorDTO;
   }
 
-  public Pair<PersonaDTO, PersonaDTO> fightOutcome(PersonaDTO attacker, PersonaDTO defender) {
+  public Pair<CombatantDTO, CombatantDTO> fightOutcome(PersonaDTO attacker, CombatantDTO defender) {
 
     int maxRounds = 100; // Maximum number of rounds to prevent stalemates
     Random rnd = new Random();
@@ -193,16 +209,15 @@ public class CombatService {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
-    Persona defender = randomMonster();
+    Monster defender = randomMonster();
     activityService.logPVEActivity(defender.getId());
   }
 
-  public Persona randomMonster() {
-    Persona defender =
-            personaRepository
+  public Monster randomMonster() {
+    Monster defender =
+            monsterRepository
             .findById(
-                personaRepository
-                    .findRandomIdByFaction(Faction.MONSTER)
+                monsterRepository.findRandomMonsterId()
                     .orElseThrow(() -> new IllegalArgumentException("No such Monster")))
             .orElseThrow(() -> new IllegalArgumentException("No such Monster"));
     return defender;
