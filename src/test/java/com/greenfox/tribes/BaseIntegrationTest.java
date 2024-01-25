@@ -6,6 +6,7 @@ import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.models.CharacterEquipment;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.services.CharacterService;
+import com.greenfox.tribes.services.PersonaService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class BaseIntegrationTest extends BaseTest {
 
   @Autowired private UserRepository userRepository;
   @Autowired private EquipmentService equipmentService;
-  @Autowired private CharacterService characterService;
+  @Autowired private PersonaService characterService;
   @Autowired private CharacterEquipmentRepository pairingRepo;
   @Autowired private PasswordEncoder passwordEncoder;
 

@@ -12,6 +12,7 @@ import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.services.CharacterService;
+import com.greenfox.tribes.services.PersonaService;
 import com.greenfox.tribes.services.PortraitService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/character")
 public class CharacterUIController {
 
-  private CharacterService characterService;
+  private PersonaService characterService;
 
   private PersonaRepository personaRepository;
   private CustomUserDetailService userService;

@@ -24,7 +24,7 @@ public class CombatService {
   private UserRepository userRepository;
   private CustomUserDetailService userService;
   private CharacterService characterService;
-  private PersonaRepository playerCharacters;
+  private PersonaRepository personaRepository;
   private MonsterRepository monsterRepository;
   private EquipmentRepository equipmentRepository;
   private CharacterEquipmentRepository pairingRepo;
@@ -69,7 +69,7 @@ public class CombatService {
 
   private Combatant getCombatant(Long id, String combatantType) {
     if (combatantType.equals("Persona")) {
-      return playerCharacters
+      return personaRepository
           .findById(id)
           .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     } else if (combatantType.equals("Monster")) {
@@ -82,7 +82,7 @@ public class CombatService {
 
   public PersonaDTO equipGladiator(Long id) {
     Persona gladiator =
-        playerCharacters
+        personaRepository
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
@@ -140,11 +140,11 @@ public class CombatService {
 
   public void arenaPrize(Pair<Combatant, Combatant> combatants) {
     Persona winnerPersona =
-        playerCharacters
+        personaRepository
             .findById(combatants.getFirst().getId())
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
     Persona loserPersona =
-        playerCharacters
+        personaRepository
             .findById(combatants.getSecond().getId())
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
@@ -152,8 +152,8 @@ public class CombatService {
 
     winnerPersona.setPullRing(winnerPersona.getPullRing() + (loserPersona.getPullRing() / 2));
     loserPersona.setPullRing(loserPersona.getPullRing() / 2);
-    playerCharacters.save(winnerPersona);
-    playerCharacters.save(loserPersona);
+    personaRepository.save(winnerPersona);
+    personaRepository.save(loserPersona);
   }
 
   public void huntPrize(Pair<Combatant, Combatant> combatants) {
@@ -168,13 +168,13 @@ public class CombatService {
       loggedCharacter.setPullRing(
           loggedCharacter.getPullRing() - (loggedCharacter.getPullRing() / 2));
     }
-    playerCharacters.save(loggedCharacter);
+    personaRepository.save(loggedCharacter);
   }
 
   public void pvpMatching(Long id) {
 
     Persona attacker =
-        playerCharacters
+        personaRepository
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 
@@ -186,9 +186,9 @@ public class CombatService {
 
   public Persona randomEnemy(Faction faction) {
     Persona defender =
-        playerCharacters
+        personaRepository
             .findById(
-                playerCharacters
+                personaRepository
                     .findRandomIdByFaction(faction)
                     .orElseThrow(() -> new IllegalArgumentException("Nobody on the other team")))
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
@@ -197,7 +197,7 @@ public class CombatService {
 
   public void pveMatching(Long id) {
     Persona attacker =
-        playerCharacters
+        personaRepository
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
 

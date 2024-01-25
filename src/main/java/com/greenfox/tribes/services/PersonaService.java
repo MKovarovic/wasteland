@@ -20,7 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @AllArgsConstructor
-public class CharacterService {
+public class PersonaService {
 
   private PersonaRepository playerCharacters;
   private CharacterEquipmentRepository pairingRepo;
