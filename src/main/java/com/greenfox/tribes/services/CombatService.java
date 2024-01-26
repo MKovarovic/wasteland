@@ -99,11 +99,11 @@ public class CombatService {
       List<Equipment> equippedItems =
           characterService.readCharacter(gladiator.getId()).getEquipedItems();
       for (Equipment e : equippedItems) {
-        gladiatorDTO.setAtk(gladiator.getAtk() + e.getAtkBonus());
-        gladiatorDTO.setDef(gladiator.getDef() + e.getDefBonus());
-        gladiatorDTO.setHp(gladiator.getHp() + e.getHpBonus());
-        gladiatorDTO.setLck(gladiator.getLck() + e.getLckBonus());
-        gladiatorDTO.setDmg(gladiator.getDmg() + e.getDmgBonus());
+        gladiatorDTO.setAtk(gladiatorDTO.getAtk() + e.getAtkBonus());
+        gladiatorDTO.setDef(gladiatorDTO.getDef() + e.getDefBonus());
+        gladiatorDTO.setHp(gladiatorDTO.getHp() + e.getHpBonus());
+        gladiatorDTO.setLck(gladiatorDTO.getLck() + e.getLckBonus());
+        gladiatorDTO.setDmg(gladiatorDTO.getDmg() + e.getDmgBonus());
       }
     }
     return gladiatorDTO;

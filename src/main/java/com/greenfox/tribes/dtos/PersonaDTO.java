@@ -39,6 +39,7 @@ public class PersonaDTO extends CombatantDTO {
   public void setInventoryEquipment(List<Equipment> bundle) {
     equipedItems = new ArrayList<>(bundle);
   }
+
   public void setEquippedItemsEquipment(List<Equipment> bundle) {
     equipedItems = new ArrayList<>(bundle);
   }

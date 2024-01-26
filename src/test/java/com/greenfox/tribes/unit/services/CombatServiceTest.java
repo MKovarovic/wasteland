@@ -48,10 +48,10 @@ class CombatServiceTest extends BaseTest {
     return PersonaMapping.remap(getPersona());
   }
 
-  private Equipment getEquipment(int price) {
+  private Equipment getEquipment(int price, String type) {
     Equipment res = new Equipment();
     res.setName("Sword");
-    res.setType("Weapon");
+    res.setType(type);
     res.setPrice(price);
     res.setAtkBonus(3);
     res.setDefBonus(2);
@@ -66,9 +66,9 @@ class CombatServiceTest extends BaseTest {
     // Initialize test data
     testGladiator = getPersona();
     testGladiatorDTO = getPersonaDTO();
-    testEquipment1 = getEquipment(30);
-    testEquipment2 = getEquipment(50);
-    testEquipment3 = getEquipment(70);
+    testEquipment1 = getEquipment(30, "Weapon");
+    testEquipment2 = getEquipment(50, "Tool");
+    testEquipment3 = getEquipment(70, "Amulet");
     testGladiatorDTO.setInventoryEquipment(List.of(testEquipment1, testEquipment2, testEquipment3));
     testGladiatorDTO.setEquippedItemsEquipment(List.of(testEquipment1, testEquipment2));
 
