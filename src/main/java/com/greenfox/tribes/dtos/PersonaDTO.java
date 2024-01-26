@@ -24,7 +24,7 @@ public class PersonaDTO extends CombatantDTO {
   private int hp;
 
   private int pullRing;
-
+  // todo: don't use entities in DTOs
   private List<Equipment> inventory = new ArrayList<>();
   private List<Equipment> equipedItems = new ArrayList<>();
 
