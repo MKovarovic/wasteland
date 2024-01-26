@@ -1,6 +1,7 @@
 package com.greenfox.tribes.controllers;
 
 import com.greenfox.tribes.dtos.PortraitDTO;
+import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.repositories.PersonaRepository;
 import com.greenfox.tribes.repositories.PortraitRepository;
@@ -43,7 +44,7 @@ public class CharacterUIController {
   @GetMapping("/new/create")
   public String finishCreation(
       @RequestParam("characterName") String characterName,
-      @RequestParam("faction") String faction,
+      @RequestParam("faction") Faction faction,
       @RequestParam("atk") int atk,
       @RequestParam("dmg") int dmg,
       @RequestParam("def") int def,

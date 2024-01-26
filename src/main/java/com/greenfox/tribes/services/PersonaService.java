@@ -26,13 +26,11 @@ public class PersonaService {
   private CharacterEquipmentRepository pairingRepo;
 
   public Persona addCharacter(
-      String name, int hp, int atk, int dmg, int def, int lck, String faction, int pullRing) {
+      String name, int hp, int atk, int dmg, int def, int lck, Faction faction, int pullRing) {
     if (hp + atk + dmg + def + lck != 100) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
-    Faction actualFaction = Faction.valueOf(faction.toUpperCase());
-
-    Persona character = new Persona(name, actualFaction, atk, def, dmg, lck, hp, pullRing);
+    Persona character = new Persona(name, faction, atk, def, dmg, lck, hp, pullRing);
     playerCharacters.save(character);
     return character;
   }
