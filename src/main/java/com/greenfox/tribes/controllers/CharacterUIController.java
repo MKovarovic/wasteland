@@ -44,7 +44,7 @@ public class CharacterUIController {
   @GetMapping("/new/create")
   public String finishCreation(
       @RequestParam("characterName") String characterName,
-      @RequestParam("faction") Faction faction,
+      @RequestParam("faction") String faction,
       @RequestParam("atk") int atk,
       @RequestParam("dmg") int dmg,
       @RequestParam("def") int def,
@@ -58,7 +58,7 @@ public class CharacterUIController {
       @RequestParam("hairImg") String hairImg) {
 
     Persona persona =
-        characterService.addCharacter(characterName, hp, atk, dmg, def, lck, faction, 100);
+        characterService.addCharacter(characterName, hp, atk, dmg, def, lck, Faction.valueOf(faction.toUpperCase()), 100);
     System.out.println(persona);
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

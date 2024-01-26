@@ -1,5 +1,6 @@
 package com.greenfox.tribes.services;
 
+import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.PersonaMapping;
 import com.greenfox.tribes.models.CharacterEquipment;
@@ -89,7 +90,7 @@ public class PersonaService {
     int dmgBonus = 0;
     if (dto.getEquipedItems() != null) {
 
-      for (Equipment e : dto.getEquipedItems()) {
+      for (EquipmentDTO e : dto.getEquipedItems()) {
         atkBonus += e.getAtkBonus();
         defBonus += e.getDefBonus();
         hpBonus += e.getHpBonus();

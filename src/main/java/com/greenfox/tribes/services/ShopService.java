@@ -1,6 +1,6 @@
 package com.greenfox.tribes.services;
 
-import com.greenfox.tribes.dtos.EquipmentDTO;
+import com.greenfox.tribes.dtos.ShopItemDTO;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
@@ -23,15 +23,15 @@ public class ShopService {
   private UserRepository userRepository;
   private CharacterEquipmentRepository characterEquipmentRepository;
 
-  public ArrayList<EquipmentDTO> getShoppingList() {
+  public ArrayList<ShopItemDTO> getShoppingList() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    ArrayList<EquipmentDTO> shoppingList = new ArrayList<>();
+    ArrayList<ShopItemDTO> shoppingList = new ArrayList<>();
     for (Equipment equipment : equipmentRepository.findAll()) {
       int numberOwned =
           characterEquipmentRepository.countAllByEquipmentAndPersona(
               equipment, userRepository.findByUsername(auth.getName()).get().getPersona());
 
-      shoppingList.add(EquipmentDTO.fromEquipment(equipment, numberOwned));
+      shoppingList.add(ShopItemDTO.fromEquipment(equipment, numberOwned));
     }
     return shoppingList;
   }

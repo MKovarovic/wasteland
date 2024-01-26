@@ -1,6 +1,7 @@
 package com.greenfox.tribes.services;
 
 import com.greenfox.tribes.dtos.CombatantDTO;
+import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.enums.ActivityType;
 import com.greenfox.tribes.enums.CombatantType;
@@ -96,9 +97,9 @@ public class CombatService {
     PersonaDTO gladiatorDTO = characterService.readCharacter();
     if (gladiatorDTO.getEquipedItems() != null) {
 
-      List<Equipment> equippedItems =
+      List<EquipmentDTO> equippedItems =
           characterService.readCharacter(gladiator.getId()).getEquipedItems();
-      for (Equipment e : equippedItems) {
+      for (EquipmentDTO e : equippedItems) {
         gladiatorDTO.setAtk(gladiatorDTO.getAtk() + e.getAtkBonus());
         gladiatorDTO.setDef(gladiatorDTO.getDef() + e.getDefBonus());
         gladiatorDTO.setHp(gladiatorDTO.getHp() + e.getHpBonus());
