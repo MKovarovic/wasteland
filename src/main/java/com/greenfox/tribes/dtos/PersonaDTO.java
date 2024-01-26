@@ -1,7 +1,6 @@
 package com.greenfox.tribes.dtos;
 
 import com.greenfox.tribes.mappers.EquipmentMapping;
-import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.models.CharacterEquipment;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +24,6 @@ public class PersonaDTO extends CombatantDTO {
   private int hp;
 
   private int pullRing;
-  // todo: don't use entities in DTOs
   private List<EquipmentDTO> inventory = new ArrayList<>();
   private List<EquipmentDTO> equipedItems = new ArrayList<>();
 
@@ -49,7 +47,6 @@ public class PersonaDTO extends CombatantDTO {
       if (e.getIsEquipped()) {
         EquipmentDTO equipmentDTO = EquipmentMapping.remap(e.getEquipment());
         equipedItems.add(equipmentDTO);
-
       }
     }
   }

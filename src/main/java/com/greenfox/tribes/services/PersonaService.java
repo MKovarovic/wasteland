@@ -4,7 +4,6 @@ import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.PersonaMapping;
 import com.greenfox.tribes.models.CharacterEquipment;
-import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.dtos.PersonaDTO;

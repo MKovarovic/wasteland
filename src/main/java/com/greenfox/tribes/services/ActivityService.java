@@ -10,7 +10,6 @@ import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.repositories.MonsterRepository;
 import com.greenfox.tribes.repositories.PersonaRepository;
 
-
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
@@ -51,8 +50,7 @@ public class ActivityService {
     activityLogRepository.save(activityLog);
   }
 
-  public void logActivity(ActivityType type, Integer time, Integer pullRings,
-                          Boolean givesItem) {
+  public void logActivity(ActivityType type, Integer time, Integer pullRings, Boolean givesItem) {
     ActivityLog activity = new ActivityLog();
     activity.setType(type);
     activity.setTimestamp(System.currentTimeMillis());
@@ -128,9 +126,9 @@ public class ActivityService {
     persona.setPullRing(
         persona.getPullRing()
             + activityLogRepository
-            .findActivityLogByPersonaId(initiator.getId())
-            .get()
-            .getPullRings());
+                .findActivityLogByPersonaId(initiator.getId())
+                .get()
+                .getPullRings());
     if (activityLogRepository.findActivityLogByPersonaId(initiator.getId()).get().getGivesItem()) {
       Random rnd = new Random();
       int item = rnd.nextInt((int) equipmentRepository.count());
@@ -140,7 +138,4 @@ public class ActivityService {
       pairingRepo.save(pair);
     }
   }
-
-
-
 }
