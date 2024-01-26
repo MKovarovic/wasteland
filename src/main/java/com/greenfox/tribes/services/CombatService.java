@@ -44,10 +44,7 @@ public class CombatService {
         personaRepository
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("No such persona"));
-    Combatant defenderCombatant =
-        personaRepository
-            .findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    Combatant defenderCombatant;
     if (activityLogRepository.findActivityLogByPersonaId(id).get().getType() == ActivityType.PVE) {
       defenderCombatant =
           getCombatant(
