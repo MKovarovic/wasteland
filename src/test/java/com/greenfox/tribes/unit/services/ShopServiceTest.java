@@ -1,7 +1,7 @@
 package com.greenfox.tribes.unit.services;
 
 import com.greenfox.tribes.services.ShopService;
-import com.greenfox.tribes.dtos.EquipmentDTO;
+import com.greenfox.tribes.dtos.ShopItemDTO;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.repositories.EquipmentRepository;
 import com.greenfox.tribes.models.WastelandUser;
@@ -65,7 +65,7 @@ public class ShopServiceTest {
         .thenReturn(1);
 
     // Call the method to be tested
-    ArrayList<EquipmentDTO> shoppingList = yourService.getShoppingList();
+    ArrayList<ShopItemDTO> shoppingList = yourService.getShoppingList();
 
     // Assert the results
     assertNotNull(shoppingList);

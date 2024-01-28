@@ -1,7 +1,8 @@
 package com.greenfox.tribes.controllers;
 
 import com.greenfox.tribes.dtos.PortraitDTO;
-import com.greenfox.tribes.models.Equipment;
+import com.greenfox.tribes.enums.Faction;
+import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.repositories.PersonaRepository;
 import com.greenfox.tribes.repositories.PortraitRepository;
 import com.greenfox.tribes.services.EquipmentService;
@@ -11,9 +12,9 @@ import com.greenfox.tribes.services.CustomUserDetailService;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.models.Persona;
-import com.greenfox.tribes.services.CharacterService;
+import com.greenfox.tribes.services.PersonaService;
 import com.greenfox.tribes.services.PortraitService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,18 +22,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/character")
 public class CharacterUIController {
 
-  @Autowired CharacterService characterService;
-  @Autowired
-  PersonaRepository personaRepository;
-  @Autowired CustomUserDetailService userService;
-  @Autowired UserRepository userRepository;
-  @Autowired PortraitService portraitService;
-  @Autowired PortraitRepository portraitRepository;
-  @Autowired EquipmentService equipmentService;
-  @Autowired CharacterEquipmentRepository pairingRepo;
+  private PersonaService characterService;
+
+  private PersonaRepository personaRepository;
+  private CustomUserDetailService userService;
+  private UserRepository userRepository;
+  private PortraitService portraitService;
+  private PortraitRepository portraitRepository;
+  private EquipmentService equipmentService;
+  private CharacterEquipmentRepository pairingRepo;
 
   @GetMapping("/new")
   public String newCharacter() {
@@ -56,14 +58,13 @@ public class CharacterUIController {
       @RequestParam("hairImg") String hairImg) {
 
     Persona persona =
-        characterService.addCharacter(characterName, hp, atk, dmg, def, lck, faction, 100);
+        characterService.addCharacter(characterName, hp, atk, dmg, def, lck, Faction.valueOf(faction.toUpperCase()), 100);
     System.out.println(persona);
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     Long idPortrait =
         portraitService.createPortrait(
             faceImg, hairImg, eyeImg, noseImg, mouthImg, eyebrowsImg, persona.getId());
-
 
     persona.setPortrait(portraitRepository.findById(idPortrait).get());
     personaRepository.save(persona);
@@ -81,36 +82,22 @@ public class CharacterUIController {
 
     if (user.getPersona() == null) {
       return "persona-sites/character-creation";
-    } else {
-      PersonaDTO dto = characterService.readCharacter();
-      model.addAttribute("DTO", dto);
-      int atkBonus = 0;
-      int defBonus = 0;
-      int hpBonus = 0;
-      int lckBonus = 0;
-      int dmgBonus = 0;
-
-      if (dto.getEquipedItems() != null) {
-
-        for (Equipment e : dto.getEquipedItems()) {
-          atkBonus += e.getAtkBonus();
-          defBonus += e.getDefBonus();
-          hpBonus += e.getHpBonus();
-          lckBonus += e.getLckBonus();
-          dmgBonus += e.getDmgBonus();
-        }
-      }
-      model.addAttribute("atkBonus", atkBonus);
-      model.addAttribute("defBonus", defBonus);
-      model.addAttribute("hpBonus", hpBonus);
-      model.addAttribute("lckBonus", lckBonus);
-      model.addAttribute("dmgBonus", dmgBonus);
-
-      PortraitDTO portraitDTO = portraitService.findPortrait(user.getPersona().getId());
-      model.addAttribute("portraitDTO", portraitDTO);
-      model.addAttribute("faction", user.getPersona().getFaction());
-      return "persona-sites/main-page";
     }
+
+    PersonaDTO dto = characterService.readCharacter();
+    model.addAttribute("DTO", dto);
+
+    int[] bonuses = characterService.getBonuses(dto);
+    model.addAttribute("atkBonus", bonuses[0]);
+    model.addAttribute("defBonus", bonuses[1]);
+    model.addAttribute("hpBonus", bonuses[2]);
+    model.addAttribute("lckBonus", bonuses[3]);
+    model.addAttribute("dmgBonus", bonuses[4]);
+
+    PortraitDTO portraitDTO = PortraitMapper.remap(user.getPersona().getPortrait());
+    model.addAttribute("portraitDTO", portraitDTO);
+    model.addAttribute("faction", user.getPersona().getFaction().toString());
+    return "persona-sites/main-page";
   }
 
   @RequestMapping("/me/equip")

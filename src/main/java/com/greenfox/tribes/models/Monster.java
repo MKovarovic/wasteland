@@ -1,12 +1,15 @@
 package com.greenfox.tribes.models;
 
+import com.greenfox.tribes.enums.Faction;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class Monster extends Combatant {
   @Id
@@ -20,6 +23,8 @@ public class Monster extends Combatant {
   private Integer lck; // chance to crit, i.e. deal double damage
   private Integer hp;
   private String name;
+
+  private Faction faction = Faction.MONSTER;
   // INVENTORY
   private Integer pullRing;
 }

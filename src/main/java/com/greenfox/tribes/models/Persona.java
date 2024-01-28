@@ -1,17 +1,38 @@
 package com.greenfox.tribes.models;
 
-import com.greenfox.tribes.models.ActivityLog;
-import com.greenfox.tribes.models.WastelandUser;
-import com.greenfox.tribes.models.CharacterEquipment;
+import com.greenfox.tribes.enums.Faction;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
+@NoArgsConstructor
 public class Persona extends Combatant {
+
+  public Persona(
+      String characterName,
+      Faction faction,
+      Integer atk,
+      Integer def,
+      Integer dmg,
+      Integer lck,
+      Integer hp,
+      Integer pullRing) {
+    this.characterName = characterName;
+    this.faction = faction;
+    this.atk = atk;
+    this.def = def;
+    this.dmg = dmg;
+    this.lck = lck;
+    this.hp = hp;
+    this.pullRing = pullRing;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,7 +40,8 @@ public class Persona extends Combatant {
   private Long id;
 
   private String characterName;
-  private String faction;
+
+  private Faction faction;
 
   @OneToOne(mappedBy = "persona")
   @ToString.Exclude
@@ -50,6 +72,6 @@ public class Persona extends Combatant {
   Portrait portrait;
 
   // TECHNICAL STUFF
-  private Boolean isBusy;
+
   Boolean isPremium = false;
 }

@@ -3,16 +3,15 @@ package com.greenfox.tribes.controllers;
 import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
+import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.models.Combatant;
-import com.greenfox.tribes.services.ActivityService;
+import com.greenfox.tribes.services.*;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
 import com.greenfox.tribes.repositories.MonsterRepository;
 import com.greenfox.tribes.models.Persona;
-import com.greenfox.tribes.services.CharacterService;
-import com.greenfox.tribes.services.MonsterService;
-import com.greenfox.tribes.services.PortraitService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -22,90 +21,133 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/activity")
 public class ActivityController {
-  @Autowired UserRepository userRepository;
-  @Autowired ActivityService activityService;
-  @Autowired MonsterRepository monsterRepository;
-  @Autowired CharacterService characterService;
-  @Autowired PortraitService portraitService;
-  @Autowired private MonsterService monsterService;
+
+  private UserRepository userRepository;
+  private ActivityService activityService;
+  private MonsterRepository monsterRepository;
+  private CombatService combatService;
+  private PersonaService characterService;
+  private PortraitService portraitService;
+  private MonsterService monsterService;
+
+  public Model commonData(Model model) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
+    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
+    model.addAttribute("faction", userHero.getFaction().toString());
+    model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
+    return model;
+  }
+
+  @GetMapping("/notHere")
+  public String notHere() {
+    return "game-sites/not-here";
+  }
 
   @GetMapping("/work")
   public String work(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     if (activityService.isFinished(user.getPersona().getId())) {
-      user.getPersona().setIsBusy(false);
       activityService.deleteActivity(user.getPersona().getId());
     }
 
+    if (activityService.activityInProgress(user.getPersona().getId())
+        && activityService.getActivity(user.getPersona().getId()).getType() != ActivityType.WORK) {
+      return "redirect:/activity/notHere";
+    }
     model.addAttribute("name", user.getPersona().getCharacterName());
-    model.addAttribute("faction", user.getPersona().getFaction());
-    model.addAttribute("isBusy", user.getPersona().getIsBusy());
+    model.addAttribute("faction", user.getPersona().getFaction().toString());
+    model.addAttribute("isBusy", activityService.activityInProgress(user.getPersona().getId()));
     model.addAttribute("id", user.getPersona().getId());
+    model.addAttribute("minutes", activityService.timeRemaining(user.getPersona().getId()));
+
     return "game-sites/work";
   }
 
   @GetMapping("/work/log")
-  public String logWork(@RequestParam("id") long id) {
-    activityService.logActivity(ActivityType.WORK, id);
+  public String logWork() {
+    activityService.logWorkActivity();
     return "redirect:/activity/work";
   }
 
   @GetMapping("/pvp")
   public String pvp(Model model) {
+
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
-    ActivityType type;
+    ActivityType type = null;
     if (dto != null && dto.getType() != null) {
       type = dto.getType();
     }
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    model.addAttribute("faction", user.getPersona().getFaction());
-    int noEnemy = 1;
-    if (dto != null) {
-      if (dto.getType() == ActivityType.PVP) {
-        if (activityService.isFinished(userHero.getId())) {
-          int pullrings = userHero.getPullRing();
-          Combatant[] combatants = activityService.fightStart(userHero.getId());
-          activityService.arenaPrize(combatants);
-          int reward = userHero.getPullRing() - pullrings;
-          model.addAttribute("reward", reward);
-          userHero.setIsBusy(false);
-          activityService.deleteActivity(userHero.getId());
 
-          return "game-sites/pvp-reward";
-        }
-        noEnemy = 0;
-        model.addAttribute(
-            "enemy",
-            characterService.readCharacter(
-                userRepository.findById(dto.getEnemyID()).get().getPersona().getId()));
-        model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
-
-        model.addAttribute("noEnemy", noEnemy);
-
-        PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
-        model.addAttribute("portraitHero", portraitHero);
-        model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
-
-        return "game-sites/pvp";
-      }
-      return "redirect:/character/me";
+    if (type == null) {
+      return "redirect:/activity/pvp/welcome?id=" + userHero.getId();
     }
+    if (type != ActivityType.PVP) {
+      return "redirect:/activity/notHere";
+    }
+    if (activityService.isFinished(userHero.getId())) {
+      return "redirect:/activity/pvp/reward?id=" + userHero.getId();
+    }
+    return "redirect:/activity/pvp/fight?id=" + userHero.getId();
+  }
+
+  @GetMapping("/pvp/welcome")
+  public String pvpWelcome(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model = commonData(model);
+    model.addAttribute("name", userHero.getCharacterName());
 
     return "game-sites/pvp-welcome";
+  }
+
+  @GetMapping("/pvp/reward")
+  public String pvpReward(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model = commonData(model);
+
+    int initialPullRings = userHero.getPullRing();
+    Pair<Combatant, Combatant> combatants = combatService.fightStart(userHero.getId());
+    combatService.arenaPrize(combatants);
+    int reward = userHero.getPullRing() - initialPullRings;
+    model.addAttribute("reward", reward);
+    activityService.deleteActivity(userHero.getId());
+
+    return "game-sites/pvp-reward";
+  }
+
+  @GetMapping("/pvp/fight")
+  public String pvpFight(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model = commonData(model);
+
+    ActivityDTO dto = activityService.getActivity(id);
+
+    model.addAttribute("enemy", characterService.readCharacter(dto.getEnemyID()));
+    model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
+
+    PortraitDTO portraitHero = PortraitMapper.remap(userHero.getPortrait());
+    model.addAttribute("portraitHero", portraitHero);
+    if (activityService.timeRemaining(userHero.getId()) < 1) {
+      return "redirect:/activity/pvp/reward?id=" + userHero.getId();
+    }
+    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+    return "game-sites/pvp";
   }
 
   @GetMapping("/pvp/log")
   public String logPvp() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    activityService.pvpMatching(user.getPersona().getId());
+    combatService.pvpMatching(user.getPersona().getId());
     return "redirect:/activity/pvp";
   }
 
@@ -116,67 +158,74 @@ public class ActivityController {
     Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
 
     ActivityDTO dto = activityService.getActivity(userHero.getId());
-    ActivityType type;
+    ActivityType type = null;
     if (dto != null && dto.getType() != null) {
       type = dto.getType();
     }
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
 
-    int noEnemy = 1;
-    if (dto != null) {
-      if (dto.getType() == ActivityType.PVE) {
-        if (activityService.isFinished(userHero.getId())) {
-          int pullrings = userHero.getPullRing();
-          Combatant[] combatants = activityService.fightStart(userHero.getId());
-          activityService.huntPrize(combatants);
-          int reward = userHero.getPullRing() - pullrings;
-          model.addAttribute("reward", reward);
-          userHero.setIsBusy(false);
-          activityService.deleteActivity(userHero.getId());
-
-          return "game-sites/pve-reward";
-        }
-        noEnemy = 0;
-        model.addAttribute("enemy", monsterService.findMonster(dto.getEnemyID()));
-        // model.addAttribute("portraitEnemy", portraitService.findPortrait(dto.getEnemyID()));
-
-        model.addAttribute("noEnemy", noEnemy);
-
-        PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
-        model.addAttribute("portraitHero", portraitHero);
-        model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
-
-        return "game-sites/pve";
-      }
-      return "redirect:/character/me";
+    if (type == null) {
+      return "redirect:/activity/pve/welcome?id=" + userHero.getId();
     }
+
+    if (type != ActivityType.PVE) {
+      return "redirect:/activity/notHere";
+    }
+
+    if (activityService.isFinished(userHero.getId())) {
+      return "redirect:/activity/pve/reward?id=" + userHero.getId();
+    } else {
+      return "redirect:/activity/pve/fight?id=" + userHero.getId();
+    }
+  }
+
+  @GetMapping("/pve/welcome")
+  public String pveWelcome(Model model, @RequestParam("id") long id) {
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model = commonData(model);
 
     return "game-sites/pve-welcome";
-    /*if (activityService.isFinished(userHero.getId())) {
-      Combatant[] combatants = activityService.fightStart(userHero.getId());
-      activityService.huntPrize(combatants);
-    }
-    int noEnemy = 1;
-    ActivityDTO dto = activityService.getActivity(userHero.getId());
-    if (dto != null) {
-      noEnemy = 0;
-      model.addAttribute("enemy", monsterRepository.findById(dto.getEnemyID()).get());
-    }
+  }
 
-    model.addAttribute("faction", user.getPersona().getFaction());
-    model.addAttribute("noEnemy", noEnemy);
-    model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
-    PortraitDTO portraitHero = portraitService.findPortrait(userHero.getId());
+  @GetMapping("/pve/reward")
+  public String pveReward(Model model, @RequestParam("id") long id) {
+
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model = commonData(model);
+
+    int initialPullRings = userHero.getPullRing();
+    Pair<Combatant, Combatant> combatants = combatService.fightStart(userHero.getId());
+    combatService.huntPrize(combatants);
+    int reward = userHero.getPullRing() - initialPullRings;
+    model.addAttribute("reward", reward);
+    activityService.deleteActivity(userHero.getId());
+
+    return "game-sites/pve-reward";
+  }
+
+  @GetMapping("/pve/fight")
+  public String pveFight(Model model, @RequestParam("id") long id) {
+
+    Persona userHero = userRepository.findById(id).get().getPersona();
+    model = commonData(model);
+
+    ActivityDTO dto = activityService.getActivity(id);
+
+    model.addAttribute("enemy", characterService.readCharacter(dto.getEnemyID()));
+
+    PortraitDTO portraitHero = PortraitMapper.remap(userHero.getPortrait());
     model.addAttribute("portraitHero", portraitHero);
-    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));*/
-
+    if (activityService.timeRemaining(userHero.getId()) < 1) {
+      return "redirect:/activity/pve/reward?id=" + userHero.getId();
+    }
+    model.addAttribute("minutes", activityService.timeRemaining(userHero.getId()));
+    return "game-sites/pve";
   }
 
   @GetMapping("/pve/log")
   public String logPve() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    activityService.pveMatching(user.getPersona().getId());
+    combatService.pveMatching(user.getPersona().getId());
     return "redirect:/activity/pve";
   }
 }

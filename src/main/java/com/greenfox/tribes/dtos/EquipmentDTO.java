@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class EquipmentDTO {
-
   private String name;
   private Long id;
   private String type;
@@ -17,9 +16,8 @@ public class EquipmentDTO {
   private Integer dmgBonus;
   private Integer hpBonus;
   private Integer lckBonus;
-  private Integer nrOwned;
 
-  public static EquipmentDTO fromEquipment(Equipment eq, int numberOwned) {
+  public static EquipmentDTO fromEquipment(Equipment eq) {
     return new EquipmentDTO(
         eq.getName(),
         eq.getId(),
@@ -29,7 +27,6 @@ public class EquipmentDTO {
         eq.getDefBonus(),
         eq.getDmgBonus(),
         eq.getHpBonus(),
-        eq.getLckBonus(),
-        numberOwned);
+        eq.getLckBonus());
   }
 }

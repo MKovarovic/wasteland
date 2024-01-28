@@ -24,14 +24,14 @@
 
                 </section>
 
-                <div th:if="${noEnemy == 0}">
+<!--                <div th:if="${noEnemy == 0}">-->
                     <section class="combatant">
                         <div th:insert="/fragments/character-card.html :: portrait(${portraitEnemy}, ${enemy})"></div>
                         <h2 th:text="${enemy.getCharacterName()}"></h2>
                         <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy})"></div>
 
                     </section>
-                </div>
+               <!-- </div>-->
 
 
             </div>
@@ -42,7 +42,7 @@
 
 
 </div>
-</div>
+
 
 </body>
 </html>

@@ -13,5 +13,5 @@ public class ActivityDTO {
   private int pullRings;
   private Boolean givesItem;
   private Long enemyID;
-  Long personaID;
+  private Long personaID;
 }

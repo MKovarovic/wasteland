@@ -1,5 +1,6 @@
 package com.greenfox.tribes.repositories;
 
+import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.models.Persona;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +15,5 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
   Optional<Persona> findPersonaByPlayer_Username(String loggedUser);
 
   @Query("SELECT id FROM Persona  WHERE faction = :faction ORDER BY RAND() LIMIT 1")
-  Optional<Long> findRandomIdByFaction(@Param("faction")String faction);
+  Optional<Long> findRandomIdByFaction(@Param("faction") Faction faction);
 }
