@@ -101,4 +101,6 @@ public class PersonaService {
     int[] bonuses = {atkBonus, defBonus, hpBonus, lckBonus, dmgBonus};
     return bonuses;
   }
+
+
 }
