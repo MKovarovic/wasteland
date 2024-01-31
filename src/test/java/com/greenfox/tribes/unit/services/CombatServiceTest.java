@@ -7,9 +7,11 @@ import com.greenfox.tribes.BaseTest;
 import com.greenfox.tribes.dtos.CombatantDTO;
 import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.dtos.PersonaDTO;
+import com.greenfox.tribes.enums.CombatantType;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.EquipmentMapping;
 import com.greenfox.tribes.mappers.PersonaMapping;
+import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.repositories.PersonaRepository;
@@ -22,6 +24,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.util.Pair;
@@ -32,6 +35,8 @@ class CombatServiceTest extends BaseTest {
 
   @MockBean private PersonaRepository personaRepository;
 
+  @Mock
+  private PersonaRepository personaRepo;
   @MockBean private PersonaService characterService;
   @InjectMocks private CombatService combatService;
   private Persona testGladiator;
@@ -121,34 +126,29 @@ class CombatServiceTest extends BaseTest {
   }
 
   @Test
-  public void CombatServiceTest_fightOutcome_isFair() {
-    PersonaDTO attacker = new PersonaDTO();
-    CombatantDTO defender = new CombatantDTO();
-    attacker.setHp(100);
-    attacker.setAtk(50);
-    attacker.setDef(30);
-    attacker.setDmg(20);
-    attacker.setLck(60);
-    defender.setHp(100);
-    defender.setAtk(50);
-    defender.setDef(30);
-    defender.setDmg(20);
-    defender.setLck(60);
+  public void CombatServiceTest_ArenaPrize_() {
+    Persona winner = createTestRaider();
+    winner.setId(2L);
+    winner.setPullRing(100);
+    Persona loser = createTestRaider();
+    loser.setPullRing(50);
+    Pair<Combatant, Combatant> combatants = Pair.of(winner, loser);
 
-    int totalRounds = 1000;
-    int attackerWins = 0;
+    when(personaRepo.findById(2L)).thenReturn(java.util.Optional.of(winner));
+    when(personaRepo.findById(1L)).thenReturn(java.util.Optional.of(loser));
 
-    for (int i = 0; i < totalRounds; i++) {
-      attacker.setHp(50);
-      defender.setHp(50);
+    combatService.arenaPrize(combatants);
 
-      Pair<CombatantDTO, CombatantDTO> outcome = combatService.fightOutcome(attacker, defender);
-      if (outcome.getFirst() == attacker) {
+    assertEquals(125, winner.getPullRing());
+    assertEquals(25, loser.getPullRing());
 
-        attackerWins++;
-      }
-    }
-    double percentWon = ((double) attackerWins / totalRounds) * 10;
-    assertEquals(5, (int)percentWon);
+    verify(personaRepo, times(1)).save(winner);
+    verify(personaRepo, times(1)).save(loser);
+  }
+
+  private Persona createTestRaider() {
+    Persona persona = new Persona("JoeMama", Faction.RAIDER, 50, 20, 10, 10, 100, 10);
+    persona.setId(1L);
+    return persona;
   }
 }
