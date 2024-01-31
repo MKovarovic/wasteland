@@ -61,6 +61,28 @@ class ActivityServiceTest extends BaseTest {
     assertEquals(ActivityType.PVP, argument.getValue().getType());
   }
 
+  @Test
+  public void ActivityService_logPvE_logNotEmpty() {
+    Persona persona = createTestRaider();
+    ActivityLog activityLog = new ActivityLog();
+    activityLog.setPersona(persona);
+    activityLog.setType(ActivityType.PVE);
+    activityLog.setId(1L);
+    activityLog.setGivesItem(false);
+    activityLog.setPullRings(100);
+    activityLog.setTime(5);
+    activityLog.setTimestamp(System.currentTimeMillis());
+
+    when(personaService.getLoggedInPersona()).thenReturn(persona);
+    when(activityRepository.findActivityLogByPersonaId(1L)).thenReturn(Optional.of(activityLog));
+    activityService.logPVEActivity(1L);
+
+    ArgumentCaptor<ActivityLog> argument = ArgumentCaptor.forClass(ActivityLog.class);
+    verify(activityRepository, times(2)).save(argument.capture());
+    assertEquals(persona, argument.getValue().getPersona());
+    assertEquals(ActivityType.PVE, argument.getValue().getType());
+  }
+
   private Persona createTestRaider() {
     Persona persona = new Persona("JoeMama", Faction.RAIDER, 50, 20, 10, 10, 100, 1);
     persona.setId(1L);
