@@ -78,6 +78,15 @@ class ActivityServiceTest extends BaseTest {
     assertEquals(ActivityType.PVP, dto.getType());
   }
 
+  @Test
+  public void ActivityService_timeRemaining_works(){
+
+    when(activityRepository.findActivityLogByPersonaId(any())).thenReturn(Optional.of(getActivity(ActivityType.WORK)));
+    assertEquals(4, activityService.timeRemaining(1L));
+
+  }
+
+
   private Persona createTestRaider() {
     Persona persona = new Persona("JoeMama", Faction.RAIDER, 50, 20, 10, 10, 100, 1);
     persona.setId(1L);
