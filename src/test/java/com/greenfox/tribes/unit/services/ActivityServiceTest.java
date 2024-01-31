@@ -1,6 +1,7 @@
 package com.greenfox.tribes.unit.services;
 
 import com.greenfox.tribes.BaseTest;
+import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.enums.ActivityType;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.models.ActivityLog;
@@ -42,14 +43,7 @@ class ActivityServiceTest extends BaseTest {
   @Test
   public void ActivityService_logPvP_logNotEmpty() {
     Persona persona = createTestRaider();
-    ActivityLog activityLog = new ActivityLog();
-    activityLog.setPersona(persona);
-    activityLog.setType(ActivityType.PVP);
-    activityLog.setId(1L);
-    activityLog.setGivesItem(false);
-    activityLog.setPullRings(100);
-    activityLog.setTime(5);
-    activityLog.setTimestamp(System.currentTimeMillis());
+    ActivityLog activityLog = getActivity(ActivityType.PVP);
 
     when(personaService.getLoggedInPersona()).thenReturn(persona);
     when(activityRepository.findActivityLogByPersonaId(1L)).thenReturn(Optional.of(activityLog));
@@ -64,14 +58,7 @@ class ActivityServiceTest extends BaseTest {
   @Test
   public void ActivityService_logPvE_logNotEmpty() {
     Persona persona = createTestRaider();
-    ActivityLog activityLog = new ActivityLog();
-    activityLog.setPersona(persona);
-    activityLog.setType(ActivityType.PVE);
-    activityLog.setId(1L);
-    activityLog.setGivesItem(false);
-    activityLog.setPullRings(100);
-    activityLog.setTime(5);
-    activityLog.setTimestamp(System.currentTimeMillis());
+    ActivityLog activityLog = getActivity(ActivityType.PVE);
 
     when(personaService.getLoggedInPersona()).thenReturn(persona);
     when(activityRepository.findActivityLogByPersonaId(1L)).thenReturn(Optional.of(activityLog));
@@ -81,6 +68,14 @@ class ActivityServiceTest extends BaseTest {
     verify(activityRepository, times(2)).save(argument.capture());
     assertEquals(persona, argument.getValue().getPersona());
     assertEquals(ActivityType.PVE, argument.getValue().getType());
+  }
+
+  @Test
+  public void ActivityService_makeDTO_logNotEmpty() {
+    ActivityLog activityLog = getActivity(ActivityType.PVP);
+    when(activityRepository.findById(any())).thenReturn(Optional.of(activityLog));
+    ActivityDTO dto = activityService.makeDTO(1L);
+    assertEquals(ActivityType.PVP, dto.getType());
   }
 
   private Persona createTestRaider() {
@@ -93,5 +88,18 @@ class ActivityServiceTest extends BaseTest {
     Persona persona = new Persona("JoeMama", Faction.SETTLER, 50, 20, 10, 10, 100, 1);
     persona.setId(1L);
     return persona;
+  }
+
+  private ActivityLog getActivity(ActivityType type) {
+    ActivityLog activityLog = new ActivityLog();
+    Persona persona = createTestRaider();
+    activityLog.setPersona(persona);
+    activityLog.setType(type);
+    activityLog.setId(1L);
+    activityLog.setGivesItem(false);
+    activityLog.setPullRings(100);
+    activityLog.setTime(5);
+    activityLog.setTimestamp(System.currentTimeMillis());
+    return activityLog;
   }
 }
