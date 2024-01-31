@@ -2,12 +2,17 @@ package com.greenfox.tribes.unit.services;
 
 import com.greenfox.tribes.BaseTest;
 import com.greenfox.tribes.dtos.ActivityDTO;
+import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.enums.ActivityType;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.models.ActivityLog;
+import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.repositories.ActivityLogRepository;
+import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
+import com.greenfox.tribes.repositories.EquipmentRepository;
 import com.greenfox.tribes.services.ActivityService;
+import com.greenfox.tribes.services.EquipmentService;
 import com.greenfox.tribes.services.PersonaService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,7 +28,11 @@ class ActivityServiceTest extends BaseTest {
 
   @Mock private PersonaService personaService;
   @Mock private ActivityLogRepository activityRepository;
+
+  @Mock private EquipmentRepository equipmentRepository;
+  @Mock private CharacterEquipmentRepository pairingRepo;
   @InjectMocks private ActivityService activityService;
+  @InjectMocks private EquipmentService equipmentService;
 
   @Test
   public void ActivityService_logWork_logNotEmpty() {
@@ -79,13 +88,36 @@ class ActivityServiceTest extends BaseTest {
   }
 
   @Test
-  public void ActivityService_timeRemaining_works(){
+  public void ActivityService_timeRemaining_works() {
 
-    when(activityRepository.findActivityLogByPersonaId(any())).thenReturn(Optional.of(getActivity(ActivityType.WORK)));
+    when(activityRepository.findActivityLogByPersonaId(any()))
+        .thenReturn(Optional.of(getActivity(ActivityType.WORK)));
     assertEquals(4, activityService.timeRemaining(1L));
-
   }
+//todo: figure out how to test this
+/*  @Test
+  public void ActivityService_getReward() {
+    Equipment equipment = new Equipment();
+    equipment.setId(1L);
+    equipment.setName("Rusty Sword");
+    equipment.setType("Weapon");
+    equipment.setDefBonus(0);
+    equipment.setHpBonus(0);
+    equipment.setDmgBonus(0);
+    equipment.setAtkBonus(5);
+    equipment.setLckBonus(0);
+    equipment.setPrice(10);
 
+
+    when(personaService.getLoggedInPersona()).thenReturn(createTestRaider());
+    when(personaService.getLoggedInPersona()).thenReturn(createTestSettler());
+    when(activityRepository.findActivityLogByPersonaId(any()))
+        .thenReturn(Optional.of(getActivity(ActivityType.PVP)));
+    when(equipmentRepository.count()).thenReturn(19L);
+    when(equipmentRepository.findById(any())).thenReturn(Optional.of(equipment));
+
+
+  }*/
 
   private Persona createTestRaider() {
     Persona persona = new Persona("JoeMama", Faction.RAIDER, 50, 20, 10, 10, 100, 1);
@@ -105,7 +137,7 @@ class ActivityServiceTest extends BaseTest {
     activityLog.setPersona(persona);
     activityLog.setType(type);
     activityLog.setId(1L);
-    activityLog.setGivesItem(false);
+    activityLog.setGivesItem(type == ActivityType.PVE);
     activityLog.setPullRings(100);
     activityLog.setTime(5);
     activityLog.setTimestamp(System.currentTimeMillis());
