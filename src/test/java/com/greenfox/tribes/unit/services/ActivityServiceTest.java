@@ -31,9 +31,7 @@ class ActivityServiceTest extends BaseTest {
   @Mock private ActivityLogRepository activityRepository;
 
   @Mock private EquipmentRepository equipmentRepository;
-  @Mock private CharacterEquipmentRepository pairingRepo;
   @InjectMocks private ActivityService activityService;
-  @InjectMocks private EquipmentService equipmentService;
 
   @Test
   public void activityService_logWork_logNotEmpty() {
