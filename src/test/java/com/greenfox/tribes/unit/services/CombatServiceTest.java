@@ -4,10 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.greenfox.tribes.BaseTest;
-import com.greenfox.tribes.dtos.CombatantDTO;
 import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.dtos.PersonaDTO;
-import com.greenfox.tribes.enums.CombatantType;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.EquipmentMapping;
 import com.greenfox.tribes.mappers.PersonaMapping;
@@ -127,7 +125,7 @@ class CombatServiceTest extends BaseTest {
   }
 
   @Test
-  public void CombatServiceTest_ArenaPrize() {
+  public void combatServiceTest_ArenaPrize() {
     Persona winner = createTestRaider();
     winner.setId(2L);
     winner.setPullRing(100);

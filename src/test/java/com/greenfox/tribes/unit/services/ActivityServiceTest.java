@@ -2,7 +2,6 @@ package com.greenfox.tribes.unit.services;
 
 import com.greenfox.tribes.BaseTest;
 import com.greenfox.tribes.dtos.ActivityDTO;
-import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.enums.ActivityType;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.models.ActivityLog;
@@ -37,7 +36,7 @@ class ActivityServiceTest extends BaseTest {
   @InjectMocks private EquipmentService equipmentService;
 
   @Test
-  public void ActivityService_logWork_logNotEmpty() {
+  public void activityService_logWork_logNotEmpty() {
     Persona persona = createTestRaider();
 
     when(personaService.getLoggedInPersona()).thenReturn(persona);
@@ -52,7 +51,7 @@ class ActivityServiceTest extends BaseTest {
   }
 
   @Test
-  public void ActivityService_logPvP_logNotEmpty() {
+  public void activityService_logPvP_logNotEmpty() {
     Persona persona = createTestRaider();
     ActivityLog activityLog = getActivity(ActivityType.PVP);
 
@@ -67,7 +66,7 @@ class ActivityServiceTest extends BaseTest {
   }
 
   @Test
-  public void ActivityService_logPvE_logNotEmpty() {
+  public void activityService_logPvE_logNotEmpty() {
     Persona persona = createTestRaider();
     ActivityLog activityLog = getActivity(ActivityType.PVE);
 
@@ -82,7 +81,7 @@ class ActivityServiceTest extends BaseTest {
   }
 
   @Test
-  public void ActivityService_makeDTO_logNotEmpty() {
+  public void activityService_makeDTO_logNotEmpty() {
     ActivityLog activityLog = getActivity(ActivityType.PVP);
     when(activityRepository.findById(any())).thenReturn(Optional.of(activityLog));
     ActivityDTO dto = activityService.makeDTO(1L);
@@ -90,7 +89,7 @@ class ActivityServiceTest extends BaseTest {
   }
 
   @Test
-  public void ActivityService_timeRemaining_works() {
+  public void activityService_timeRemaining_works() {
 
     when(activityRepository.findActivityLogByPersonaId(any()))
         .thenReturn(Optional.of(getActivity(ActivityType.WORK)));
@@ -99,7 +98,7 @@ class ActivityServiceTest extends BaseTest {
 
   // todo: figure out how to test this
   @Test
-  public void ActivityService_getReward() {
+  public void activityService_getReward() {
     Equipment equipment = new Equipment();
     equipment.setId(1L);
     equipment.setName("Rusty Sword");
@@ -110,7 +109,7 @@ class ActivityServiceTest extends BaseTest {
     equipment.setAtkBonus(5);
     equipment.setLckBonus(0);
     equipment.setPrice(10);
-Persona persona = createTestRaider();
+    Persona persona = createTestRaider();
     when(personaRepository.findById(any())).thenReturn(Optional.of(persona));
     when(personaService.getLoggedInPersona()).thenReturn(createTestSettler());
     when(activityRepository.findActivityLogByPersonaId(any()))
