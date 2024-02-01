@@ -240,7 +240,7 @@ public class CombatService {
   }
 
   public void logPVE(Long id) {
-    activityService.logPVPActivity(id);
+    activityService.logPVEActivity(id);
   }
 
 

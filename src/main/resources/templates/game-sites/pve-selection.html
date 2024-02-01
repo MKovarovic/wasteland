@@ -17,7 +17,7 @@
 
                     <h2 th:text="${enemy1.getCharacterName()}"></h2>
                     <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy2})"></div>
-                    </i><a th:href="'/activity/pvp/log?id=' + ${enemy1.getId()}" class="button"> Choose</a>
+                    </i><a th:href="'/activity/pve/log?id=' + ${enemy1.getId()}" class="button"> Choose</a>
                 </section>
 
 
@@ -25,14 +25,14 @@
 
                     <h2 th:text="${enemy2.getCharacterName()}"></h2>
                     <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy2})"></div>
-                    </i><a th:href="'/activity/pvp/log?id=' + ${enemy2.getId()}" class="button"> Choose</a>
+                    </i><a th:href="'/activity/pve/log?id=' + ${enemy2.getId()}" class="button"> Choose</a>
                 </section>
 
                 <section class="combatant">
 
                     <h2 th:text="${enemy3.getCharacterName()}"></h2>
                     <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy3})"></div>
-                    </i><a th:href="'/activity/pvp/log?id=' + ${enemy3.getId()}" class="button"> Choose</a>
+                    </i><a th:href="'/activity/pve/log?id=' + ${enemy3.getId()}" class="button"> Choose</a>
                 </section>
 
 
