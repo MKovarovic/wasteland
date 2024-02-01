@@ -3,6 +3,7 @@ package com.greenfox.tribes.controllers;
 import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
+import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.services.*;
@@ -108,6 +109,26 @@ public class ActivityController {
 
     return "game-sites/pvp-welcome";
   }
+
+  @GetMapping("/pvp/choice")
+  public String pvpChoice(Model model){
+    model = commonData(model);
+    Persona[] enemies = combatService.randomEnemies(Faction.SETTLER);
+    model.addAttribute("enemies", enemies);
+
+    model.addAttribute("enemy1", characterService.readCharacter(enemies[0].getId()));
+    model.addAttribute("portraitEnemy1", portraitService.findPortrait(enemies[0].getId()));
+
+    System.out.println(portraitService.findPortrait(enemies[0].getId()));
+    model.addAttribute("enemy2", characterService.readCharacter(enemies[1].getId()));
+    model.addAttribute("portraitEnemy2", portraitService.findPortrait(enemies[1].getId()));
+
+    model.addAttribute("enemy3", characterService.readCharacter(enemies[2].getId()));
+    model.addAttribute("portraitEnemy3", portraitService.findPortrait(enemies[2].getId()));
+
+    return "game-sites/pvp_selection";
+  }
+
 
   @GetMapping("/pvp/reward")
   public String pvpReward(Model model, @RequestParam("id") long id) {
