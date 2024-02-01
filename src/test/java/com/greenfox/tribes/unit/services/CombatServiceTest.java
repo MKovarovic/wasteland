@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.greenfox.tribes.BaseTest;
+import com.greenfox.tribes.dtos.CombatantDTO;
 import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.enums.Faction;
@@ -151,4 +152,35 @@ class CombatServiceTest extends BaseTest {
     persona.setId(1L);
     return persona;
   }
-}
+
+  @Test
+  public void CombatServiceTest_fightOutcome_isFair() {
+    PersonaDTO attacker = new PersonaDTO();
+    CombatantDTO defender = new CombatantDTO();
+    attacker.setHp(100);
+    attacker.setAtk(50);
+    attacker.setDef(30);
+    attacker.setDmg(20);
+    attacker.setLck(60);
+    defender.setHp(100);
+    defender.setAtk(50);
+    defender.setDef(30);
+    defender.setDmg(20);
+    defender.setLck(60);
+
+    int totalRounds = 1000;
+    int attackerWins = 0;
+
+    for (int i = 0; i < totalRounds; i++) {
+      attacker.setHp(50);
+      defender.setHp(50);
+
+      Pair<CombatantDTO, CombatantDTO> outcome = combatService.fightOutcome(attacker, defender);
+      if (outcome.getFirst() == attacker) {
+
+        attackerWins++;
+      }
+    }
+    double percentWon = ((double) attackerWins / totalRounds) * 10;
+    assertEquals(5, (int)percentWon);
+}}

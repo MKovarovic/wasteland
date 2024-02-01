@@ -1,5 +1,7 @@
 package com.greenfox.tribes.services;
 
+import com.greenfox.tribes.dtos.EquipmentDTO;
+import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.dtos.ShopItemDTO;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.models.WastelandUser;
@@ -13,12 +15,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class ShopService {
 
   private EquipmentRepository equipmentRepository;
+  private PersonaService personaService;
   private EquipmentService equipmentService;
   private UserRepository userRepository;
   private CharacterEquipmentRepository characterEquipmentRepository;
@@ -26,10 +30,19 @@ public class ShopService {
   public ArrayList<ShopItemDTO> getShoppingList() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     ArrayList<ShopItemDTO> shoppingList = new ArrayList<>();
-    for (Equipment equipment : equipmentRepository.findAll()) {
-      int numberOwned =
-          characterEquipmentRepository.countAllByEquipmentAndPersona(
-              equipment, userRepository.findByUsername(auth.getName()).get().getPersona());
+    PersonaDTO personaDTO = personaService.readCharacter();
+    List<EquipmentDTO> backpackItems = personaService.showEquipment(personaDTO);
+    List<Equipment> allEquipment = equipmentRepository.findAll();
+
+    for (Equipment equipment : allEquipment) {
+      int numberOwned = 0;
+      for (EquipmentDTO e : backpackItems) {
+        CharacterEquipment characterEquipment =
+            characterEquipmentRepository.findById(e.getId()).orElse(null);
+        if (characterEquipment != null && !characterEquipment.getIsEquipped()) {
+          numberOwned++;
+        }
+      }
 
       shoppingList.add(ShopItemDTO.fromEquipment(equipment, numberOwned));
     }
