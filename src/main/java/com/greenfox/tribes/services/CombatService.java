@@ -203,6 +203,9 @@ public class CombatService {
     return defender;
   }
 
+
+  //todo: make sure no two enemies are the same
+
   public Persona[] randomEnemies(Faction faction) {
     Persona[] enemies = new Persona[3];
     enemies[0] = randomEnemy(faction);
@@ -224,6 +227,22 @@ public class CombatService {
     Monster defender = randomMonster();
     activityService.logPVEActivity(defender.getId());
   }
+
+
+  //todo: make sure no two enemies are the same
+
+  public Monster[] randomMonsters() {
+    Monster[] enemies = new Monster[3];
+    enemies[0] = randomMonster();
+    enemies[1] = randomMonster();
+    enemies[2] = randomMonster();
+    return enemies;
+  }
+
+  public void logPVE(Long id) {
+    activityService.logPVPActivity(id);
+  }
+
 
   public Monster randomMonster() {
     Monster defender =
