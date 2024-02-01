@@ -32,7 +32,7 @@ public class EquipmentDTO {
         false);
   }
 
-  public  void toggleEquip() {
-      isEquipped = !isEquipped;
+  public void toggleEquip() {
+    isEquipped = !isEquipped;
   }
 }

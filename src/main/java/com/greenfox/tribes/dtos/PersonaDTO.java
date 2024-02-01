@@ -2,10 +2,8 @@ package com.greenfox.tribes.dtos;
 
 import com.greenfox.tribes.mappers.EquipmentMapping;
 import com.greenfox.tribes.models.CharacterEquipment;
-import com.greenfox.tribes.services.EquipmentService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,7 @@ public class PersonaDTO extends CombatantDTO {
   private int hp;
 
   private int pullRing;
-  private List< EquipmentDTO> inventory = new ArrayList<>();
+  private List<EquipmentDTO> inventory = new ArrayList<>();
   private List<EquipmentDTO> backpackItems = new ArrayList<>();
   private List<EquipmentDTO> equipedItems = new ArrayList<>();
 
@@ -37,14 +35,13 @@ public class PersonaDTO extends CombatantDTO {
     }
   }
 
-  public void setPairId(List<CharacterEquipment> bundle){
+  public void setPairId(List<CharacterEquipment> bundle) {
     for (CharacterEquipment e : bundle) {
       EquipmentDTO equipmentDTO = EquipmentMapping.remap(e.getEquipment());
       equipmentDTO.setId(e.getId());
       backpackItems.add(equipmentDTO);
-  }}
-
-
+    }
+  }
 
   public void setInventoryEquipment(List<EquipmentDTO> bundle) {
     equipedItems = new ArrayList<>(bundle);

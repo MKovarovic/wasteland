@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -28,6 +27,7 @@ public class EquipmentService {
 
     return characterEquipmentRepository.findById(id).orElse(null);
   }
+
   public void newItem(
       String name,
       String type,
@@ -52,6 +52,4 @@ public class EquipmentService {
   public Equipment getItem(Long id) {
     return equipmentRepository.findById(id).get();
   }
-
-
 }

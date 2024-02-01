@@ -4,7 +4,6 @@ import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.PersonaMapping;
 import com.greenfox.tribes.models.CharacterEquipment;
-import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.dtos.PersonaDTO;
@@ -81,12 +80,7 @@ public class PersonaService {
     List<EquipmentDTO> inventory = new ArrayList<>();
     for (CharacterEquipment e : list) {
       EquipmentDTO dto = EquipmentDTO.fromEquipment(e.getEquipment());
-        if(e.getIsEquipped()) {
-
-            dto.setIsEquipped(true);
-        }else{
-          dto.setIsEquipped(false);
-        }
+      dto.setIsEquipped(e.getIsEquipped());
       inventory.add(dto);
     }
     return inventory;

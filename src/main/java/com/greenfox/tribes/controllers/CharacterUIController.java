@@ -12,7 +12,6 @@ import com.greenfox.tribes.services.CustomUserDetailService;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.models.Persona;
-import org.springframework.data.util.Pair;
 
 import com.greenfox.tribes.services.PersonaService;
 import com.greenfox.tribes.services.PortraitService;
