@@ -165,10 +165,10 @@ public class ActivityController {
   }
 
   @GetMapping("/pvp/log")
-  public String logPvp() {
+  public String logPvp(@RequestParam("id") long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    combatService.pvpMatching(user.getPersona().getId());
+    combatService.logPVP(id);
     return "redirect:/activity/pvp";
   }
 
