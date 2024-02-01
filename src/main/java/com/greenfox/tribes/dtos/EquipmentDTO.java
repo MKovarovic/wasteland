@@ -3,11 +3,13 @@ package com.greenfox.tribes.dtos;
 import com.greenfox.tribes.models.Equipment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 @AllArgsConstructor
 public class EquipmentDTO {
   private String name;
+
   private Long id;
   private String type;
   private Integer price;
@@ -29,4 +31,5 @@ public class EquipmentDTO {
         eq.getHpBonus(),
         eq.getLckBonus());
   }
+
 }

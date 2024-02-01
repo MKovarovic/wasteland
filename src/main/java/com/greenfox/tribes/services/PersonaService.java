@@ -51,11 +51,7 @@ public class PersonaService {
 
   public void toggleEquip(Long equipmentId) {
 
-    Persona persona = getLoggedInPersona();
-    Optional<CharacterEquipment> equipmentOptional =
-        persona.getInventory().stream()
-            .filter(e -> Objects.equals(e.getEquipment().getId(), equipmentId))
-            .findFirst();
+    Optional<CharacterEquipment> equipmentOptional = pairingRepo.findById(equipmentId);
     equipmentOptional.ifPresent(
         equipment -> {
           if (equipment.getIsEquipped() || canBeEquipped(equipment.getEquipment().getType())) {

@@ -71,29 +71,29 @@
                                 <th>Equip?</th>
 
                             </tr>
-                            <tr th:each="item: ${DTO.getInventory()}">
+                            <tr th:each="item: ${inventory}">
 
                                 <td>
-                                    <p th:text="${item.getName()}"></p>
+                                    <p th:text="${item.getSecond().getName()}"></p>
                                 </td>
                                 <td>
-                                    <p th:text="${item.getAtkBonus()}"></p>
+                                    <p th:text="${item.getSecond().getAtkBonus()}"></p>
                                 </td>
                                 <td>
-                                    <p th:text="${item.getDmgBonus()}"></p>
+                                    <p th:text="${item.getSecond().getDmgBonus()}"></p>
                                 </td>
                                 <td>
-                                    <p th:text="${item.getDefBonus()}"></p>
+                                    <p th:text="${item.getSecond().getDefBonus()}"></p>
                                 </td>
                                 <td>
-                                    <p th:text="${item.getHpBonus()}"></p>
+                                    <p th:text="${item.getSecond().getHpBonus()}"></p>
                                 </td>
                                 <td>
-                                    <p th:text="${item.getLckBonus()}"></p>
+                                    <p th:text="${item.getSecond().getLckBonus()}"></p>
                                 </td>
                                 <td>
-                                    <a th:href="'/character/me/equip?id=' + ${item.getId()}">(un)Equip</a>
-
+                                    <a th:href="'/character/me/equip?id=' + ${item.getFirst()}">(un)Equip</a>
+v
                                 </td>
 
                             </tr>

@@ -93,6 +93,7 @@ public class CharacterUIController {
     model.addAttribute("hpBonus", bonuses[2]);
     model.addAttribute("lckBonus", bonuses[3]);
     model.addAttribute("dmgBonus", bonuses[4]);
+    model.addAttribute("inventory", dto.getInventory());
 
     PortraitDTO portraitDTO = PortraitMapper.remap(user.getPersona().getPortrait());
     model.addAttribute("portraitDTO", portraitDTO);
