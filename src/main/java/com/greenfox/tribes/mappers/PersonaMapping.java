@@ -17,6 +17,7 @@ public class PersonaMapping {
     dto.setPullRing(persona.getPullRing());
     dto.setInventory(persona.getInventory());
     dto.setEquipedItems(persona.getInventory());
+    dto.setPairId(persona.getInventory());
     return dto;
   }
 
