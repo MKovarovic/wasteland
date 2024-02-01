@@ -203,6 +203,18 @@ public class CombatService {
     return defender;
   }
 
+  public Persona[] randomEnemies(Faction faction) {
+    Persona[] enemies = new Persona[3];
+    enemies[0] = randomEnemy(faction);
+    enemies[1] = randomEnemy(faction);
+    enemies[2] = randomEnemy(faction);
+    return enemies;
+  }
+
+  public void logPVP(Long id) {
+    activityService.logPVPActivity(id);
+  }
+
   public void pveMatching(Long id) {
     Persona attacker =
         personaRepository
