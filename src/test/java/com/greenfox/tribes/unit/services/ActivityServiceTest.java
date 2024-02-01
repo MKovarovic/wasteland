@@ -89,9 +89,9 @@ class ActivityServiceTest extends BaseTest {
 
     when(activityRepository.findActivityLogByPersonaId(any()))
         .thenReturn(Optional.of(getActivity(ActivityType.WORK)));
+
     assertEquals(4, activityService.timeRemaining(1L));
   }
-
 
   @Test
   public void activityService_getReward() {
@@ -138,7 +138,7 @@ class ActivityServiceTest extends BaseTest {
     activityLog.setGivesItem(type == ActivityType.PVE);
     activityLog.setPullRings(100);
     activityLog.setTime(5);
-    activityLog.setTimestamp(System.currentTimeMillis());
+    activityLog.setTimestamp(System.currentTimeMillis() - 30 * 1000);
     return activityLog;
   }
 }
