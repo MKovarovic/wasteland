@@ -96,7 +96,7 @@ class ActivityServiceTest extends BaseTest {
     assertEquals(4, activityService.timeRemaining(1L));
   }
 
-  // todo: figure out how to test this
+
   @Test
   public void activityService_getReward() {
     Equipment equipment = new Equipment();
