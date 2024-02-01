@@ -127,7 +127,7 @@ class CombatServiceTest extends BaseTest {
   }
 
   @Test
-  public void CombatServiceTest_ArenaPrize_() {
+  public void CombatServiceTest_ArenaPrize() {
     Persona winner = createTestRaider();
     winner.setId(2L);
     winner.setPullRing(100);
