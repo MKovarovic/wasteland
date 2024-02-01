@@ -34,6 +34,7 @@ class CombatServiceTest extends BaseTest {
   @Autowired private CombatService gladiatorService;
 
   @MockBean private PersonaRepository personaRepository;
+  @Mock ActivityService activityService;
 
   @Mock
   private PersonaRepository personaRepo;
@@ -134,6 +135,7 @@ class CombatServiceTest extends BaseTest {
     loser.setPullRing(50);
     Pair<Combatant, Combatant> combatants = Pair.of(winner, loser);
 
+    //when(activityService.getReward(any())).thenReturn(java.util.Optional.of(winner));
     when(personaRepo.findById(2L)).thenReturn(java.util.Optional.of(winner));
     when(personaRepo.findById(1L)).thenReturn(java.util.Optional.of(loser));
 

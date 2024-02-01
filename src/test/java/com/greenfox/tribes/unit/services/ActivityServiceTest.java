@@ -11,6 +11,7 @@ import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.repositories.ActivityLogRepository;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.repositories.EquipmentRepository;
+import com.greenfox.tribes.repositories.PersonaRepository;
 import com.greenfox.tribes.services.ActivityService;
 import com.greenfox.tribes.services.EquipmentService;
 import com.greenfox.tribes.services.PersonaService;
@@ -27,6 +28,7 @@ import static org.mockito.Mockito.*;
 class ActivityServiceTest extends BaseTest {
 
   @Mock private PersonaService personaService;
+  @Mock private PersonaRepository personaRepository;
   @Mock private ActivityLogRepository activityRepository;
 
   @Mock private EquipmentRepository equipmentRepository;
@@ -94,8 +96,9 @@ class ActivityServiceTest extends BaseTest {
         .thenReturn(Optional.of(getActivity(ActivityType.WORK)));
     assertEquals(4, activityService.timeRemaining(1L));
   }
-//todo: figure out how to test this
-/*  @Test
+
+  // todo: figure out how to test this
+  @Test
   public void ActivityService_getReward() {
     Equipment equipment = new Equipment();
     equipment.setId(1L);
@@ -107,17 +110,17 @@ class ActivityServiceTest extends BaseTest {
     equipment.setAtkBonus(5);
     equipment.setLckBonus(0);
     equipment.setPrice(10);
-
-
-    when(personaService.getLoggedInPersona()).thenReturn(createTestRaider());
+Persona persona = createTestRaider();
+    when(personaRepository.findById(any())).thenReturn(Optional.of(persona));
     when(personaService.getLoggedInPersona()).thenReturn(createTestSettler());
     when(activityRepository.findActivityLogByPersonaId(any()))
         .thenReturn(Optional.of(getActivity(ActivityType.PVP)));
     when(equipmentRepository.count()).thenReturn(19L);
     when(equipmentRepository.findById(any())).thenReturn(Optional.of(equipment));
 
-
-  }*/
+    activityService.getReward(persona.getId());
+    verify(personaRepository, times(1)).save(any());
+  }
 
   private Persona createTestRaider() {
     Persona persona = new Persona("JoeMama", Faction.RAIDER, 50, 20, 10, 10, 100, 1);
