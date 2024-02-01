@@ -9,9 +9,11 @@ import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.EquipmentMapping;
 import com.greenfox.tribes.mappers.PersonaMapping;
+import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.models.Persona;
 import com.greenfox.tribes.repositories.PersonaRepository;
+import com.greenfox.tribes.services.ActivityService;
 import com.greenfox.tribes.services.CombatService;
 import com.greenfox.tribes.services.PersonaService;
 import java.util.ArrayList;
@@ -19,21 +21,23 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.util.Pair;
 
 class CombatServiceTest extends BaseTest {
 
+  @Autowired private CombatService gladiatorService;
 
-  @Autowired
-  private CombatService gladiatorService;
+  @MockBean private PersonaRepository personaRepository;
+  @Mock ActivityService activityService;
 
-  @MockBean
-  private PersonaRepository personaRepository;
-
-  @MockBean
-  private PersonaService characterService;
-
+  @Mock
+  private PersonaRepository personaRepo;
+  @MockBean private PersonaService characterService;
+  @InjectMocks private CombatService combatService;
   private Persona testGladiator;
   private PersonaDTO testGladiatorDTO;
   private EquipmentDTO testEquipment1;
@@ -95,7 +99,8 @@ class CombatServiceTest extends BaseTest {
     assertEquals(
         testGladiator.getDef() + testEquipment1.getDefBonus() + testEquipment2.getDefBonus(),
         result.getDef());
-    assertEquals(testGladiator.getHp() + testEquipment1.getHpBonus() + testEquipment2.getHpBonus(),
+    assertEquals(
+        testGladiator.getHp() + testEquipment1.getHpBonus() + testEquipment2.getHpBonus(),
         result.getHp());
     assertEquals(
         testGladiator.getLck() + testEquipment1.getLckBonus() + testEquipment2.getLckBonus(),
@@ -112,8 +117,38 @@ class CombatServiceTest extends BaseTest {
     when(personaRepository.findById(invalidId)).thenReturn(Optional.empty());
 
     // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> {
-      gladiatorService.equipGladiator(invalidId);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          gladiatorService.equipGladiator(invalidId);
+        });
+  }
+
+  @Test
+  public void combatServiceTest_ArenaPrize() {
+    Persona winner = createTestRaider();
+    winner.setId(2L);
+    winner.setPullRing(100);
+    Persona loser = createTestRaider();
+    loser.setPullRing(50);
+    Pair<Combatant, Combatant> combatants = Pair.of(winner, loser);
+
+    //when(activityService.getReward(any())).thenReturn(java.util.Optional.of(winner));
+    when(personaRepo.findById(2L)).thenReturn(java.util.Optional.of(winner));
+    when(personaRepo.findById(1L)).thenReturn(java.util.Optional.of(loser));
+
+    combatService.arenaPrize(combatants);
+
+    assertEquals(125, winner.getPullRing());
+    assertEquals(25, loser.getPullRing());
+
+    verify(personaRepo, times(1)).save(winner);
+    verify(personaRepo, times(1)).save(loser);
+  }
+
+  private Persona createTestRaider() {
+    Persona persona = new Persona("JoeMama", Faction.RAIDER, 50, 20, 10, 10, 100, 10);
+    persona.setId(1L);
+    return persona;
   }
 }

@@ -120,21 +120,22 @@ public class ActivityService {
   }
 
   public void getReward(Long id) {
-    Persona initiator = userService.getLoggedUser().getPersona();
-    Combatant persona = playerCharacters.findById(id).get();
+
+    Persona persona = playerCharacters.findById(id).get();
 
     persona.setPullRing(
         persona.getPullRing()
             + activityLogRepository
-                .findActivityLogByPersonaId(initiator.getId())
+                .findActivityLogByPersonaId(persona.getId())
                 .get()
                 .getPullRings());
-    if (activityLogRepository.findActivityLogByPersonaId(initiator.getId()).get().getGivesItem()) {
+    playerCharacters.save(persona);
+    if (activityLogRepository.findActivityLogByPersonaId(persona.getId()).get().getGivesItem()) {
       Random rnd = new Random();
       int item = rnd.nextInt((int) equipmentRepository.count());
       Equipment itemToGive = equipmentRepository.findAll().get(item);
       CharacterEquipment pair = new CharacterEquipment();
-      pair.setPair(initiator, itemToGive);
+      pair.setPair(persona, itemToGive);
       pairingRepo.save(pair);
     }
   }
