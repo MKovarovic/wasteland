@@ -9,8 +9,11 @@
 <body>
 <div id="container">
     <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
+
         <div id="content">
+
             <div id="box">
+
                 <section class="combatant">
                     <div th:insert="/fragments/character-card.html :: portrait(${portraitEnemy1}, ${enemy1})"></div>
                     <h2 th:text="${enemy1.getCharacterName()}"></h2>
