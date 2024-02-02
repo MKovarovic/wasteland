@@ -1,5 +1,7 @@
 package com.greenfox.tribes.services;
 
+import com.greenfox.tribes.dtos.EquipmentDTO;
+import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.dtos.ShopItemDTO;
 import com.greenfox.tribes.models.Equipment;
 import com.greenfox.tribes.models.WastelandUser;
@@ -13,12 +15,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @AllArgsConstructor
 public class ShopService {
 
   private EquipmentRepository equipmentRepository;
+  private PersonaService personaService;
   private EquipmentService equipmentService;
   private UserRepository userRepository;
   private CharacterEquipmentRepository characterEquipmentRepository;
@@ -26,14 +31,31 @@ public class ShopService {
   public ArrayList<ShopItemDTO> getShoppingList() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     ArrayList<ShopItemDTO> shoppingList = new ArrayList<>();
-    for (Equipment equipment : equipmentRepository.findAll()) {
-      int numberOwned =
-          characterEquipmentRepository.countAllByEquipmentAndPersona(
-              equipment, userRepository.findByUsername(auth.getName()).get().getPersona());
+    PersonaDTO personaDTO = personaService.readCharacter();
+    List<EquipmentDTO> backpackItems = personaService.showEquipment(personaDTO);
+    List<Equipment> allEquipment = equipmentRepository.findAll();
 
+    for (Equipment equipment : allEquipment) {
+      int numberOwned = countOwnedUnEquipped(backpackItems, equipment);
       shoppingList.add(ShopItemDTO.fromEquipment(equipment, numberOwned));
     }
     return shoppingList;
+  }
+
+  private int countOwnedUnEquipped(List<EquipmentDTO> backpackItems, Equipment equipment) {
+    AtomicInteger numberOwned = new AtomicInteger();
+    for (EquipmentDTO e : backpackItems) {
+
+      characterEquipmentRepository
+          .findById(e.getId())
+          .ifPresent(
+              characterEquipment -> {
+                if (!characterEquipment.getIsEquipped()) {
+                  numberOwned.getAndIncrement();
+                }
+              });
+    }
+    return numberOwned.get();
   }
 
   public void buyStuff(Long id) {

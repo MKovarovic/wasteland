@@ -12,6 +12,7 @@ import com.greenfox.tribes.services.CustomUserDetailService;
 import com.greenfox.tribes.repositories.CharacterEquipmentRepository;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.models.Persona;
+
 import com.greenfox.tribes.services.PersonaService;
 import com.greenfox.tribes.services.PortraitService;
 import lombok.AllArgsConstructor;
@@ -58,7 +59,8 @@ public class CharacterUIController {
       @RequestParam("hairImg") String hairImg) {
 
     Persona persona =
-        characterService.addCharacter(characterName, hp, atk, dmg, def, lck, Faction.valueOf(faction.toUpperCase()), 100);
+        characterService.addCharacter(
+            characterName, hp, atk, dmg, def, lck, Faction.valueOf(faction.toUpperCase()), 100);
     System.out.println(persona);
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -93,6 +95,8 @@ public class CharacterUIController {
     model.addAttribute("hpBonus", bonuses[2]);
     model.addAttribute("lckBonus", bonuses[3]);
     model.addAttribute("dmgBonus", bonuses[4]);
+    model.addAttribute("inventory", dto.getInventory());
+    model.addAttribute("equipment", characterService.showEquipment(dto));
 
     PortraitDTO portraitDTO = PortraitMapper.remap(user.getPersona().getPortrait());
     model.addAttribute("portraitDTO", portraitDTO);

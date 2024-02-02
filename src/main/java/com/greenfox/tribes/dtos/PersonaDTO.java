@@ -25,12 +25,21 @@ public class PersonaDTO extends CombatantDTO {
 
   private int pullRing;
   private List<EquipmentDTO> inventory = new ArrayList<>();
+  private List<EquipmentDTO> backpackItems = new ArrayList<>();
   private List<EquipmentDTO> equipedItems = new ArrayList<>();
 
   public void setInventory(List<CharacterEquipment> bundle) {
     for (CharacterEquipment e : bundle) {
       EquipmentDTO equipmentDTO = EquipmentMapping.remap(e.getEquipment());
       inventory.add(equipmentDTO);
+    }
+  }
+
+  public void setPairId(List<CharacterEquipment> bundle) {
+    for (CharacterEquipment e : bundle) {
+      EquipmentDTO equipmentDTO = EquipmentMapping.remap(e.getEquipment());
+      equipmentDTO.setId(e.getId());
+      backpackItems.add(equipmentDTO);
     }
   }
 

@@ -57,6 +57,7 @@
                         <!--<div th:insert="/fragments/character-card.html :: combatStatistics(${DTO})"></div>-->
                     </div>
                 </section>
+
                 <section class="combatant">
                     <section id="inventory">
 
@@ -71,7 +72,7 @@
                                 <th>Equip?</th>
 
                             </tr>
-                            <tr th:each="item: ${DTO.getInventory()}">
+                            <tr th:each="item: ${equipment}">
 
                                 <td>
                                     <p th:text="${item.getName()}"></p>
@@ -92,12 +93,13 @@
                                     <p th:text="${item.getLckBonus()}"></p>
                                 </td>
                                 <td>
-                                    <a th:href="'/character/me/equip?id=' + ${item.getId()}">(un)Equip</a>
+                                    <a th:href="'/character/me/equip?id=' + ${item.getId()}" th:text="${item.getIsEquipped()}? 'unequip' : 'equip'"></a>
 
                                 </td>
 
                             </tr>
                         </table>
+
                     </section>
                 </section>
 

@@ -14,7 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,6 +25,7 @@ public class PersonaService {
 
   private PersonaRepository playerCharacters;
   private CharacterEquipmentRepository pairingRepo;
+  private EquipmentService equipmentService;
 
   public Persona addCharacter(
       String name, int hp, int atk, int dmg, int def, int lck, Faction faction, int pullRing) {
@@ -45,17 +47,24 @@ public class PersonaService {
     return readCharacter(loggedCharacter.getId());
   }
 
+  public List<EquipmentDTO> showEquipment(PersonaDTO personaDTO) {
+    List<EquipmentDTO> result = new ArrayList<>();
+    for (EquipmentDTO e : personaDTO.getBackpackItems()) {
+      CharacterEquipment characterEquipment = equipmentService.findCharacterEquipment(e.getId());
+      e.setIsEquipped(characterEquipment != null && characterEquipment.getIsEquipped());
+      result.add(e);
+    }
+
+    return result;
+  }
+
   public Persona getPersona(Long id) {
     return playerCharacters.findById(id).get();
   }
 
   public void toggleEquip(Long equipmentId) {
 
-    Persona persona = getLoggedInPersona();
-    Optional<CharacterEquipment> equipmentOptional =
-        persona.getInventory().stream()
-            .filter(e -> Objects.equals(e.getEquipment().getId(), equipmentId))
-            .findFirst();
+    Optional<CharacterEquipment> equipmentOptional = pairingRepo.findById(equipmentId);
     equipmentOptional.ifPresent(
         equipment -> {
           if (equipment.getIsEquipped() || canBeEquipped(equipment.getEquipment().getType())) {
@@ -63,6 +72,18 @@ public class PersonaService {
             pairingRepo.save(equipment);
           }
         });
+  }
+
+  public List<EquipmentDTO> getInventory() {
+    Persona loggedCharacter = getLoggedInPersona();
+    List<CharacterEquipment> list = loggedCharacter.getInventory();
+    List<EquipmentDTO> inventory = new ArrayList<>();
+    for (CharacterEquipment e : list) {
+      EquipmentDTO dto = EquipmentDTO.fromEquipment(e.getEquipment());
+      dto.setIsEquipped(e.getIsEquipped());
+      inventory.add(dto);
+    }
+    return inventory;
   }
 
   public Boolean canBeEquipped(String type) {
@@ -101,6 +122,4 @@ public class PersonaService {
     int[] bonuses = {atkBonus, defBonus, hpBonus, lckBonus, dmgBonus};
     return bonuses;
   }
-
-
 }

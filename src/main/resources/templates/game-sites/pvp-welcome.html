@@ -17,9 +17,9 @@
                     <div th:if="${isBusy != true}">
 
                         <i>
-                        <p th:text="${faction == 'RAIDER'} ? 'Hello ' + ${name} +  ', you look like someoone that needs some quick cash. I know a guy who has more then enough, but is unwilling to share. We could take him, together, and split the profit. What do you say?' : 'Hello ' + ${name} +  ', you seem like a good fighter. Tell you what, there is a nuisance of a guy that steals, robs, and vandalises. I will give you pull rings if you go and take him out. You in?'"></p>
-                        </i><a th:text="${faction == 'RAIDER'}? 'Let\'s go!' : 'I\'m on it.'"
-                           th:href="'/activity/pvp/log'" class="button"></a>
+                        <p th:text="${faction == 'RAIDER'} ? 'Hello ' + ${name} +  ', you look like someoone that needs some quick cash. There are guys who have more then enough, but are unwilling to share. We could take one of them, together, and split the profit. What do you say?' : 'Hello ' + ${name} +  ', you seem like a good fighter. Tell you what, there seems to be quite a lot of human pests that steal, rob, and vandalise, instead of honest job. I will give you pull rings if you go and one out. You in?'"></p>
+                        </i><a th:text="${faction == 'RAIDER'}? 'Pick a target' : 'Choose bounty'"
+                           th:href="'/activity/pvp/choice'" class="button"></a>
                     </div>
                     <div th:if="${isBusy == true}">
                         <p> Activity in progress!</p>

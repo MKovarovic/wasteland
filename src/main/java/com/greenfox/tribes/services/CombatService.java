@@ -203,6 +203,31 @@ public class CombatService {
     return defender;
   }
 
+  public Persona[] randomEnemies(Faction faction) {
+    Long[] enemiesIDs =
+        personaRepository
+            .findRandomEnemies(faction)
+            .orElseThrow(() -> new IllegalArgumentException("Nobody on the other team"));
+    Persona[] enemies = new Persona[3];
+    enemies[0] =
+        personaRepository
+            .findById(enemiesIDs[0])
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    enemies[1] =
+        personaRepository
+            .findById(enemiesIDs[1])
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    enemies[2] =
+        personaRepository
+            .findById(enemiesIDs[2])
+            .orElseThrow(() -> new IllegalArgumentException("No such persona"));
+    return enemies;
+  }
+
+  public void logPVP(Long id) {
+    activityService.logPVPActivity(id);
+  }
+
   public void pveMatching(Long id) {
     Persona attacker =
         personaRepository
@@ -211,6 +236,31 @@ public class CombatService {
 
     Monster defender = randomMonster();
     activityService.logPVEActivity(defender.getId());
+  }
+
+  public Monster[] randomMonsters() {
+    Long[] enemiesIDs =
+        monsterRepository
+            .findRandomMonsters()
+            .orElseThrow(() -> new IllegalArgumentException("Nothing to hunt"));
+    Monster[] enemies = new Monster[3];
+    enemies[0] =
+        monsterRepository
+            .findById(enemiesIDs[0])
+            .orElseThrow(() -> new IllegalArgumentException("No such monster"));
+    enemies[1] =
+        monsterRepository
+            .findById(enemiesIDs[1])
+            .orElseThrow(() -> new IllegalArgumentException("No such monster"));
+    enemies[2] =
+        monsterRepository
+            .findById(enemiesIDs[2])
+            .orElseThrow(() -> new IllegalArgumentException("No such monster"));
+    return enemies;
+  }
+
+  public void logPVE(Long id) {
+    activityService.logPVEActivity(id);
   }
 
   public Monster randomMonster() {

@@ -16,6 +16,7 @@ public class EquipmentDTO {
   private Integer dmgBonus;
   private Integer hpBonus;
   private Integer lckBonus;
+  private Boolean isEquipped;
 
   public static EquipmentDTO fromEquipment(Equipment eq) {
     return new EquipmentDTO(
@@ -27,6 +28,11 @@ public class EquipmentDTO {
         eq.getDefBonus(),
         eq.getDmgBonus(),
         eq.getHpBonus(),
-        eq.getLckBonus());
+        eq.getLckBonus(),
+        false);
+  }
+
+  public void toggleEquip() {
+    isEquipped = !isEquipped;
   }
 }

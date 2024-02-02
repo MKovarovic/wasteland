@@ -3,8 +3,10 @@ package com.greenfox.tribes.controllers;
 import com.greenfox.tribes.dtos.ActivityDTO;
 import com.greenfox.tribes.dtos.PortraitDTO;
 import com.greenfox.tribes.enums.ActivityType;
+import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.models.Combatant;
+import com.greenfox.tribes.models.Monster;
 import com.greenfox.tribes.services.*;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
@@ -109,6 +111,25 @@ public class ActivityController {
     return "game-sites/pvp-welcome";
   }
 
+  @GetMapping("/pvp/choice")
+  public String pvpChoice(Model model) {
+    model = commonData(model);
+    Persona[] enemies = combatService.randomEnemies(Faction.SETTLER);
+    model.addAttribute("enemies", enemies);
+
+    model.addAttribute("enemy1", characterService.readCharacter(enemies[0].getId()));
+    model.addAttribute("portraitEnemy1", portraitService.findPortrait(enemies[0].getId()));
+
+    System.out.println(portraitService.findPortrait(enemies[0].getId()));
+    model.addAttribute("enemy2", characterService.readCharacter(enemies[1].getId()));
+    model.addAttribute("portraitEnemy2", portraitService.findPortrait(enemies[1].getId()));
+
+    model.addAttribute("enemy3", characterService.readCharacter(enemies[2].getId()));
+    model.addAttribute("portraitEnemy3", portraitService.findPortrait(enemies[2].getId()));
+
+    return "game-sites/pvp-selection";
+  }
+
   @GetMapping("/pvp/reward")
   public String pvpReward(Model model, @RequestParam("id") long id) {
     Persona userHero = userRepository.findById(id).get().getPersona();
@@ -144,10 +165,10 @@ public class ActivityController {
   }
 
   @GetMapping("/pvp/log")
-  public String logPvp() {
+  public String logPvp(@RequestParam("id") long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    combatService.pvpMatching(user.getPersona().getId());
+    combatService.logPVP(id);
     return "redirect:/activity/pvp";
   }
 
@@ -202,6 +223,21 @@ public class ActivityController {
     return "game-sites/pve-reward";
   }
 
+  @GetMapping("/pve/choice")
+  public String pveChoice(Model model) {
+    model = commonData(model);
+    Monster[] enemies = combatService.randomMonsters();
+    model.addAttribute("enemies", enemies);
+
+    model.addAttribute("enemy1", monsterService.findMonster(enemies[0].getId()));
+
+    model.addAttribute("enemy2", monsterService.findMonster(enemies[1].getId()));
+
+    model.addAttribute("enemy3", monsterService.findMonster(enemies[2].getId()));
+
+    return "game-sites/pve-selection";
+  }
+
   @GetMapping("/pve/fight")
   public String pveFight(Model model, @RequestParam("id") long id) {
 
@@ -210,7 +246,7 @@ public class ActivityController {
 
     ActivityDTO dto = activityService.getActivity(id);
 
-    model.addAttribute("enemy", characterService.readCharacter(dto.getEnemyID()));
+    model.addAttribute("enemy", monsterService.findMonster(dto.getEnemyID()));
 
     PortraitDTO portraitHero = PortraitMapper.remap(userHero.getPortrait());
     model.addAttribute("portraitHero", portraitHero);
@@ -222,10 +258,10 @@ public class ActivityController {
   }
 
   @GetMapping("/pve/log")
-  public String logPve() {
+  public String logPve(@RequestParam("id") long id) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    combatService.pveMatching(user.getPersona().getId());
+    combatService.logPVE(id);
     return "redirect:/activity/pve";
   }
 }

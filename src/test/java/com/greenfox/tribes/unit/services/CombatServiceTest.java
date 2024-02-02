@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.greenfox.tribes.BaseTest;
+import com.greenfox.tribes.dtos.CombatantDTO;
 import com.greenfox.tribes.dtos.EquipmentDTO;
 import com.greenfox.tribes.dtos.PersonaDTO;
 import com.greenfox.tribes.enums.Faction;
@@ -34,8 +35,7 @@ class CombatServiceTest extends BaseTest {
   @MockBean private PersonaRepository personaRepository;
   @Mock ActivityService activityService;
 
-  @Mock
-  private PersonaRepository personaRepo;
+  @Mock private PersonaRepository personaRepo;
   @MockBean private PersonaService characterService;
   @InjectMocks private CombatService combatService;
   private Persona testGladiator;
@@ -133,7 +133,7 @@ class CombatServiceTest extends BaseTest {
     loser.setPullRing(50);
     Pair<Combatant, Combatant> combatants = Pair.of(winner, loser);
 
-    //when(activityService.getReward(any())).thenReturn(java.util.Optional.of(winner));
+    // when(activityService.getReward(any())).thenReturn(java.util.Optional.of(winner));
     when(personaRepo.findById(2L)).thenReturn(java.util.Optional.of(winner));
     when(personaRepo.findById(1L)).thenReturn(java.util.Optional.of(loser));
 
@@ -150,5 +150,37 @@ class CombatServiceTest extends BaseTest {
     Persona persona = new Persona("JoeMama", Faction.RAIDER, 50, 20, 10, 10, 100, 10);
     persona.setId(1L);
     return persona;
+  }
+
+  @Test
+  public void combatServiceTest_fightOutcome_isFair() {
+    PersonaDTO attacker = new PersonaDTO();
+    CombatantDTO defender = new CombatantDTO();
+    attacker.setHp(100);
+    attacker.setAtk(50);
+    attacker.setDef(30);
+    attacker.setDmg(20);
+    attacker.setLck(60);
+    defender.setHp(100);
+    defender.setAtk(50);
+    defender.setDef(30);
+    defender.setDmg(20);
+    defender.setLck(60);
+
+    int totalRounds = 1000;
+    int attackerWins = 0;
+
+    for (int i = 0; i < totalRounds; i++) {
+      attacker.setHp(50);
+      defender.setHp(50);
+
+      Pair<CombatantDTO, CombatantDTO> outcome = combatService.fightOutcome(attacker, defender);
+      if (outcome.getFirst() == attacker) {
+
+        attackerWins++;
+      }
+    }
+    double percentWon = ((double) attackerWins / totalRounds) * 10;
+    assertEquals(5, (int) percentWon);
   }
 }
