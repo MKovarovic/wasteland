@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="container">
-    <div th:insert="/fragments/structure.html :: siteForm2(~{::#content})">
+    <div th:insert="fragments/structure.html :: siteForm2(~{::#content})">
         <div id="content">
             <section id="creationBox">
                 <form id="characterSheet" onsubmit="return validateCharacterCreation()">

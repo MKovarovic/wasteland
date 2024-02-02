@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="container">
-    <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
+    <div th:insert="fragments/structure.html :: siteForm(~{::#content})">
         <div id="content">
             <div id="box">
 
@@ -16,7 +16,7 @@
                 <section class="combatant">
 
                     <h2 th:text="${enemy1.getCharacterName()}"></h2>
-                    <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy1})"></div>
+                    <div th:insert="fragments/character-card.html :: combatStatistics(${enemy1})"></div>
                     </i><a th:href="'/activity/pve/log?id=' + ${enemy1.getId()}" class="button"> Choose</a>
                 </section>
 
@@ -24,14 +24,14 @@
                 <section class="combatant">
 
                     <h2 th:text="${enemy2.getCharacterName()}"></h2>
-                    <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy2})"></div>
+                    <div th:insert="fragments/character-card.html :: combatStatistics(${enemy2})"></div>
                     </i><a th:href="'/activity/pve/log?id=' + ${enemy2.getId()}" class="button"> Choose</a>
                 </section>
 
                 <section class="combatant">
 
                     <h2 th:text="${enemy3.getCharacterName()}"></h2>
-                    <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy3})"></div>
+                    <div th:insert="fragments/character-card.html :: combatStatistics(${enemy3})"></div>
                     </i><a th:href="'/activity/pve/log?id=' + ${enemy3.getId()}" class="button"> Choose</a>
                 </section>
 

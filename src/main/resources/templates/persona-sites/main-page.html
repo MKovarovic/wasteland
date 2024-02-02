@@ -8,13 +8,13 @@
 </head>
 <body>
 <div id="container">
-    <div th:insert="/fragments/structure.html :: siteForm(~{::#content})">
+    <div th:insert="fragments/structure.html :: siteForm(~{::#content})">
         <div id="content">
 
             <div id="box">
                 <section class="combatant">
                     <div id="alignmentLeft">
-                        <div th:insert="/fragments/character-card.html :: portrait(${portraitDTO}, ${DTO})"></div>
+                        <div th:insert="fragments/character-card.html :: portrait(${portraitDTO}, ${DTO})"></div>
                         <br>
                         <h2 th:text="${DTO.getCharacterName()}"></h2>
                         <table>
@@ -54,7 +54,7 @@
                             </tr>
 
                         </table>
-                        <!--<div th:insert="/fragments/character-card.html :: combatStatistics(${DTO})"></div>-->
+                        <!--<div th:insert="fragments/character-card.html :: combatStatistics(${DTO})"></div>-->
                     </div>
                 </section>
 
