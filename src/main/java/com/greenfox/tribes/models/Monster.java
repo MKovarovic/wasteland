@@ -23,7 +23,7 @@ public class Monster extends Combatant {
   private Integer lck; // chance to crit, i.e. deal double damage
   private Integer hp;
   private String name;
-
+  private String picture;
   private Faction faction = Faction.MONSTER;
   // INVENTORY
   private Integer pullRing;
