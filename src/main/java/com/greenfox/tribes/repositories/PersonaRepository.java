@@ -16,4 +16,7 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 
   @Query("SELECT id FROM Persona  WHERE faction = :faction ORDER BY RAND() LIMIT 1")
   Optional<Long> findRandomIdByFaction(@Param("faction") Faction faction);
+
+  @Query("SELECT id FROM Persona  WHERE faction = :faction ORDER BY RAND() LIMIT 3")
+  Optional<Long[]> findRandomEnemies(@Param("faction") Faction faction);
 }

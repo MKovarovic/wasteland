@@ -16,7 +16,7 @@
                 <section class="combatant">
 
                     <h2 th:text="${enemy1.getCharacterName()}"></h2>
-                    <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy2})"></div>
+                    <div th:insert="/fragments/character-card.html :: combatStatistics(${enemy1})"></div>
                     </i><a th:href="'/activity/pve/log?id=' + ${enemy1.getId()}" class="button"> Choose</a>
                 </section>
 

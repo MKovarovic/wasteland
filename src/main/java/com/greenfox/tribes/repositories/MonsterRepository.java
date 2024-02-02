@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface MonsterRepository extends JpaRepository<Monster, Long> {
   @Query(nativeQuery = true, value = "SELECT id FROM monster ORDER BY RAND() LIMIT 1")
   Optional<Long> findRandomMonsterId();
+
+  @Query(nativeQuery = true, value = "SELECT id FROM monster ORDER BY RAND() LIMIT 3")
+  Optional<Long[]> findRandomMonsters();
 }
