@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @AllArgsConstructor
@@ -35,18 +36,26 @@ public class ShopService {
     List<Equipment> allEquipment = equipmentRepository.findAll();
 
     for (Equipment equipment : allEquipment) {
-      int numberOwned = 0;
-      for (EquipmentDTO e : backpackItems) {
-        CharacterEquipment characterEquipment =
-            characterEquipmentRepository.findById(e.getId()).orElse(null);
-        if (characterEquipment != null && !characterEquipment.getIsEquipped()) {
-          numberOwned++;
-        }
-      }
-
+      int numberOwned = countOwnedUnEquipped(backpackItems, equipment);
       shoppingList.add(ShopItemDTO.fromEquipment(equipment, numberOwned));
     }
     return shoppingList;
+  }
+
+  private int countOwnedUnEquipped(List<EquipmentDTO> backpackItems, Equipment equipment) {
+    AtomicInteger numberOwned = new AtomicInteger();
+    for (EquipmentDTO e : backpackItems) {
+
+      characterEquipmentRepository
+          .findById(e.getId())
+          .ifPresent(
+              characterEquipment -> {
+                if (!characterEquipment.getIsEquipped()) {
+                  numberOwned.getAndIncrement();
+                }
+              });
+    }
+    return numberOwned.get();
   }
 
   public void buyStuff(Long id) {

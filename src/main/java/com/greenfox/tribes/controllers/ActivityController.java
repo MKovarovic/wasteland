@@ -231,13 +231,10 @@ public class ActivityController {
     model.addAttribute("enemies", enemies);
 
     model.addAttribute("enemy1", monsterService.findMonster(enemies[0].getId()));
-    //model.addAttribute("portraitEnemy1", portraitService.findPortrait(enemies[0].getId()));
 
     model.addAttribute("enemy2", monsterService.findMonster(enemies[1].getId()));
-    //model.addAttribute("portraitEnemy2", portraitService.findPortrait(enemies[1].getId()));
 
     model.addAttribute("enemy3", monsterService.findMonster(enemies[2].getId()));
-   // model.addAttribute("portraitEnemy3", portraitService.findPortrait(enemies[2].getId()));
 
     return "game-sites/pve-selection";
   }
