@@ -112,7 +112,7 @@ public class ActivityController {
   }
 
   @GetMapping("/pvp/choice")
-  public String pvpChoice(Model model){
+  public String pvpChoice(Model model) {
     model = commonData(model);
     Persona[] enemies = combatService.randomEnemies(Faction.SETTLER);
     model.addAttribute("enemies", enemies);
@@ -129,7 +129,6 @@ public class ActivityController {
 
     return "game-sites/pvp-selection";
   }
-
 
   @GetMapping("/pvp/reward")
   public String pvpReward(Model model, @RequestParam("id") long id) {
@@ -225,7 +224,7 @@ public class ActivityController {
   }
 
   @GetMapping("/pve/choice")
-  public String pveChoice(Model model){
+  public String pveChoice(Model model) {
     model = commonData(model);
     Monster[] enemies = combatService.randomMonsters();
     model.addAttribute("enemies", enemies);
@@ -238,9 +237,6 @@ public class ActivityController {
 
     return "game-sites/pve-selection";
   }
-
-
-
 
   @GetMapping("/pve/fight")
   public String pveFight(Model model, @RequestParam("id") long id) {

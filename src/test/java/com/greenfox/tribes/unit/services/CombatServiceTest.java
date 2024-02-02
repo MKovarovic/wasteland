@@ -35,8 +35,7 @@ class CombatServiceTest extends BaseTest {
   @MockBean private PersonaRepository personaRepository;
   @Mock ActivityService activityService;
 
-  @Mock
-  private PersonaRepository personaRepo;
+  @Mock private PersonaRepository personaRepo;
   @MockBean private PersonaService characterService;
   @InjectMocks private CombatService combatService;
   private Persona testGladiator;
@@ -134,7 +133,7 @@ class CombatServiceTest extends BaseTest {
     loser.setPullRing(50);
     Pair<Combatant, Combatant> combatants = Pair.of(winner, loser);
 
-    //when(activityService.getReward(any())).thenReturn(java.util.Optional.of(winner));
+    // when(activityService.getReward(any())).thenReturn(java.util.Optional.of(winner));
     when(personaRepo.findById(2L)).thenReturn(java.util.Optional.of(winner));
     when(personaRepo.findById(1L)).thenReturn(java.util.Optional.of(loser));
 
@@ -154,7 +153,7 @@ class CombatServiceTest extends BaseTest {
   }
 
   @Test
-  public void CombatServiceTest_fightOutcome_isFair() {
+  public void combatServiceTest_fightOutcome_isFair() {
     PersonaDTO attacker = new PersonaDTO();
     CombatantDTO defender = new CombatantDTO();
     attacker.setHp(100);
@@ -182,5 +181,6 @@ class CombatServiceTest extends BaseTest {
       }
     }
     double percentWon = ((double) attackerWins / totalRounds) * 10;
-    assertEquals(5, (int)percentWon);
-}}
+    assertEquals(5, (int) percentWon);
+  }
+}
