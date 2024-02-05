@@ -35,6 +35,7 @@ public class MonsterService {
     dto.setLck(monster.getLck());
     dto.setHp(monster.getHp());
     dto.setPullRing(monster.getPullRing());
+    dto.setPicture(monster.getPicture());
     return dto;
   }
 }

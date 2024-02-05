@@ -14,4 +14,5 @@ public class MonsterDTO extends CombatantDTO {
   private int def;
   private int lck;
   private int pullRing;
+  private String picture;
 }
