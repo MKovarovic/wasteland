@@ -152,7 +152,7 @@ a {
 
 }
 
-#alignmentLeft table, #alignmentLeft h2, #alignmentLeft img{
+#alignmentLeft table, #alignmentLeft h2, #alignmentLeft img {
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -162,16 +162,38 @@ a {
 }
 
 
-
-#face{
+#face {
   width: 180px;
   height: 180px;
   position: relative;
 }
 
-#face img{
+#face img {
   content: '';
   position: absolute;
   top: 5px;
   left: 5px;
+}
+
+
+.shop-button {
+  display: flex;
+  justify-content: space-between;
+}
+
+.shop-button * {
+  margin: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.character-stats label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.character-stats input {
+  width: 187px;
 }

@@ -18,33 +18,49 @@
                                placeholder="Choose your name" required minlength="3" maxlength="20">
 
                         <h3> Faction</h3>
-                        <input type="radio" id="settler" name="faction" value="Settler" required>
-                        <label for="settler">Settler</label><br>
+                        <div class="flex">
+                            <label for="settler">Settler</label>
+                            <input type="radio" id="settler" name="faction" value="Settler" required>
+                        </div>
 
-                        <input type="radio" id="raider" name="faction" value="Raider">
-                        <label for="raider">Raider</label><br>
+                        <div class="flex">
+                            <label for="raider">Raider</label>
+                            <input type="radio" id="raider" name="faction" value="Raider">
+                        </div>
+
 
                         <h3> Statistics</h3>
 
                         remaining points:
                         <output id="points">---</output>
-                        <br/>
-                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
-                               id="atk"
-                               name="atk"/>Attack<br/>
-                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
-                               id="dmg"
-                               name="dmg"/>Damage<br/>
-                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
-                               id="def"
-                               name="def"/>Defense<br/>
-                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
-                               id="hp"
-                               name="hp"/>Hit Points<br/>
-                        <input class="abilityBuy" type=number oninput="recalculate();" min="10" value="10" max="50"
-                               id="lck"
-                               name="lck"/>Luck<br/>
+                        <br>
+                        <div class="character-stats">
+                            <label>Attack:<input class="abilityBuy" type=number oninput="recalculate();" min="10"
+                                                value="10"
+                                                max="50"
+                                                id="atk"
+                                                name="atk"/></label>
+                            <label>Damage:<input class="abilityBuy" type=number oninput="recalculate();" min="10"
+                                                value="10"
+                                                max="50"
+                                                id="dmg"
+                                                name="dmg"/></label>
+                            <label>Defense:<input class="abilityBuy" type=number oninput="recalculate();" min="10"
+                                                 value="10"
+                                                 max="50"
+                                                 id="def"
+                                                 name="def"/></label>
+                            <label>Hit Points:<input class="abilityBuy" type=number oninput="recalculate();" min="10"
+                                                    value="10" max="50"
+                                                    id="hp"
+                                                    name="hp"/></label>
+                            <label>Luck:<input class="abilityBuy" type=number oninput="recalculate();" min="10"
+                                              value="10"
+                                              max="50"
+                                              id="lck"
+                                              name="lck"/></label>
 
+                        </div>
                     </div>
 
                     <input id="faceSave" type="text" name="faceImg" value="/PortraitParts/Face01.png"
@@ -84,7 +100,8 @@
                     </div>
 
 
-                    <button type="submit" form="characterSheet" formaction="/character/new/create" formmethod="get"> Send
+                    <button type="submit" form="characterSheet" formaction="/character/new/create" formmethod="get">
+                        Send
                     </button>
                 </section>
 
