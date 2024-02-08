@@ -7,6 +7,7 @@ import com.greenfox.tribes.enums.Faction;
 import com.greenfox.tribes.mappers.PortraitMapper;
 import com.greenfox.tribes.models.Combatant;
 import com.greenfox.tribes.models.Monster;
+import com.greenfox.tribes.repositories.PersonaRepository;
 import com.greenfox.tribes.services.*;
 import com.greenfox.tribes.models.WastelandUser;
 import com.greenfox.tribes.repositories.UserRepository;
@@ -29,6 +30,7 @@ public class ActivityController {
 
   private UserRepository userRepository;
   private ActivityService activityService;
+  private PersonaRepository personaRepository;
   private MonsterRepository monsterRepository;
   private CombatService combatService;
   private PersonaService characterService;
@@ -38,7 +40,7 @@ public class ActivityController {
   public Model commonData(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
+    Persona userHero = user.getPersona();
     model.addAttribute("hero", characterService.readCharacter(userHero.getId()));
     model.addAttribute("faction", userHero.getFaction().toString());
     model.addAttribute("isBusy", activityService.isFinished(userHero.getId()));
@@ -82,8 +84,7 @@ public class ActivityController {
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
-
+    Persona userHero = user.getPersona();
     ActivityDTO dto = activityService.getActivity(userHero.getId());
     ActivityType type = null;
     if (dto != null && dto.getType() != null) {
@@ -104,7 +105,7 @@ public class ActivityController {
 
   @GetMapping("/pvp/welcome")
   public String pvpWelcome(Model model, @RequestParam("id") long id) {
-    Persona userHero = userRepository.findById(id).get().getPersona();
+    Persona userHero = personaRepository.findById(id).get();
     model = commonData(model);
     model.addAttribute("name", userHero.getCharacterName());
 
@@ -120,7 +121,6 @@ public class ActivityController {
     model.addAttribute("enemy1", characterService.readCharacter(enemies[0].getId()));
     model.addAttribute("portraitEnemy1", portraitService.findPortrait(enemies[0].getId()));
 
-    System.out.println(portraitService.findPortrait(enemies[0].getId()));
     model.addAttribute("enemy2", characterService.readCharacter(enemies[1].getId()));
     model.addAttribute("portraitEnemy2", portraitService.findPortrait(enemies[1].getId()));
 
@@ -132,7 +132,7 @@ public class ActivityController {
 
   @GetMapping("/pvp/reward")
   public String pvpReward(Model model, @RequestParam("id") long id) {
-    Persona userHero = userRepository.findById(id).get().getPersona();
+    Persona userHero = personaRepository.findById(id).get();
     model = commonData(model);
 
     int initialPullRings = userHero.getPullRing();
@@ -147,7 +147,7 @@ public class ActivityController {
 
   @GetMapping("/pvp/fight")
   public String pvpFight(Model model, @RequestParam("id") long id) {
-    Persona userHero = userRepository.findById(id).get().getPersona();
+    Persona userHero = personaRepository.findById(id).get();
     model = commonData(model);
 
     ActivityDTO dto = activityService.getActivity(id);
@@ -176,8 +176,7 @@ public class ActivityController {
   public String pve(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
-    Persona userHero = userRepository.findById(user.getPersona().getId()).get().getPersona();
-
+    Persona userHero = user.getPersona();
     ActivityDTO dto = activityService.getActivity(userHero.getId());
     ActivityType type = null;
     if (dto != null && dto.getType() != null) {
@@ -201,7 +200,7 @@ public class ActivityController {
 
   @GetMapping("/pve/welcome")
   public String pveWelcome(Model model, @RequestParam("id") long id) {
-    Persona userHero = userRepository.findById(id).get().getPersona();
+    Persona userHero = personaRepository.findById(id).get();
     model = commonData(model);
 
     return "game-sites/pve-welcome";
@@ -210,7 +209,7 @@ public class ActivityController {
   @GetMapping("/pve/reward")
   public String pveReward(Model model, @RequestParam("id") long id) {
 
-    Persona userHero = userRepository.findById(id).get().getPersona();
+    Persona userHero = personaRepository.findById(id).get();
     model = commonData(model);
 
     int initialPullRings = userHero.getPullRing();
@@ -241,7 +240,7 @@ public class ActivityController {
   @GetMapping("/pve/fight")
   public String pveFight(Model model, @RequestParam("id") long id) {
 
-    Persona userHero = userRepository.findById(id).get().getPersona();
+    Persona userHero = personaRepository.findById(id).get();
     model = commonData(model);
 
     ActivityDTO dto = activityService.getActivity(id);

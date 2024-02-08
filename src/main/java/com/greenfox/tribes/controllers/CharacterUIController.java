@@ -61,7 +61,6 @@ public class CharacterUIController {
     Persona persona =
         characterService.addCharacter(
             characterName, hp, atk, dmg, def, lck, Faction.valueOf(faction.toUpperCase()), 100);
-    System.out.println(persona);
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     Long idPortrait =
