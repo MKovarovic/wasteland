@@ -46,7 +46,8 @@ public class ShopService {
   private int  countOwnedUnEquipped(List<EquipmentDTO> backpackItems, Equipment equipment) {
     int numberOwned = 0;
     for(EquipmentDTO item : backpackItems) {
-      if(Objects.equals(item.getId(), equipment.getId())) {
+      Equipment equipment1 = characterEquipmentRepository.findById(item.getId()).get().getEquipment();
+      if(Objects.equals(equipment1.getId(), equipment.getId()) && !item.getIsEquipped()) {
         numberOwned++;
       }
     }
