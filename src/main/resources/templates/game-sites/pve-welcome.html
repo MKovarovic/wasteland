@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work</title>
+    <link href="/resources/ActivityGraphics.css" rel="stylesheet"/>
+    <link href="/resources/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="container">
+    <div th:insert="fragments/structure.html :: siteForm(~{::#content})">
+        <div id="content">
+            <div id="box">
+                <div id="text">
+                    <h2>Hunting</h2>
+                    <div th:if="${isBusy != true}">
+
+                        <i>
+                        <p> Hello there,  you look like someone who can hold their own in a fight. There is plenty of wild and dangerous beasts in these woods. I am too old to hunt anymore, but I will pay you handsomely for their meat.</p>
+                        </i><a th:href="'/activity/pve/choice'" class="button">Pick a track.
+                           </a>
+                    </div>
+                    <div th:if="${isBusy == true}">
+                        <p> Activity in progress!</p>
+
+                    </div>
+                </div>
+
+                <div id=picture>
+                    <img  src="/resources/Hunter.png" alt="hunter"/>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

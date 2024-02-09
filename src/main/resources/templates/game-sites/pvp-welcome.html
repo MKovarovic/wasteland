@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work</title>
+    <link href="/resources/ActivityGraphics.css" rel="stylesheet"/>
+    <link href="/resources/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="container">
+    <div th:insert="fragments/structure.html :: siteForm(~{::#content})">
+        <div id="content">
+            <div id="box">
+                <div id="text">
+                    <h2 th:if="${faction == 'RAIDER'}">Raiding</h2>
+                    <h2 th:if="${faction == 'SETTLER'}">Bounty hunting</h2>
+                    <div th:if="${isBusy != true}">
+
+                        <i>
+                        <p th:text="${faction == 'RAIDER'} ? 'Hello ' + ${name} +  ', you look like someoone that needs some quick cash. There are guys who have more then enough, but are unwilling to share. We could take one of them, together, and split the profit. What do you say?' : 'Hello ' + ${name} +  ', you seem like a good fighter. Tell you what, there seems to be quite a lot of human pests that steal, rob, and vandalise, instead of honest job. I will give you pull rings if you go and one out. You in?'"></p>
+                        </i><a th:text="${faction == 'RAIDER'}? 'Pick a target' : 'Choose bounty'"
+                           th:href="'/activity/pvp/choice'" class="button"></a>
+                    </div>
+                    <div th:if="${isBusy == true}">
+                        <p> Activity in progress!</p>
+
+                    </div>
+                </div>
+
+                <div id=picture>
+                    <img th:if="${faction == 'RAIDER'}" src="/resources/Raider.png" alt="raider"/>
+                    <img th:if="${faction == 'SETTLER'}" src="/resources/TheColonel.jpg" alt="settler"/>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

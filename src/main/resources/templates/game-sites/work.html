@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work</title>
+    <link href="/resources/ActivityGraphics.css" rel="stylesheet"/>
+    <link href="/resources/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="container">
+    <div th:insert="fragments/structure.html :: siteForm(~{::#content})">
+        <div id="content">
+            <div id="box">
+                <div id="text">
+                    <h2 th:if="${faction == 'RAIDER'}">Scavanging</h2>
+                    <h2 th:if="${faction == 'SETTLER'}">Farming</h2>
+                    <div th:if="${isBusy != true}">
+
+                        <i>
+                        <p th:text="${faction == 'RAIDER'} ? 'Hello ' + ${name} +  ', there is plenty of places to loot, and plenty of stuff to be scavanged.Want pull rings? Do something for that. Get me some old electronics, scrap metal, cans, whatever you find. I will pay you for it. You are still here? Go  get me some stuff!' : 'Hello ' + ${name} +  ', wanna work? \'Cause there is plenty of that around. You can go weed that part of the field, or help over there with raking, or perhaps you would perhaps you would like to help with watering? You still here? Go help with the work, and earn some honest pull rings, or don\'t bother me.'"></p>
+                        </i><a th:text="${faction == 'RAIDER'}? 'Go scavanging' : 'Work the field'"
+                           th:href="'/activity/work/log'" class="button"></a>
+                    </div>
+                    <div th:if="${isBusy == true}">
+                        <h2 th:text="${faction == 'RAIDER'} ? 'Scavanging in progress': 'Farming in progress'"> </h2>
+                        <p> Honest work may not be as easy as you think.</p>
+                        <p> It certainly takes more time than expected.</p>
+                        <h4 th:text="${minutes + ' minute(s) remaining'}"></h4>
+                    </div>
+                </div>
+
+                <div id=picture>
+                    <img th:if="${faction == 'RAIDER'}" src="/resources/scavangingwork.jpg" alt="raider"/>
+                    <img th:if="${faction == 'SETTLER'}" src="/resources/fieldwork.jpg" alt="settler"/>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

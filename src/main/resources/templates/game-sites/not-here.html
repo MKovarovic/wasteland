@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>'Shop'</title>
+    <link href="/resources/Graphics.css" rel="stylesheet"/>
+    <link href="/resources/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="container">
+    <div th:insert="fragments/structure.html :: siteForm(~{::#content})">
+        <div id="content">
+            <h2>Activity in Progress</h2>
+            <h3>You are already doing an activity somewhere else.</h3>
+            <h3>As nobody can be on two places at once, you have to finish it first,
+            before starting this one.</h3>
+        </div>
+    </div>
+</div>
+</body>
+</html>

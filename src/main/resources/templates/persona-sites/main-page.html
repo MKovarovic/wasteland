@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Landing</title>
+    <link href="/resources/Graphics.css" rel="stylesheet"/>
+    <link href="/resources/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="container">
+    <div th:insert="fragments/structure.html :: siteForm(~{::#content})">
+        <div id="content">
+
+            <div id="box">
+                <section class="combatant">
+                    <div id="alignmentLeft">
+                        <div th:insert="fragments/character-card.html :: portrait(${portraitDTO}, ${DTO})"></div>
+                        <br>
+                        <h2 th:text="${DTO.getCharacterName()}"></h2>
+                        <table>
+
+                            <tr>
+                                <td>
+                                    <p> Faction</p>
+                                </td>
+                                <td>
+                                    <p th:text="${DTO.getFaction()}"></p>
+                                </td>
+                            <tr>
+                                <td>
+                                    <p th:text="'⨁:' + ${DTO.getAtk()} + ' + ' + ${atkBonus}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="'𐃃:' + ${DTO.getDef()} + ' + ' + ${defBonus}"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p th:text="'🗡:' + ${DTO.getDmg()} + ' + ' + ${dmgBonus}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="'❤:' + ${DTO.getHp()} + ' + ' + ${hpBonus}"></p>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>
+                                    <p>⯎</p>
+                                </td>
+                                <td>
+                                    <p th:text="${DTO.getLck()}"></p>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <!--<div th:insert="fragments/character-card.html :: combatStatistics(${DTO})"></div>-->
+                    </div>
+                </section>
+
+                <section class="combatant">
+                    <section id="inventory">
+
+                        <table>
+                            <tr>
+                                <th>Item</th>
+                                <th>ATK bonus</th>
+                                <th>DMG bonus</th>
+                                <th>DEF bonus</th>
+                                <th>HP bonus</th>
+                                <th>LCK bonus</th>
+                                <th>Equip?</th>
+
+                            </tr>
+                            <tr th:each="item: ${equipment}">
+
+                                <td>
+                                    <p th:text="${item.getName()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getAtkBonus()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getDmgBonus()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getDefBonus()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getHpBonus()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getLckBonus()}"></p>
+                                </td>
+                                <td>
+                                    <a th:href="'/character/me/equip?id=' + ${item.getId()}" th:text="${item.getIsEquipped()}? 'unequip' : 'equip'"></a>
+
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </section>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
