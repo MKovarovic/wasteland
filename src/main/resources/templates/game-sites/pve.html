@@ -25,6 +25,7 @@
 
 
                     <section class="combatant">
+                        <img th:src="${enemy.getPicture()}" alt="">
                         <h2 th:text="${enemy.getCharacterName()}"></h2>
                         <div th:insert="fragments/character-card.html :: combatStatistics(${enemy})"></div>
 
