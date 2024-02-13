@@ -48,7 +48,8 @@ public class ActivityController {
   }
 
   @GetMapping("/notHere")
-  public String notHere() {
+  public String notHere(Model model) {
+    model = commonData(model);
     return "game-sites/not-here";
   }
 
@@ -56,6 +57,7 @@ public class ActivityController {
   public String work(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
+    model = commonData(model);
     if (activityService.isFinished(user.getPersona().getId())) {
       activityService.deleteActivity(user.getPersona().getId());
     }
@@ -81,7 +83,7 @@ public class ActivityController {
 
   @GetMapping("/pvp")
   public String pvp(Model model) {
-
+    model = commonData(model);
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     WastelandUser user = userRepository.findByUsername(auth.getName()).get();
     Persona userHero = user.getPersona();
