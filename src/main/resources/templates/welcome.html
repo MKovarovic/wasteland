@@ -10,7 +10,9 @@
 <div id = "container">
     <div th:insert="fragments/structure.html :: siteForm2(~{::#content})">
         <div id="content">
-            <h1>WELCOME</h1>
+            <i><h3>It's the year 2080. The world had been wrecked by the war that was supposed to end all wars. In the world overflowing with danger, be it from mutated animals, weird man-eating plants, or robots with scrabled circuitry, the SETTLERS are trying to make a living. Tend to crops, build homes, and bit by bit bring civilisation back. However, they are not the only survivors. There are also RAIDERS, living here and now, living off scraps of the old world, and whatever they can take from those weaker then them.</h3>
+            </i>
+
             <div th:if="${param.error}">
                 Invalid username and password.
             </div>
@@ -29,7 +31,7 @@
 
 
             </form>
-
+            <p><sup>To login, or to create a new account, please enter your username and password.</sup> </p>
         </div>
     </div>
 </div>
