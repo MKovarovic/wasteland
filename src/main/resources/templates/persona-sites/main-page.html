@@ -52,10 +52,18 @@
                                     <p th:text="${DTO.getLck()}"></p>
                                 </td>
                             </tr>
-
+                            <td>
+                                <p>Pull rings:</p>
+                            </td>
+                            <td>
+                                <p th:text="${DTO.getPullRing()}"></p>
+                            </td>
                         </table>
                         <!--<div th:insert="fragments/character-card.html :: combatStatistics(${DTO})"></div>-->
                     </div>
+
+
+
                 </section>
 
                 <section class="combatant">
@@ -69,6 +77,7 @@
                                 <th>DEF bonus</th>
                                 <th>HP bonus</th>
                                 <th>LCK bonus</th>
+                                <th>Type</th>
                                 <th>Equip?</th>
 
                             </tr>
@@ -91,6 +100,9 @@
                                 </td>
                                 <td>
                                     <p th:text="${item.getLckBonus()}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${item.getType()}"></p>
                                 </td>
                                 <td>
                                     <a th:href="'/character/me/equip?id=' + ${item.getId()}" th:text="${item.getIsEquipped()}? 'unequip' : 'equip'"></a>
