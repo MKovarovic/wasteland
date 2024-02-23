@@ -117,7 +117,9 @@ public class ActivityController {
   @GetMapping("/pvp/choice")
   public String pvpChoice(Model model) {
     model = commonData(model);
-    Persona[] enemies = combatService.randomEnemies(Faction.SETTLER);
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Persona userHero = userRepository.findByUsername(auth.getName()).get().getPersona();
+    Persona[] enemies = combatService.randomEnemies(userHero.getFaction() == Faction.SETTLER?Faction.RAIDER:Faction.SETTLER);
     model.addAttribute("enemies", enemies);
 
     model.addAttribute("enemy1", characterService.readCharacter(enemies[0].getId()));
