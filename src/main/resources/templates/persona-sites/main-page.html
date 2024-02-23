@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Landing</title>
+    <title>CHARACTER</title>
     <link href="/resources/Graphics.css" rel="stylesheet"/>
     <link href="/resources/style.css" rel="stylesheet"/>
 </head>
@@ -63,7 +63,6 @@
                     </div>
 
 
-
                 </section>
 
                 <section class="combatant">
@@ -105,7 +104,8 @@
                                     <p th:text="${item.getType()}"></p>
                                 </td>
                                 <td>
-                                    <a th:href="'/character/me/equip?id=' + ${item.getId()}" th:text="${item.getIsEquipped()}? 'unequip' : 'equip'"></a>
+                                    <a th:href="'/character/me/equip?id=' + ${item.getId()}"
+                                       th:text="${item.getIsEquipped()}? 'unequip' : 'equip'"></a>
 
                                 </td>
 
